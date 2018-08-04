@@ -2,7 +2,7 @@ remove(list = ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-setwd("/Users/harrocyranka/Desktop/rviz/afl_project/")
+setwd("")
 library(tidyverse);library(readxl);library(lubridate)
 
 
@@ -111,6 +111,18 @@ z %>% ggplot(aes(x = reorder(name_state,lifetime), y = lifetime, fill = party,
 
 
  
+by_state %>% top_n(10, wt = mean_score) %>%
+  mutate(group = "Highest Scoring States") %>%
+  bind_rows(by_state %>%top_n(-10,wt=mean_score) %>%mutate(group = "Lowest Scoring States")) %>%
+  arrange(desc(mean_score)) %>% mutate(mean_score = round(mean_score,1)) %>%
+  ggplot(aes(x = reorder(state,mean_score), y = mean_score, fill = group,
+                                           label = mean_score)) + 
+  geom_col(show.legend = FALSE) + 
+  coord_flip() + theme_minimal() + 
+  scale_fill_manual(values = c("blue", "red")) + geom_label(fill = "white", size = 3) + 
+  labs(y = "Average Lifetime Score", x = "State",
+       title = "Most Liberal and Most Conservative Congressional Delegations\nAccording to the AFL-CIO Legislative Scorecard (Average Lifetime scores)")
 
+  
 
 
