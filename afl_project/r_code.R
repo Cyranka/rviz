@@ -2,7 +2,7 @@ remove(list = ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-setwd("")
+setwd("/Users/harrocyranka/Desktop/rviz/afl_project/")
 library(tidyverse);library(readxl);library(lubridate)
 
 
@@ -20,7 +20,7 @@ house <- house %>%
 house %>% mutate(Party = ifelse(party == "D", "Democrat", "Republican")) %>%
   ggplot(aes(x = avg_score, y = ..density.., fill = Party)) + geom_histogram(bins = 20,alpha = 0.5, color = 'black') + theme_bw() +
   scale_fill_manual(values = c("steelblue", "red")) + 
-  labs(x = "Mean AFL-CIO Lifetime Score", y = "Density", title = "Histogram of AFL-CIO Lifetime Scores by Party")
+  labs(x = "AFL-CIO Lifetime Score", y = "Density", title = "Histogram of AFL-CIO Lifetime Scores by Party")
   
 
 
@@ -53,7 +53,7 @@ p <- plot_geo(by_state, locationmode = 'USA-states') %>%
     z = ~mean_score, text = ~state, locations = ~state,
     color = ~mean_score, colors = myColors
   ) %>%
-  colorbar(title = "AFL-CIO Lifetime Score") %>%
+  colorbar(title = "Average AFL-CIO Lifetime Score") %>%
   layout(
     title = '',
     geo = g
@@ -81,13 +81,33 @@ arm::display(fit.2, detail = TRUE)
 colors <-ifelse(no_nas$party == "R", "red", "blue")
 
 plot(no_nas$score_2016, no_nas$score_2017, col = colors, pch = 19, cex = 0.7,
-     xlab = "2016 Scores", ylab = "2017 Scores", main = "Plotted Regression Lines")
+     xlab = "2016 Scores", ylab = "2017 Scores", main = "Regression of 2017 Scores on 2016 Scores",
+     sub ="\n Model: score_2017 = 1.54 + 0.94*score_2016 + -0.36*score_2016*party_gop")
 
 curve(cbind(1,x,x*1) %*% coef(fit.2), add = TRUE,
       col = 'red', lwd = 1, lty = 2) ##Curve for GOP (Fit 2)
 
 curve(cbind(1,x,x*0) %*% coef(fit.2), add = TRUE,
       col = 'blue', lwd = 1, lty = 2) ##Curve for Dem (Fit 2)
+
+##Get most liberal republicans and most conservative democrats
+lib_gop <- house %>% filter(party == "R") %>% group_by(party) %>%
+  top_n(10, wt = lifetime) %>%
+  mutate(group = "Highest Scoring Republicans")
+  
+con_dem <- house %>% filter(party == "D") %>% group_by(party) %>%
+  top_n(-10, wt = lifetime) %>%
+  mutate(group = "Lowest Scoring Democrats")
+
+z <- bind_rows(lib_gop, con_dem) %>% mutate(name_state = paste(name, state, sep = "-"))
+
+z %>% ggplot(aes(x = reorder(name_state,lifetime), y = lifetime, fill = party,
+                 label = lifetime)) + 
+  geom_col(show.legend = FALSE) + facet_wrap(~group, scale = "free_y") + 
+  coord_flip() + theme_minimal() + 
+  scale_fill_manual(values = c("blue", "red")) + geom_label(fill = "white", size = 3) + 
+  labs(y = "Lifetime Scores", x = "Representative",
+       title = "Most Liberal Republicans and Most Conservative Democrats\nAccording to the AFL-CIO Legislative Scorecard (Lifetime scores)")
 
 
  
