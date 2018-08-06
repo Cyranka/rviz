@@ -20,10 +20,10 @@ x %>% filter(type_of_event == "incidents") %>%
   mutate(year_range = relevel(factor(year_range, labels = c("00-14", "85-99")),ref = "85-99")) %>%
   inner_join(event_decrease %>% select(airline, improvement, order)) %>%
   ggplot(aes(x = reorder(airline, order), y = n_events, color = year_range, group = airline)) + geom_point(size = 2,alpha = 0.5) + coord_flip() + 
-  geom_line(color = "black") + theme_minimal() + labs(color = "Period", y = "Total Events", x = "Airlines",
-                                                      title = "Total Events by Airline",
-                                                      subtitle = "Data sorted by airlines with the highest decrease in events",
-                                                      caption = "Airlines on top: decrease in # of events\nAirlines in the middle: No change in # of events\nAirlines in the bottom: Increase in the # of events") + 
+  geom_line(color = "black") + theme_minimal() + labs(color = "Period", y = "Total Incidents", x = "Airlines",
+                                                      title = "Total Incidents by Airline",
+                                                      subtitle = "Data sorted by airlines with the highest decrease in Incidents",
+                                                      caption = "Airlines on top: decrease in # of Incidents\nAirlines in the middle: No change in # of Incidents\nAirlines in the bottom: Increase in # of Incidents") + 
   scale_color_manual(values = c("firebrick", "steelblue")) + 
   geom_vline(xintercept = 26.5, size = 0.3, linetype = 2) +
   geom_vline(xintercept = 16.5, size = 0.3, linetype = 2)
@@ -49,6 +49,6 @@ event_spread %>%filter(`00_14`<12 & `85_99` <20) %>%
   ggplot(aes(x = `85_99`, y = `00_14`, color = as.character(cluster))) + geom_point(size = 4, shape=18) + geom_jitter(size = 4, shape = 18) + 
   theme_bw() + labs(color = 'K-Means Assignment') + geom_point(data = k_means_centers, aes(x=`85_99`, y= `00_14`), col = "black", size = 3,
                                                                shape = 4) + 
-  labs(x = "Total events between 1985-1999", y = "Total events between 2000-2014",
-       title = "K-means clustering of airline events",
+  labs(x = "Total incidents between 1985-1999", y = "Total incidents between 2000-2014",
+       title = "K-means clustering of airline incidents",
        caption = "Cluster centers marked with an X\nSome 'extreme' cases were removed")
