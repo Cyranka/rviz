@@ -1,0 +1,539 @@
+name,count,percent
+New York,1095,7.13%
+San Francisco,979,6.38%
+Washington,680,4.43%
+Seattle,579,3.77%
+Chicago,568,3.70%
+Boston,563,3.67%
+Cambridge,441,2.87%
+Ontario,354,2.31%
+Melbourne,353,2.30%
+Los Angeles,343,2.23%
+Austin,293,1.91%
+Vancouver,253,1.65%
+Philadelphia,245,1.60%
+Columbia,234,1.52%
+Brooklyn,215,1.40%
+Atlanta,211,1.37%
+Houston,201,1.31%
+Portland,197,1.28%
+Dublin,193,1.26%
+Victoria,183,1.19%
+Pittsburgh,161,1.05%
+Pittsburg,161,1.05%
+San Diego,150,0.98%
+Berkeley,150,0.98%
+Minneapolis,149,0.97%
+Edinburg,146,0.95%
+Dallas,140,0.91%
+Baltimore,129,0.84%
+Denver,125,0.81%
+Durham,119,0.77%
+Manchester,118,0.77%
+Charlotte,114,0.74%
+Ann Arbor,111,0.72%
+Madison,110,0.72%
+Palo Alto,107,0.70%
+Columbus,104,0.68%
+Raleigh,92,0.60%
+Gary,92,0.60%
+San Jose,91,0.59%
+Boulder,89,0.58%
+Queens,88,0.57%
+Manhattan,85,0.55%
+Nashville,82,0.53%
+Oakland,82,0.53%
+Davis,74,0.48%
+New Haven,68,0.44%
+Mountain View,67,0.44%
+Charlottesville,66,0.43%
+Salt Lake City,62,0.40%
+Hampton,61,0.40%
+Athens,61,0.40%
+Miami,60,0.39%
+Birmingham,59,0.38%
+Rochester,59,0.38%
+Cincinnati,56,0.36%
+Wellington,56,0.36%
+Chapel Hill,54,0.35%
+Bristol,51,0.33%
+Lansing,50,0.33%
+Milwaukee,48,0.31%
+Kansas City,48,0.31%
+Richmond,48,0.31%
+Phoenix,47,0.31%
+Detroit,47,0.31%
+Gainesville,47,0.31%
+Cleveland,46,0.30%
+Arlington,42,0.27%
+Tempe,41,0.27%
+Lincoln,40,0.26%
+Fort Collins,39,0.25%
+Tampa,37,0.24%
+Indianapolis,36,0.23%
+Santa Barbara,36,0.23%
+Orlando,35,0.23%
+Waterloo,35,0.23%
+Ames,35,0.23%
+Irvine,34,0.22%
+East Lansing,34,0.22%
+Kent,33,0.21%
+Louisville,32,0.21%
+State College,31,0.20%
+Brighton,31,0.20%
+Sacramento,30,0.20%
+Omaha,30,0.20%
+New Orleans,29,0.19%
+Eugene,29,0.19%
+Burlington,28,0.18%
+Milton,28,0.18%
+San Antonio,27,0.18%
+Edmond,27,0.18%
+Redmond,27,0.18%
+Reading,26,0.17%
+Lombard,26,0.17%
+Las Vegas,25,0.16%
+Tucson,25,0.16%
+Bloomington,25,0.16%
+Buffalo,24,0.16%
+College Station,24,0.16%
+Bend,24,0.16%
+Iowa City,24,0.16%
+Pasadena,23,0.15%
+Somerville,23,0.15%
+Urbana,23,0.15%
+Tallahassee,22,0.14%
+Providence,22,0.14%
+Cary,22,0.14%
+Santa Monica,22,0.14%
+Corvallis,22,0.14%
+Albuquerque,21,0.14%
+Salem,21,0.14%
+Sunnyvale,21,0.14%
+Champaign,21,0.14%
+Reno,20,0.13%
+Lancaster,20,0.13%
+Alexandria,20,0.13%
+Syracuse,20,0.13%
+Lafayette,20,0.13%
+Warwick,19,0.12%
+Plymouth,19,0.12%
+New Brunswick,19,0.12%
+Norwich,19,0.12%
+Hamilton,18,0.12%
+Saint Petersburg,17,0.11%
+Knoxville,17,0.11%
+Worcester,17,0.11%
+Santa Cruz,17,0.11%
+Saint Peters,17,0.11%
+Saint Louis,16,0.10%
+Jersey City,16,0.10%
+Grand Rapids,16,0.10%
+Jackson,16,0.10%
+Bellevue,16,0.10%
+Santa Clara,16,0.10%
+San Mateo,16,0.10%
+Fort Worth,15,0.10%
+Memphis,15,0.10%
+Riverside,15,0.10%
+Lexington,15,0.10%
+Charleston,15,0.10%
+Hartford,15,0.10%
+Norman,15,0.10%
+Evanston,15,0.10%
+Roy,15,0.10%
+Newark,14,0.09%
+Provo,14,0.09%
+Albany,14,0.09%
+Lawrence,14,0.09%
+Florence,14,0.09%
+West Lafayette,13,0.08%
+Orange,12,0.08%
+Boca Raton,12,0.08%
+Frederick,12,0.08%
+Logan,12,0.08%
+Bozeman,12,0.08%
+Blacksburg,12,0.08%
+Jacksonville,11,0.07%
+Colorado Springs,11,0.07%
+Fremont,11,0.07%
+Dayton,11,0.07%
+Denton,11,0.07%
+South Bend,11,0.07%
+Merced,11,0.07%
+San Luis Obispo,11,0.07%
+Oklahoma City,10,0.07%
+Tulsa,10,0.07%
+Saint Paul,10,0.07%
+Plano,10,0.07%
+Baton Rouge,10,0.07%
+Tacoma,10,0.07%
+Asheville,10,0.07%
+Rockville,10,0.07%
+Cupertino,10,0.07%
+Annapolis,10,0.07%
+Long Beach,9,0.06%
+Anchorage,9,0.06%
+Little Rock,9,0.06%
+Springfield,9,0.06%
+Wilmington,9,0.06%
+Portsmouth,9,0.06%
+Redwood City,9,0.06%
+Auburn,9,0.06%
+Kalamazoo,9,0.06%
+Hoboken,9,0.06%
+Fayetteville,8,0.05%
+Midland,8,0.05%
+Allen,8,0.05%
+Erie,8,0.05%
+Greenville,8,0.05%
+Flagstaff,8,0.05%
+Stillwater,8,0.05%
+Greensboro,7,0.05%
+Scottsdale,7,0.05%
+Des Moines,7,0.05%
+Fort Lauderdale,7,0.05%
+Chattanooga,7,0.05%
+Hollywood,7,0.05%
+Tuscaloosa,7,0.05%
+Livermore,7,0.05%
+Kirkland,7,0.05%
+Santa Fe,7,0.05%
+Troy,7,0.05%
+Decatur,7,0.05%
+Walnut Creek,7,0.05%
+Novi,7,0.05%
+Woodland,7,0.05%
+Highland,7,0.05%
+Pensacola,7,0.05%
+Bronx,6,0.04%
+Mesa,6,0.04%
+Fort Wayne,6,0.04%
+Irving,6,0.04%
+Spokane,6,0.04%
+Concord,6,0.04%
+Fargo,6,0.04%
+Vista,6,0.04%
+Redlands,6,0.04%
+Alpharetta,6,0.04%
+Lehi,6,0.04%
+Grand Forks,6,0.04%
+Beverly,6,0.04%
+Oviedo,6,0.04%
+Delaware,6,0.04%
+Toledo,5,0.03%
+Norfolk,5,0.03%
+Akron,5,0.03%
+Huntsville,5,0.03%
+Waco,5,0.03%
+Stamford,5,0.03%
+Parma,5,0.03%
+Wyoming,5,0.03%
+South San Francisco,5,0.03%
+Bowling Green,5,0.03%
+Royal Oak,5,0.03%
+Olympia,5,0.03%
+Farmington,5,0.03%
+Staten Island,4,0.03%
+Corpus Christi,4,0.03%
+Glendale,4,0.03%
+McKinney,4,0.03%
+Hayward,4,0.03%
+Round Rock,4,0.03%
+Westminster,4,0.03%
+Billings,4,0.03%
+Burbank,4,0.03%
+Las Cruces,4,0.03%
+Roanoke,4,0.03%
+Longmont,4,0.03%
+Carmel,4,0.03%
+Suffolk,4,0.03%
+Bellingham,4,0.03%
+Duluth,4,0.03%
+Pleasanton,4,0.03%
+Alameda,4,0.03%
+Milpitas,4,0.03%
+Missoula,4,0.03%
+Jupiter,4,0.03%
+Waltham,4,0.03%
+Coral Gables,4,0.03%
+Campbell,4,0.03%
+Lubbock,3,0.02%
+Amarillo,3,0.02%
+Overland Park,3,0.02%
+Santa Rosa,3,0.02%
+Lakewood,3,0.02%
+Rockford,3,0.02%
+Naperville,3,0.02%
+Savannah,3,0.02%
+Olathe,3,0.02%
+Carrollton,3,0.02%
+Murfreesboro,3,0.02%
+Thousand Oaks,3,0.02%
+Fairfield,3,0.02%
+Richardson,3,0.02%
+West Palm Beach,3,0.02%
+Daly City,3,0.02%
+Hillsboro,3,0.02%
+Renton,3,0.02%
+Nashua,3,0.02%
+Chino,3,0.02%
+Newport Beach,3,0.02%
+Clifton,3,0.02%
+Mission,3,0.02%
+Medford,3,0.02%
+Farmington Hills,3,0.02%
+Napa,3,0.02%
+San Ramon,3,0.02%
+Franklin,3,0.02%
+Georgetown,3,0.02%
+Encinitas,3,0.02%
+Rocklin,3,0.02%
+Brentwood,3,0.02%
+Ankeny,3,0.02%
+White Plains,3,0.02%
+Bradenton,3,0.02%
+Shoreline,3,0.02%
+Normal,3,0.02%
+Harrisonburg,3,0.02%
+Oak Park,3,0.02%
+Bedford,3,0.02%
+Monroe,3,0.02%
+Apex,3,0.02%
+Keller,3,0.02%
+Binghamton,3,0.02%
+DeKalb,3,0.02%
+Germantown,3,0.02%
+Virginia Beach,2,0.01%
+Wichita,2,0.01%
+Aurora,2,0.01%
+Santa Ana,2,0.01%
+Stockton,2,0.01%
+Chula Vista,2,0.01%
+Chandler,2,0.01%
+Mobile,2,0.01%
+Brownsville,2,0.01%
+Cape Coral,2,0.01%
+Sioux Falls,2,0.01%
+Frisco,2,0.01%
+Warren,2,0.01%
+Elizabeth,2,0.01%
+Simi Valley,2,0.01%
+Abilene,2,0.01%
+Allentown,2,0.01%
+Odessa,2,0.01%
+Arvada,2,0.01%
+Clearwater,2,0.01%
+Costa Mesa,2,0.01%
+Pueblo,2,0.01%
+Santa Maria,2,0.01%
+Tyler,2,0.01%
+Kenosha,2,0.01%
+Beaverton,2,0.01%
+Orem,2,0.01%
+San Marcos,2,0.01%
+Miami Beach,2,0.01%
+Chico,2,0.01%
+San Leandro,2,0.01%
+Newton,2,0.01%
+Sugar Land,2,0.01%
+Ogden,2,0.01%
+Tustin,2,0.01%
+Deerfield Beach,2,0.01%
+Folsom,2,0.01%
+Fort Myers,2,0.01%
+Loveland,2,0.01%
+Bethlehem,2,0.01%
+Canton,2,0.01%
+Pasco,2,0.01%
+Weston,2,0.01%
+Muncie,2,0.01%
+Eau Claire,2,0.01%
+Camarillo,2,0.01%
+Shawnee,2,0.01%
+Rogers,2,0.01%
+Madera,2,0.01%
+Cheyenne,2,0.01%
+Sammamish,2,0.01%
+Marietta,2,0.01%
+Terre Haute,2,0.01%
+Malden,2,0.01%
+Casper,2,0.01%
+Arcadia,2,0.01%
+Des Plaines,2,0.01%
+Novato,2,0.01%
+Rocky Mount,2,0.01%
+Pocatello,2,0.01%
+West New York,2,0.01%
+Lenexa,2,0.01%
+Kingsport,2,0.01%
+Brookhaven,2,0.01%
+Minnetonka,2,0.01%
+La Crosse,2,0.01%
+Murray,2,0.01%
+Harrisburg,2,0.01%
+Bentonville,2,0.01%
+Danville,2,0.01%
+Moorhead,2,0.01%
+Brea,2,0.01%
+Westfield,2,0.01%
+Manassas,2,0.01%
+Hickory,2,0.01%
+Marlborough,2,0.01%
+Hurst,2,0.01%
+Pacifica,2,0.01%
+El Paso,1,0.01%
+Fresno,1,0.01%
+Anaheim,1,0.01%
+Henderson,1,0.01%
+Chesapeake,1,0.01%
+Gilbert,1,0.01%
+Garland,1,0.01%
+Modesto,1,0.01%
+Fontana,1,0.01%
+Montgomery,1,0.01%
+Augusta,1,0.01%
+Shreveport,1,0.01%
+Newport News,1,0.01%
+Oceanside,1,0.01%
+Elk Grove,1,0.01%
+Corona,1,0.01%
+Joliet,1,0.01%
+Bridgeport,1,0.01%
+Killeen,1,0.01%
+McAllen,1,0.01%
+Miramar,1,0.01%
+Surprise,1,0.01%
+Roseville,1,0.01%
+Cedar Rapids,1,0.01%
+Evansville,1,0.01%
+Independence,1,0.01%
+El Monte,1,0.01%
+Carlsbad,1,0.01%
+West Jordan,1,0.01%
+Pearland,1,0.01%
+Elgin,1,0.01%
+Murrieta,1,0.01%
+Antioch,1,0.01%
+Lowell,1,0.01%
+Everett,1,0.01%
+Clovis,1,0.01%
+Lakeland,1,0.01%
+Green Bay,1,0.01%
+Lewisville,1,0.01%
+Greeley,1,0.01%
+Davie,1,0.01%
+Sparks,1,0.01%
+Compton,1,0.01%
+Flint,1,0.01%
+Federal Way,1,0.01%
+Mission Viejo,1,0.01%
+South Gate,1,0.01%
+Livonia,1,0.01%
+Sunrise,1,0.01%
+Lynn,1,0.01%
+Fall River,1,0.01%
+Hawthorne,1,0.01%
+Hemet,1,0.01%
+Mount Pleasant,1,0.01%
+Johns Creek,1,0.01%
+Lake Forest,1,0.01%
+Sioux City,1,0.01%
+Kennewick,1,0.01%
+New Rochelle,1,0.01%
+Chino Hills,1,0.01%
+Hammond,1,0.01%
+Lake Charles,1,0.01%
+Saint Joseph,1,0.01%
+Layton,1,0.01%
+Union City,1,0.01%
+Camden,1,0.01%
+Warner Robins,1,0.01%
+Temple,1,0.01%
+Flower Mound,1,0.01%
+Rock Hill,1,0.01%
+Apple Valley,1,0.01%
+Maple Grove,1,0.01%
+Palatine,1,0.01%
+Mount Vernon,1,0.01%
+Yorba Linda,1,0.01%
+Delray Beach,1,0.01%
+Johnson City,1,0.01%
+Oshkosh,1,0.01%
+Broomfield,1,0.01%
+Laguna Niguel,1,0.01%
+Conway,1,0.01%
+Schenectady,1,0.01%
+West Des Moines,1,0.01%
+Youngstown,1,0.01%
+Haverhill,1,0.01%
+North Miami,1,0.01%
+Petaluma,1,0.01%
+West Allis,1,0.01%
+La Mesa,1,0.01%
+San Rafael,1,0.01%
+Dubuque,1,0.01%
+Bowie,1,0.01%
+Santee,1,0.01%
+Castle Rock,1,0.01%
+Smyrna,1,0.01%
+Sarasota,1,0.01%
+Greenwood,1,0.01%
+Berwyn,1,0.01%
+Hempstead,1,0.01%
+Richland,1,0.01%
+Casa Grande,1,0.01%
+West Haven,1,0.01%
+Wheaton,1,0.01%
+Revere,1,0.01%
+Caldwell,1,0.01%
+Palm Desert,1,0.01%
+Placentia,1,0.01%
+Elkhart,1,0.01%
+Grapevine,1,0.01%
+Edina,1,0.01%
+Galveston,1,0.01%
+Poway,1,0.01%
+La Mirada,1,0.01%
+Saginaw,1,0.01%
+Dunwoody,1,0.01%
+Middletown,1,0.01%
+Mishawaka,1,0.01%
+Ceres,1,0.01%
+Huntington,1,0.01%
+Wauwatosa,1,0.01%
+Kannapolis,1,0.01%
+Lacey,1,0.01%
+Chesterfield,1,0.01%
+Glenview,1,0.01%
+Hattiesburg,1,0.01%
+Elmhurst,1,0.01%
+Littleton,1,0.01%
+Titusville,1,0.01%
+Cleveland Heights,1,0.01%
+Morgan Hill,1,0.01%
+Bountiful,1,0.01%
+North Miami Beach,1,0.01%
+Jefferson City,1,0.01%
+San Bruno,1,0.01%
+Prescott,1,0.01%
+Little Elm,1,0.01%
+Moline,1,0.01%
+Ormond Beach,1,0.01%
+Mankato,1,0.01%
+Coppell,1,0.01%
+Buffalo Grove,1,0.01%
+Covington,1,0.01%
+La Puente,1,0.01%
+Maplewood,1,0.01%
+Wake Forest,1,0.01%
+Apache Junction,1,0.01%
+Cape Girardeau,1,0.01%
+Schertz,1,0.01%
+Westerville,1,0.01%
+Montclair,1,0.01%
+Spanish Fork,1,0.01%
+Atlantic City,1,0.01%
+Muskegon,1,0.01%
+Martinez,1,0.01%
+Lynnwood,1,0.01%
