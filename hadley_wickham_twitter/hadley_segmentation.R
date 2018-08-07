@@ -33,24 +33,24 @@ clean.corpus <- function(corpus){
 }
 
 
-wk.exp <- readr::read_csv("bios_for_clustering.csv")
-wk.source <- VCorpus(VectorSource(wk.exp$text))
-wk.corpus <- clean.corpus(wk.source) 
+x <- readr::read_csv("bios_for_clustering.csv")
+x_source <- VCorpus(VectorSource(x$text))
+x_corpus <- clean.corpus(x_source) 
 
-wk.dtm <- DocumentTermMatrix(wk.corpus,
+x_dtm <- DocumentTermMatrix(x_corpus,
                              control = list(weighting = weightTfIdf))
 
-dtm.new <- removeSparseTerms(wk.dtm, 0.995)
+x_dtm_new <- removeSparseTerms(x_dtm, 0.995)
 
 
 ##Remove Empty Columns
-rowTotals <- apply(dtm.new , 1, sum)
-dtm.new <- dtm.new[rowTotals >0,]
+rowTotals <- apply(x_dtm_new , 1, sum)
+x_dtm_new <- x_dtm_new[rowTotals >0,]
 
 
 set.seed(100) ##Seeds tried: 15, 20
 change_number <- 6
-soft.part <- skmeans(dtm.new, change_number, m = 1, control = 
+soft.part <- skmeans(x_dtm_new, change_number, m = 1, control = 
                        list(nruns = 5, verbose = TRUE))
 
 barplot(table(soft.part$cluster), main = 'Spherical K-means')
@@ -107,6 +107,6 @@ tibble(Cluster = 1:length_1, Total = as.vector(unname(table(soft.part$cluster)))
   writexl::write_xlsx("cluster_table.xlsx")
 
 ##
-png("/Users/harrocyranka/Desktop/Research_and_Projects/ad_hoc/hadley_twitter/wordcloud_packages.png", width=8,height=7, units='in', res=300)
+png("wordcloud_clusters.png", width=8,height=7, units='in', res=300)
 comparison.cloud(s.clus.proto, max.words = 200, title.size = 0.01,random.order = FALSE, colors = gg_color_hue(change_number))
 dev.off()
