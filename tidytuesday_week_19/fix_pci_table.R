@@ -55,10 +55,24 @@ x <- x %>% inner_join(y) %>%
 ##Need to center this, so it makes sense
 fit_1 <- glm(incidents_00_14 ~ incidents_85_99 + centered_income, family = "poisson", data = x)
 arm::display(fit_1, detail = TRUE)
-plot(x$avg_pci_0014, x$incidents_85_99, pch = 19, cex = 0.7,
+plot(x$incidents_85_99, x$incidents_00_14, pch = 19, cex = 0.7,
      xlab = "Total incidents 1985-1999", ylab = "Total incidents 2000-2014")
 curve(exp(cbind(1,x,0) %*% coef(fit_1)), add = TRUE,
       col = 'red', lwd = 2, lty = 2)
 
 
+predictions_at_mean_income <- exp(cbind(1,x$incidents_85_99,0) %*% coef(fit_1))[,1]
+predictions_at_1st <- exp(cbind(1,x$incidents_85_99,-18.9993) %*% coef(fit_1))[,1]
+predictions_at_3rd <- exp(cbind(1,x$incidents_85_99,17.7214) %*% coef(fit_1))[,1]
 
+
+
+
+##
+x %>% mutate(predictions_at_mean_income = predictions_at_mean_income,
+             predictions_at_1st = predictions_at_1st) %>%
+  ggplot(aes(x = incidents_85_99, y= incidents_00_14)) + 
+  geom_point() + theme_bw() + 
+  geom_smooth(data = x, aes(x = incidents_85_99, y = predictions_at_mean_income)) + 
+  geom_smooth(data = x, aes(x = incidents_85_99, y = predictions_at_1st), col = "red") + 
+  geom_smooth(data = x, aes(x = incidents_85_99, y = predictions_at_3rd), col = "green")
