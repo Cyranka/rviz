@@ -38,7 +38,8 @@ p2 <- p %>% dplyr::select(airline, country, avg_pci_85_99, total_incidents_85_99
 
 p2 %>% ggplot(aes(x = avg_pci, y = total_incidents)) + geom_point() + 
   facet_wrap(~period, scale = "free") + theme_bw() + 
-  labs(x = "Average per capita income in the period", y = "Total incidents")
+  labs(x = "Average per capita income in the period", y = "Total incidents") + 
+  geom_smooth(se = FALSE)
 
 
 ##Only center income
@@ -47,18 +48,17 @@ x <- x %>% inner_join(y) %>%
   dplyr::select(airline, year_range, n_events, country) %>%
   spread(year_range, n_events) %>%
   left_join(pci) %>% select(-`1985-99`) %>%
-  magrittr::set_colnames(c("airline","country","incidents_00_14","incidents_85_99","avg_pci_0014"))
+  magrittr::set_colnames(c("airline","country","incidents_00_14","incidents_85_99","avg_pci_0014")) %>%
+  mutate(centered_income = avg_pci_0014 - mean(avg_pci_0014))
 
 
 ##Need to center this, so it makes sense
-
-fit_1 <- glm(incidents_00_14 ~ incidents_85_99 + avg_pci_0014, family = "poisson", data = x)
+fit_1 <- glm(incidents_00_14 ~ incidents_85_99 + centered_income, family = "poisson", data = x)
 arm::display(fit_1, detail = TRUE)
-plot(x$avg_pci_0014, x$incidents_00_14, pch = 19, cex = 0.7,
-     xlab = "Average per capita income between 2000-2014", ylab = "Total incidents 2000-2014")
+plot(x$avg_pci_0014, x$incidents_85_99, pch = 19, cex = 0.7,
+     xlab = "Total incidents 1985-1999", ylab = "Total incidents 2000-2014")
+curve(exp(cbind(1,x,0) %*% coef(fit_1)), add = TRUE,
+      col = 'red', lwd = 2, lty = 2)
 
 
-#No US
-x_1 <- x %>% filter(incidents_00_14 <12)
-fit_2 <- glm(incidents_00_14 ~ incidents_85_99 + avg_pci_0014, family = "poisson", data = x_1)
-arm::display(fit_2, detail = TRUE)
+
