@@ -97,3 +97,42 @@ x %>%
        subtitle = "Model: (Total incidents during 2000-14) = (Total incidents during 1985-99) + (Mean Per Capita Income between 2000-14 (Centered))",
        caption = "Blue line: poisson regression curve when # accidents = 0\nGreen line: poisson regression curve when # of accidents = 8 (3rd Quartile)\nRed line: poisson regression curve when # of accidents = 4 (Median)")
 
+###Removing Aeroflot and refitting the model
+fit_2 <- glm(incidents_00_14 ~ incidents_85_99 + centered_income, family = "poisson", data = x %>% filter(airline!="Aeroflot*"))
+arm::display(fit_2, detail = TRUE)
+
+
+predictions_at_mean_income <- exp(cbind(1,x$incidents_85_99[-2],0) %*% coef(fit_2))[,1]
+predictions_at_1st <- exp(cbind(1,x$incidents_85_99[-2],-18.9993) %*% coef(fit_2))[,1]
+predictions_at_3rd <- exp(cbind(1,x$incidents_85_99[-2],17.7214) %*% coef(fit_2))[,1]
+
+
+##
+x %>%  filter(airline!="Aeroflot*") %>%
+  ggplot(aes(x = incidents_85_99, y= incidents_00_14)) + 
+  geom_point() + theme_bw() + geom_jitter() + 
+  geom_smooth(data = x %>%  filter(airline!="Aeroflot*"), aes(x = incidents_85_99, y = predictions_at_mean_income)) + 
+  geom_smooth(data = x %>%  filter(airline!="Aeroflot*"), aes(x = incidents_85_99, y = predictions_at_1st), col = "red") + 
+  geom_smooth(data = x %>%  filter(airline!="Aeroflot*"), aes(x = incidents_85_99, y = predictions_at_3rd), col = "forestgreen") + 
+  labs(x = "Incidents 1985-99",y = "Incidents 2000-14",
+       title = "Poisson regression curves at three different income levels (Aeroflot Removed)",
+       subtitle = "Model: (Total incidents during 2000-14) = (Total incidents during 1985-99) + (Mean Per Capita Income between 2000-14 (Centered))",
+       caption = "Blue line: poisson regression curve when mean per capita income ≈ 23.6 (Average)\nGreen line: poisson regression curve when mean per capita income ≈ 41.3 (3rd Quartile)\nRed line: poisson regression curve when mean per capita income ≈ 4.5 (1st Quartile)")
+
+
+
+###Removing Aeroflot and refitting the model: Income side
+predictions_no_accidents <- exp(cbind(1,0,x$centered_income[-2]) %*% coef(fit_2))[,1]
+predictions_4_accidents <- exp(cbind(1,4,x$centered_income[-2]) %*% coef(fit_2))[,1]
+predictions_8_accidents <- exp(cbind(1,8,x$centered_income[-2]) %*% coef(fit_2))[,1]
+
+x %>%filter(airline!="Aeroflot*") %>%
+  ggplot(aes(x = centered_income, y= incidents_00_14)) + 
+  geom_point() + theme_bw() + 
+  geom_smooth(data = x %>%filter(airline!="Aeroflot*"), aes(x = centered_income, y = predictions_no_accidents), col = "blue") + 
+  geom_smooth(data = x %>%filter(airline!="Aeroflot*"), aes(x = centered_income, y = predictions_4_accidents), col = "red") + 
+  geom_smooth(data = x %>%filter(airline!="Aeroflot*"), aes(x = centered_income, y = predictions_8_accidents), col = "forestgreen")+ 
+  labs(x = "Centered Mean Per Capita Income in 2000-14",y = "Incidents 2000-14",
+       title = "Poisson regression curves at three different # of total incidents in 1985-99 (Aeroflot Removed)",
+       subtitle = "Model: (Total incidents during 2000-14) = (Total incidents during 1985-99) + (Mean Per Capita Income between 2000-14 (Centered))",
+       caption = "Blue line: poisson regression curve when # accidents = 0\nGreen line: poisson regression curve when # of accidents = 8 (3rd Quartile)\nRed line: poisson regression curve when # of accidents = 4 (Median)")
