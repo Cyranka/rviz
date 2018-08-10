@@ -66,3 +66,67 @@ ny_list <- read_csv("dataset_with_clusters.csv") %>%
 
 write_csv(ny_list, "new_york_school_list.csv")
 
+##Chicago tableau
+chicago <- read_csv("dataset_with_clusters.csv") %>%
+  mutate(cluster = x$cluster) %>%
+  filter(county %in% c("Cook County") & lstate == "IL") %>%
+  dplyr::select(latcod, loncod, cluster, enrollment) %>%
+  dplyr::rename(lat = latcod, lon = loncod)
+
+write_csv(chicago, "chicago_school_list.csv")
+
+
+##
+cluster_statistics %>%
+  select(-`Total schools`) %>%
+  mutate(`Mean zip median household income` = round(`Mean zip median household income`,0),
+         `Mean enrollment` = round(`Mean enrollment`,0),
+         `Mean % school lunch` = round(`Mean % school lunch`,1),
+         `Mean % non-white` = round(`Mean % non-white`,1)) %>%
+  gather(measure, total,-Cluster) %>%
+  arrange(Cluster) %>%
+  ggplot(aes(x = as.character(Cluster), y = total, fill = as.character(Cluster),label = round(total,2))) +
+  geom_col(show.legend = FALSE) + geom_label(show.legend = FALSE, fill = "white", size = 3) + 
+  facet_wrap(~measure, scales = "free", ncol = 2) + theme_bw() + 
+  labs(x = "Cluster", title = "Cluster statistics", y = "Total",
+       subtitle = "Data on 25,000 public schools")
+
+
+####Create Cluster Map####
+
+library(shiny)
+library(plotly)
+
+create_cluster_map <- function(cluster_vector, colors_vector){
+    us_map <- read_csv("dataset_with_clusters.csv") %>%
+      mutate(cluster = x$cluster) %>% 
+      filter(cluster %in% cluster_vector) %>%
+      dplyr::select(latcod, loncod, cluster, enrollment, school_name)
+    
+    g <- list(
+      scope = 'usa',
+      projection = list(type = 'albers usa'),
+      showland = TRUE,
+      landcolor = toRGB("white"),
+      subunitwidth = 1,
+      countrywidth = 1,
+      subunitcolor = toRGB("black"),
+      countrycolor = toRGB("black")
+    )
+    
+    
+    p <- plot_geo(us_map, locationmode = 'USA-states', sizes = c(2, 20)) %>% add_markers(
+      x = ~loncod, y = ~latcod, size = ~enrollment,color = ~cluster,colors = colors_vector,hoverinfo = "text",
+      mode = "markers",
+      text = ~paste('School Name: ',school_name,
+                    '<br> Cluster: ',cluster)
+    )  %>% layout(title = "US Map: Clusters 2 and 3", geo = g,showlegend = FALSE, width = 2000,height = 1000) %>%
+      hide_colorbar()
+    
+    return(p)
+}
+
+y <- create_cluster_map(c(2,3),c("goldenrod","forestgreen"))
+
+y
+
