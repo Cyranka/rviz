@@ -120,6 +120,7 @@ x %>%  filter(airline!="Aeroflot*") %>%
        caption = "Blue line: poisson regression curve when mean per capita income ≈ 23.6 (Average)\nGreen line: poisson regression curve when mean per capita income ≈ 41.3 (3rd Quartile)\nRed line: poisson regression curve when mean per capita income ≈ 4.5 (1st Quartile)")
 
 
+summary(x$incidents_85_99[-2])
 
 ###Removing Aeroflot and refitting the model: Income side
 predictions_no_accidents <- exp(cbind(1,0,x$centered_income[-2]) %*% coef(fit_2))[,1]
