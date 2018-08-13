@@ -59,9 +59,9 @@ list_tf_right %>% arrange(desc(tf_idf)) %>%
   labs(x = NULL, y = "tf-idf") +
   facet_wrap(~year,scales = "free") +
   coord_flip() + theme_bw() +
-  labs(x = "Word", y = "TF-IDF", title = "TF-IDF of Right Wing Troll: Data for Selected Years", 
+  labs(x = "Word", y = "TF-IDF", title = "TF-IDF of Right Wing Trolls: Data for Selected Years", 
        subtitle = "Based on 68,263 Tweets from a random sample of 300,000 tweets",
-       caption = "Tidy Tuesday week 20, Russian Bot Data")
+       caption = "Tidy Tuesday week 20, Russian Bot Data\nOnly tweets in English")
 
 
 ##Repeat for Left Wing
@@ -98,4 +98,4 @@ list_tf_left %>% arrange(desc(tf_idf)) %>%
   coord_flip() + theme_bw() +
   labs(x = "Word", y = "TF-IDF", title = "TF-IDF of Left Wing Trolls: Data for Selected Years", 
        subtitle = "Based on 44,858 Tweets from a random sample of 300,000 tweets",
-       caption = "Tidy Tuesday week 20, Russian Bot Data")
+       caption = "Tidy Tuesday week 20, Russian Bot Data\nOnly tweets in English")
