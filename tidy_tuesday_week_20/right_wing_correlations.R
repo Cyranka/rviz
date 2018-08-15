@@ -10,7 +10,7 @@ set.seed(4)
 x <- bind_rows(lapply(csv_files, function(i) read_csv(i)))
 
 set.seed(5)
-right_sample <- x %>% filter(account_type == "left" & language == "English") %>%
+right_sample <- x %>% filter(account_type %in% c("right","Right") & language == "English") %>%
   sample_n(20000) %>% mutate(content = rtweet::plain_tweets(content))
 
 ##Convert into Tidy Text
@@ -34,41 +34,46 @@ word_cors <- word_cors %>% mutate(to_filter = as.numeric(row.names(word_cors)) %
 
 
 set.seed(5)
-word_cors %>%
-  filter(correlation> .75) %>%
+word_cors %>% ungroup() %>%
+  filter(item1 !="debalwaystrump") %>%
+  filter(item2 !="debalwaystrump") %>%
+  filter(correlation> .85) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
-  geom_node_point(color = "firebrick", size = 4) +
+  geom_node_point(color = "steelblue", size = 4) +
   geom_node_label(aes(label = name), repel = TRUE, size = 3) +
-  theme_minimal() + labs(title ="Word correlations within tweets published by left wing bots", y = "", x= "",
-                         subtitle = "Correlations over 0.75")
+  theme_minimal() + labs(title ="Word correlations within tweets published by right wing bots", y = "", x= "",
+                         subtitle = "Correlations over 0.85")
 
-##Need to fix the graph
-word_cors %>% filter(item1 %in% c("#nowplaying","#blacklivesmatter", "white","trump")) %>%
-  group_by(item1) %>% filter(item2!="trump's") %>% top_n(10) %>% ungroup() %>%
+##
+word_cors %>% filter(item1 %in% c("trump","army", "cnn","congress")) %>%
+  group_by(item1) %>% filter(item2!="trump's") %>% 
+  filter(item2 !="debalwaystrump") %>%
+  top_n(10) %>% ungroup() %>%
   filter(item2!="video") %>%
   mutate(item2 = reorder(item2, correlation)) %>%
   ggplot(aes(item2, correlation, fill = item1)) + geom_bar(stat = "identity", show.legend = FALSE) + facet_wrap(~item1, scales = "free") + coord_flip() + 
   labs(y = "Correlation", x = "Word", title = "Top correlations for selected words",
-       subtitle = "Data for left wing bots") + theme_bw()
-
+       subtitle = "Data for right wing bots") + theme_bw()
 
 ##Get related words
-hip_hop_words <- word_cors %>% filter(item1 %in% c("#nowplaying")) %>%
-  group_by(item1) %>% top_n(15) %>%
-  pull(item2) %>% append("#nowplaying")
+army_words <- word_cors %>% filter(item1 %in% c("army")) %>%
+  filter(item2!="return") %>%
+  group_by(item1) %>% top_n(10) %>%
+  pull(item2) %>% append("army")
 
-blm_words <- word_cors %>% filter(item1 %in% c("#blacklivesmatter")) %>%
-  group_by(item1) %>% top_n(15) %>%
-  pull(item2) %>% append("#blacklivesmatter")
+congress_words <- word_cors %>% filter(item1 %in% c("congress")) %>%
+  filter(item2 !="debalwaystrump") %>%
+  group_by(item1) %>% top_n(10) %>%
+  pull(item2) %>% append("congress")
 
 trump_words <- word_cors %>% filter(item1 %in% c("trump")) %>%
   filter(item2!="trump's") %>%
-  group_by(item1) %>% top_n(15) %>%
+  group_by(item1) %>% top_n(10) %>%
   pull(item2) %>% append("trump")
 
-
+#
 ##search for term function
 search_term <- function(word, data_frame){
   x <- data_frame
@@ -78,29 +83,28 @@ search_term <- function(word, data_frame){
   return(k)
 }
 
-##Not searching for 'playing' because it is too broad of a term
+##
 library(lubridate)
-list_1 <- lapply(2:length(hip_hop_words), function(i)search_term(hip_hop_words[i], x %>% filter(account_type == "left")))
-hh_df <- bind_rows(list_1) %>% unique()
+list_1 <- lapply(1:length(army_words), function(i)search_term(army_words[i], x %>% filter(account_type %in% c("right", "Right"))))
+army_df <- bind_rows(list_1) %>% unique()
 
-hh_by_month <- hh_df %>% mutate(publish_date = mdy_hm(publish_date)) %>%
+army_by_month <- army_df %>% mutate(publish_date = mdy_hm(publish_date)) %>%
   mutate(month_year = floor_date(publish_date,unit = "month")) %>%
   group_by(month_year) %>% summarise(total = n()) %>%
-  arrange(month_year) %>% mutate(group = "Music Words")
+  arrange(month_year) %>% mutate(group = "Army Words")
+
+##Searching for Congress
+list_2 <- lapply(1:length(congress_words), function(i)search_term(congress_words[i], x %>% filter(account_type %in% c("right", "Right"))))
+congress_df <- bind_rows(list_2) %>% unique()
 
 
-##Searching for BLM
-list_2 <- lapply(1:length(blm_words), function(i)search_term(blm_words[i], x %>% filter(account_type == "left")))
-blm_df <- bind_rows(list_2) %>% unique()
-
-
-blm_by_month <- blm_df %>% mutate(publish_date = mdy_hm(publish_date)) %>%
+congress_by_month <- congress_df %>% mutate(publish_date = mdy_hm(publish_date)) %>%
   mutate(month_year = floor_date(publish_date,unit = "month")) %>%
   group_by(month_year) %>% summarise(total = n()) %>%
-  arrange(month_year) %>% mutate(group = "BLM Words")
+  arrange(month_year) %>% mutate(group = "Congress Words")
 
 ##Searching for DJT words
-list_3 <- lapply(1:length(trump_words), function(i)search_term(trump_words[i], x %>% filter(account_type == "left")))
+list_3 <- lapply(1:length(trump_words), function(i)search_term(trump_words[i], x %>% filter(account_type %in% c("right", "Right"))))
 djt_df <- bind_rows(list_3) %>% unique()
 
 
@@ -111,26 +115,13 @@ djt_by_month <- djt_df %>% mutate(publish_date = mdy_hm(publish_date)) %>%
 
 
 ##
-djt_dates <- tibble(get_date = as.POSIXct(c("2016-11-08 UTC","2017-01-01 UTC","2015-06-01 UTC")),
-                    value = c(2633, 2156,1765),
-                    my_label = c("Election", "Inauguration", "Announcement"),
-                    group = "Trump Words")
-
-blm_dates <- tibble(get_date = as.POSIXct(c("2016-02-01 UTC","2017-04-01 UTC","2015-08-01 UTC")),
-                    value = c(2114, 1367,697),
-                    my_label = c("HRC Interrupted", "Jordan Edwards", "Sanders Interrupted"),
-                    group = "BLM Words")
-
-##
-bind_rows(blm_by_month, hh_by_month, djt_by_month) %>%
+bind_rows(army_by_month, congress_by_month, djt_by_month) %>%
   filter(month_year > ymd("2014-01-01")) %>%
   ggplot(aes(month_year, y = total, color = group)) + geom_line(size = 0.5, show.legend = FALSE) + theme_bw() +
-  geom_point(aes(x = get_date, y = value),color = "black", data = djt_dates) + 
-  geom_label(aes(x = get_date, y = value, label = my_label),color = "black",data = djt_dates, size = 3, alpha = 0.5) + 
-  geom_label(aes(x = get_date, y = value, label = my_label),color = "black",data = blm_dates, size = 3, alpha = 0.5) + 
+  #geom_point(aes(x = get_date, y = value),color = "black", data = djt_dates) + 
+  #geom_label(aes(x = get_date, y = value, label = my_label),color = "black",data = djt_dates, size = 3, alpha = 0.5) + 
+  #geom_label(aes(x = get_date, y = value, label = my_label),color = "black",data = blm_dates, size = 3, alpha = 0.5) + 
   facet_wrap(~group) + 
   labs(x = "Time", y = "Total",
        title = "Total tweets containing groups of selected keywords",
-       subtitle = "Data for left wing bots - Data aggregated monthly")
-
-##
+       subtitle = "Data for right wing bots - Data aggregated monthly")
