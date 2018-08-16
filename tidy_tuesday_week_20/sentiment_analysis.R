@@ -55,12 +55,54 @@ aggregate_sentiment <- with_sentiment %>% filter(day > ymd("2015-01-01")) %>%
 
 ##Do 2016 first  
 aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31")) %>%
+  filter(account_type == "Right") %>%
   ggplot(aes(x = day, y = daily_score, fill = daily_score >0)) +
   geom_col(show.legend = FALSE) + facet_wrap(~account_type) + theme_bw() + 
   scale_fill_manual(values = c("firebrick","blue"))
 
+##Getting streaks 2016
+streaks_2016 <- aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31")) %>%
+  mutate(daily_sentiment = ifelse(daily_score >= 0, "Positive","Negative")) %>%
+  group_by(account_type, daily_sentiment) %>% filter(account_type == "Right") %>%
+  ungroup() %>%
+  mutate(streak = c(1,rep(0,345)))
 
-aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31") & account_type == "Right") %>%
-  arrange(daily_score)
+my_vector <- vector(mode = "numeric", length = 345)
+my_vector[1] <- 1
+for(i in 2:346){
+  my_vector[i] <- ifelse(streaks_2016$daily_sentiment[i] == streaks_2016$daily_sentiment[i-1],my_vector[i-1]+1,1)  
+  print(i)
+}
+remove(i)
 
-##March 22 is Islam related
+streaks_2016$streak <- my_vector
+
+##Finding top streaks
+streaks_2016 %>% top_n(3,streak) %>% arrange(streak)
+
+
+##Wordclouds for selected days
+streaks_2016 %>% top_n(3,streak) %>% arrange(streak) %>% 
+  mutate(begin_date = ymd(day) - 11) %>%
+  select(account_type, begin_date, day)
+
+sample_2 %>% filter(publish_date >=ymd("2016-01-29") & publish_date <= ymd("2016-02-09") & account_type == "Right") %>%
+  unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
+  group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip()
+
+
+with_sentiment  %>% filter(day >=ymd("2016-01-29") & day <= ymd("2016-02-09") & account_type == "Right") %>% View()
+
+sample_2 %>% filter(publish_date >=ymd("2016-09-09") & publish_date <= ymd("2016-09-20") & account_type == "Right") %>%
+  unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
+  group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip()
+
+with_sentiment  %>% filter(day >=ymd("2016-09-09") & day <= ymd("2016-09-20") & account_type == "Right") %>% View()
+
+
+sample_2 %>% filter(publish_date >=ymd("2016-12-09") & publish_date <= ymd("2016-12-20") & account_type == "Right") %>%
+  unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
+  group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip()
