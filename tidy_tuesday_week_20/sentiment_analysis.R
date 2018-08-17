@@ -89,20 +89,20 @@ streaks_2016 %>% top_n(3,streak) %>% arrange(streak) %>%
 sample_2 %>% filter(publish_date >=ymd("2016-01-29") & publish_date <= ymd("2016-02-09") & account_type == "Right") %>%
   unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
   group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
-  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip()
+  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip() + theme_bw()
 
 
-with_sentiment  %>% filter(day >=ymd("2016-01-29") & day <= ymd("2016-02-09") & account_type == "Right") %>% View()
+with_sentiment  %>% filter(day >=ymd("2016-01-29") & day <= ymd("2016-02-09") & account_type == "Right") 
 
 sample_2 %>% filter(publish_date >=ymd("2016-09-09") & publish_date <= ymd("2016-09-20") & account_type == "Right") %>%
   unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
   group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
-  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip()
+  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip() + theme_bw()
 
-with_sentiment  %>% filter(day >=ymd("2016-09-09") & day <= ymd("2016-09-20") & account_type == "Right") %>% View()
+with_sentiment  %>% filter(day >=ymd("2016-09-09") & day <= ymd("2016-09-20") & account_type == "Right")
 
 
 sample_2 %>% filter(publish_date >=ymd("2016-12-09") & publish_date <= ymd("2016-12-20") & account_type == "Right") %>%
   unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
   group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
-  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip()
+  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip() + theme_bw()
