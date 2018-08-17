@@ -11,7 +11,7 @@ x <- bind_rows(lapply(csv_files, function(i) read_csv(i)))
 my_words <- readxl::read_excel("most_common_words_english_for_twitter.xlsx")
 
 set.seed(4)
-sample_1 <- x %>% filter(language == "English") %>%
+sample_1 <- x %>% filter(language == "English" & is.na(post_type)) %>%
   sample_n(60000) %>% mutate(content = rtweet::plain_tweets(content))
 
 
@@ -56,9 +56,10 @@ aggregate_sentiment <- with_sentiment %>% filter(day > ymd("2015-01-01")) %>%
 ##Do 2016 first  
 aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31")) %>%
   filter(account_type == "Right") %>%
-  ggplot(aes(x = day, y = daily_score, fill = daily_score >0)) +
-  geom_col(show.legend = FALSE) + facet_wrap(~account_type) + theme_bw() + 
-  scale_fill_manual(values = c("firebrick","blue"))
+  ggplot(aes(x = day, y = daily_score, color = daily_score >0)) +
+  geom_point(show.legend = FALSE) + facet_wrap(~account_type) + theme_bw() + 
+  scale_color_manual(values = c("firebrick","blue")) + 
+  labs(y = "Daily Score", x = "Day")
 
 ##Getting streaks 2016
 streaks_2016 <- aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31")) %>%
