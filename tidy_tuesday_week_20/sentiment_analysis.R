@@ -41,7 +41,7 @@ sample_2 <- sample_1 %>% mutate(content = clean_text_variable(content)) %>%
   mutate(account_type = ifelse(account_type == "right", "Right", account_type))
 
 ##
-with_sentiment <- sample_2 %>% select(account_type, content, day) %>%
+with_sentiment <- sample_2 %>% dplyr::select(account_type, content, day) %>%
   unnest_tokens(word, content) %>%
   anti_join(stop_words) %>%
   anti_join(my_words) %>% inner_join(get_sentiments(lexicon = "afinn")) %>%
@@ -53,57 +53,73 @@ aggregate_sentiment <- with_sentiment %>% filter(day > ymd("2015-01-01")) %>%
   group_by(account_type, day) %>% dplyr::summarise(daily_score = sum(score)) %>%
   filter(account_type %in% c("Right", "Left"))
 
-##Do 2016 first  
-aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31")) %>%
-  filter(account_type == "Right") %>%
-  ggplot(aes(x = day, y = daily_score, color = daily_score >0)) +
-  geom_point(show.legend = FALSE) + facet_wrap(~account_type) + theme_bw() + 
-  scale_color_manual(values = c("firebrick","blue")) + 
-  labs(y = "Daily Score", x = "Day")
-
-##Getting streaks 2016
-streaks_2016 <- aggregate_sentiment %>% filter(day >= ymd("2016-01-01") & day <= ymd("2016-12-31")) %>%
-  mutate(daily_sentiment = ifelse(daily_score >= 0, "Positive","Negative")) %>%
-  group_by(account_type, daily_sentiment) %>% filter(account_type == "Right") %>%
-  ungroup() %>%
-  mutate(streak = c(1,rep(0,345)))
-
-my_vector <- vector(mode = "numeric", length = 345)
-my_vector[1] <- 1
-for(i in 2:346){
-  my_vector[i] <- ifelse(streaks_2016$daily_sentiment[i] == streaks_2016$daily_sentiment[i-1],my_vector[i-1]+1,1)  
-  print(i)
-}
-remove(i)
-
-streaks_2016$streak <- my_vector
-
-##Finding top streaks
-streaks_2016 %>% top_n(3,streak) %>% arrange(streak)
+##first  
+aggregate_sentiment %>% 
+  filter(day > ymd("2016-01-01")) %>%
+  mutate(month = floor_date(day, unit = "month")) %>%
+  group_by(month, account_type) %>%
+  summarise(monthly_median = median(daily_score)) %>%
+  ggplot(aes(x = month, y = monthly_median, fill = monthly_median >0)) +
+  geom_col(show.legend = FALSE, color = "black") + facet_wrap(~account_type) + theme_bw() + 
+  scale_fill_manual(values = c("firebrick","blue")) + 
+  labs(y = "Daily Score", x = "Day", title = "Median Daily Sentiment by Month",
+       subtitle = "Data for Political Bots")
 
 
-##Wordclouds for selected days
-streaks_2016 %>% top_n(3,streak) %>% arrange(streak) %>% 
-  mutate(begin_date = ymd(day) - 11) %>%
-  select(account_type, begin_date, day)
+##Find Worst scoring months
+aggregate_sentiment %>% 
+    filter(day > ymd("2016-01-01")) %>%
+    mutate(month = floor_date(day, unit = "month")) %>%
+    group_by(month, account_type) %>%
+    summarise(monthly_median = median(daily_score)) %>%
+    arrange(monthly_median, account_type) ##Worst months for the right are
+                                           ##August, September, October 2017
 
-sample_2 %>% filter(publish_date >=ymd("2016-01-29") & publish_date <= ymd("2016-02-09") & account_type == "Right") %>%
-  unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
-  group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
-  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip() + theme_bw()
+##Doing a TF-IDF of those months,
+###     comparing to three before, and three after
+
+target_period <- c(ymd("2017-08-01"),ymd("2017-09-01"),ymd("2017-10-01"))
+previous <- c(ymd("2017-05-01"),ymd("2017-06-01"),ymd("2017-07-01"))
+after <- c(ymd("2017-11-01"),ymd("2017-12-01"),ymd("2018-01-01"))
+
+for_tfidf <- sample_2 %>% filter(day > ymd("2017-05-01") & day < ymd("2017-11-01")) %>%
+    filter(account_type == "Right") %>%
+    mutate(period = paste0(month(month),"-",year(month)))
 
 
-with_sentiment  %>% filter(day >=ymd("2016-01-29") & day <= ymd("2016-02-09") & account_type == "Right") 
+##Start TF-IDF
+replace_reg <- "https://t.co/[A-Za-z\\d]+|http://[A-Za-z\\d]+|&amp;|&lt;|&gt;|RT|https"
+unnest_reg <- "([^A-Za-z_\\d#@']|'(?![A-Za-z_\\d#@]))"
 
-sample_2 %>% filter(publish_date >=ymd("2016-09-09") & publish_date <= ymd("2016-09-20") & account_type == "Right") %>%
-  unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
-  group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
-  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip() + theme_bw()
+##Get Right Wing First
+tidy_right <- for_tfidf %>% dplyr::rename(text = content) %>%
+    filter(account_type == "Right") %>%
+    dplyr::select(period,text) %>% mutate(text = str_replace_all(text, replace_reg, "")) %>%
+    unnest_tokens(word, text) 
 
-with_sentiment  %>% filter(day >=ymd("2016-09-09") & day <= ymd("2016-09-20") & account_type == "Right")
+total_words <- tidy_right %>% 
+    dplyr::group_by(period) %>% 
+    dplyr::summarize(total = n())
+
+list_tf_right <- tidy_right %>% group_by(period, word) %>% summarise(total_period = n()) %>%
+    left_join(total_words) %>%
+    bind_tf_idf(word, period, total_period) %>% anti_join(stop_words)
 
 
-sample_2 %>% filter(publish_date >=ymd("2016-12-09") & publish_date <= ymd("2016-12-20") & account_type == "Right") %>%
-  unnest_tokens(word, content) %>% anti_join(stop_words) %>% anti_join(my_words) %>%
-  group_by(word) %>% tally(sort = TRUE) %>% slice(1:40) %>%
-  ggplot(aes(x = reorder(word, n), y = n)) + geom_col() + coord_flip() + theme_bw()
+list_tf_right %>%
+    dplyr::select(-total) %>%
+    arrange(desc(tf_idf))
+
+
+list_tf_right %>% arrange(desc(tf_idf)) %>%
+    mutate(nchar = nchar(word)) %>% filter(nchar >3) %>%
+    dplyr::select(-nchar) %>%
+    group_by(period) %>% arrange(period, desc(tf_idf)) %>% 
+    slice(1:20) %>%
+    ungroup() %>% group_by(word) %>%
+    top_n(1,tf_idf) %>%
+    ggplot(aes(reorder(word,tf_idf), tf_idf, fill = period)) +
+    geom_col(show.legend = FALSE) +
+    labs(x = NULL, y = "tf-idf") +
+    facet_wrap(~period,scales = "free") +
+    coord_flip() + theme_bw()
