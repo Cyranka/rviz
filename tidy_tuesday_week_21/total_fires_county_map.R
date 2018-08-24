@@ -55,7 +55,7 @@ fires_by_county %>% inner_join(urbnmapr::counties, by = c("county" = "county_nam
   labs(x = "", y = "", fill = "Total fires",
        title = "Total wildfires in California",
        subtitle = "County level map",
-       caption = "Source: CalFire/Buzzfeed") + 
+       caption = "Source: CalFire/Buzzfeed\nEach color represents groups of roughly equal size") + 
   theme(panel.grid.major = element_blank(),
         axis.text.x = element_blank(),
         axis.text.y = element_blank(),
@@ -66,6 +66,9 @@ fires_by_county %>% inner_join(urbnmapr::counties, by = c("county" = "county_nam
         plot.subtitle = element_text(color = "white", size = 15,face = "bold"),
         plot.caption =  element_text(color = "white", size = 9,face = "bold"),
         panel.grid.minor = element_blank())
+
+
+##Break down between human and natural
 
 
 
