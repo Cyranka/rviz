@@ -2,7 +2,7 @@ remove(list =ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-#setwd("/Users/francisco06121988/Desktop/rviz/tidy_tuesday_week_21/")
+setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_21/")
 library(tidyverse);library(urbnmapr)
 
 
@@ -69,6 +69,77 @@ fires_by_county %>% inner_join(urbnmapr::counties, by = c("county" = "county_nam
 
 
 ##Break down between human and natural
+fires_by_county <- with_county %>% group_by(county) %>% 
+  summarise(total_fires = n()) %>%
+  mutate(county = paste0(county, " County")) 
 
+causes_tibble <- tribble(
+  ~stat_cause_descr, ~cause,
+  "Miscellaneous", "Other",
+  "Equipment Use", "Human",
+  "Lightning", "Nature",
+  "Arson", "Human",
+  "Debris Burning","Human",
+  "Missing/Undefined", "Other",
+  "Campfire", "Human",
+  "Children", "Human",
+  "Smoking", "Human",
+  "Powerline", "Human",
+  "Railroad", "Human",
+  "Fireworks", "Human",
+  "Structure", "Human"
+)
 
+added_causes <- ca_buzzfeed %>% inner_join(causes_tibble) %>%
+  select(state,fips_name,fips_code,cause,fire_year, discovery_date, fire_size,latitude,longitude) %>%
+  dplyr::rename(county = fips_name) %>%
+  filter(!is.na(county))
 
+county_cause_group <- added_causes %>%
+  group_by(county, cause) %>% 
+  summarise(total_fires = n()) %>% ungroup() %>%
+  mutate(county = paste0(county, " County")) %>%
+  spread(cause, total_fires, fill = 0) %>%
+  gather(cause, total_fires, -county) %>%
+  group_by(cause) %>%
+  arrange(cause, total_fires) %>%
+  mutate(row = row_number()) %>%
+  mutate(color_group = cut_width(row,width = 10,boundary = 0))
+
+##Do Humans first
+library(RColorBrewer)
+new_colors <- brewer.pal(6,"YlOrBr")
+
+county_cause_group %>% 
+  mutate(color_group = factor(color_group, labels = c("1-10",
+                                                      "11-20",
+                                                      "21-30",
+                                                      "31-40",
+                                                      "41-50",
+                                                      "50-59"))) %>%
+  inner_join(urbnmapr::counties, by = c("county" = "county_name")) %>%
+  filter(state_abbv == "CA" & !group %in% groups_to_filter & cause!="Other") %>% 
+  ggplot(aes(long, lat, group = county, fill = color_group)) + 
+  geom_polygon(color = "black", size = .25) + theme_minimal() + 
+  scale_fill_manual(values = c("blue4","blue1",
+                               "lightblue3","honeydew3",
+                               "indianred3", "firebrick3")) + 
+  facet_wrap(~cause, scales = "free") + 
+  labs(x = "", y ="",
+       title = "County comparison between human and nature related wildfires",
+       subtitle = "Counties ranked from least number of incidents to greatest number of incidents",
+       fill = "County rank",
+       caption = "Source CalFire/Buzzfeed\nCounty ranked #1 is the one with the lowest number of wildfires") + 
+  theme(#panel.grid.major = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        legend.text = element_text(color = "black", size = 12),
+        legend.title = element_text(color = "black", size = 12,face = "bold"),
+        plot.title = element_text(color = "black", size = 20,face = "bold"),
+        plot.subtitle = element_text(color = "black", size = 13,face = "bold"),
+        plot.caption =  element_text(color = "black", size = 9,face = "bold"),
+        #panel.grid.minor = element_blank(),
+        strip.background = element_rect(fill = "azure4"),
+        strip.text = element_text(color = "white", face = "bold")
+        )
+  
