@@ -68,3 +68,30 @@ confs%>%
        subtitle = "Different patterns emerge as we group the data by conference and division") + 
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_line(color = "gainsboro", size = 0.3))
+
+
+
+##
+totals_by_team <- x %>% filter(game_year %in% c(2000,2017)) %>%
+  group_by(team,game_year) %>%
+  summarise(total_rush = sum(rush_yds, na.rm = TRUE),
+            total_pass = sum(pass_yds, na.rm = TRUE)
+  ) %>% 
+  mutate(total_yards = total_rush + total_pass) %>%
+  mutate(percent_rush = total_rush/total_yards,
+         percent_pass = total_pass/total_yards)
+
+new_totals <- totals_by_team %>%
+  select(team, game_year, percent_pass) %>%
+  ungroup() %>%
+  spread(game_year, percent_pass) %>%
+  filter(!is.na(`2000`) & !is.na(`2017`)) %>%
+  mutate(difference = `2017` -`2000`) %>% inner_join(y)
+
+new_totals %>%
+  ggplot(aes(x = reorder(team,difference), y = difference*100, fill = difference >0, label = round(difference*100,1))) + 
+  theme_bw() + geom_col(show.legend = FALSE) + facet_wrap(~conference, scales = "free_x") + 
+  labs(x = "Team", y = "% difference between 2000 and 2017",
+       title = "% difference in proportion of passing yards") + 
+  scale_y_continuous(breaks = seq(-25,30, by= 5)) + 
+  scale_fill_manual(values = c("red", "forestgreen")) + geom_label(fill = "white", size = 3)
