@@ -31,7 +31,7 @@ week_totals  %>%
         plot.background = element_rect(fill = "white"),
         axis.text = element_text(colour = "black", size = 10),
         plot.title = element_text(size = 15, face = "bold")) + 
-  labs(x = "Year", y = "Week", fill = "% of total yards",
+  labs(x = "Year", y = "Week", fill = "% of passing yards",
        title = "% of passing yards as a proportion of total yards",
        subtitle = "There has been an increase in the number of yards obtained through passing",
        caption = "Tidy Tuesday Week 22") + geom_text(color = "black", size =3)
@@ -63,7 +63,7 @@ confs%>%
   theme_bw() + 
   scale_x_continuous(breaks = seq(2000, 2017, by = 1)) + 
   #scale_y_continuous(breaks = seq(59, 72, by = 1)) + 
-  labs(x = "Year", y = "% of total yards", color = "Division",
+  labs(x = "Year", y = "% of passing yards", color = "Division",
        title = "% of passing yards as a proportion of total yards",
        subtitle = "Different patterns emerge as we group the data by conference and division") + 
   theme(panel.grid.minor = element_blank(),
