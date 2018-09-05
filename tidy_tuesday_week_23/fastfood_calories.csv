@@ -8,8 +8,8 @@ Mcdonalds,Big Mac,540,250,28,10,1,80,950,46,3,9,25,10,2,15,Other
 Mcdonalds,Cheeseburger,300,100,12,5,0.5,40,680,33,2,7,15,10,2,10,Other
 Mcdonalds,Classic Chicken Sandwich,510,210,24,4,0,65,1040,49,3,6,25,0,4,2,Other
 Mcdonalds,Double Cheeseburger,430,190,21,11,1,85,1040,35,2,7,25,20,4,15,Other
-Mcdonalds,Double Quarter PounderÂ® with Cheese,770,400,45,21,2.5,175,1290,42,3,10,51,20,6,20,Other
-Mcdonalds,Filet-O-FishÂ®,380,170,18,4,0,40,640,38,2,5,15,2,0,15,Other
+Mcdonalds,Double Quarter Pounderå¨ with Cheese,770,400,45,21,2.5,175,1290,42,3,10,51,20,6,20,Other
+Mcdonalds,Filet-O-Fishå¨,380,170,18,4,0,40,640,38,2,5,15,2,0,15,Other
 Mcdonalds,Garlic White Cheddar Burger,620,300,34,13,1.5,95,790,48,3,11,32,10,10,35,Other
 Mcdonalds,Grilled Garlic White Cheddar Chicken Sandwich,530,180,20,7,0,125,1150,48,3,11,42,10,20,35,Other
 Mcdonalds,Crispy Garlic White Cheddar Chicken Sandwich,700,300,34,9,0,85,1190,67,5,11,33,10,15,35,Other
@@ -26,7 +26,7 @@ Mcdonalds,Grilled Pico Guacamole Chicken Sandwich,520,160,18,6,0,115,1540,50,4,1
 Mcdonalds,Crispy Pico Guacamole Chicken Sandwich,680,280,32,7,0,80,1430,69,6,12,31,8,15,30,Other
 Mcdonalds,Premium Buttermilk Crispy Chicken Deluxe Sandwich,570,200,23,5,0,60,1050,64,4,11,28,4,10,20,Other
 Mcdonalds,Premium Crispy Chicken Deluxe Sandwich,530,200,22,4,0,45,1000,59,3,13,25,6,10,20,Other
-Mcdonalds,Quarter PounderÂ® with Cheese,530,240,27,13,1.5,100,1090,41,3,10,31,20,6,15,Other
+Mcdonalds,Quarter Pounderå¨ with Cheese,530,240,27,13,1.5,100,1090,41,3,10,31,20,6,15,Other
 Mcdonalds,Signature Sriracha Burger,670,320,35,12,1.5,95,1010,56,4,13,32,20,15,30,Other
 Mcdonalds,Grilled Signature Sriracha Chicken Sandwich,560,180,20,5,0,115,1550,56,4,14,41,20,25,30,Other
 Mcdonalds,Crispy Signature Sriracha Chicken Sandwich,730,300,33,7,0,80,1430,75,5,13,32,20,20,30,Other
@@ -126,12 +126,12 @@ Sonic,3 Piece Super Crunch Chicken Strips,330,140,16,3,0,55,670,25,2,0,22,1,2,1,
 Sonic,4 Piece Super Crunch Chicken Strips,440,190,21,4,0,70,900,34,2,1,29,1,2,1,Other
 Sonic,5 Piece Super Crunch Chicken Strips,550,240,26,5,0,90,1120,42,3,1,36,1,3,2,Other
 Sonic,Traditional Ultimate Chicken Sandwich,730,350,39,8,0,90,1540,62,3,11,32,4,2,15,Other
-Sonic,Ultimate Chicken Club,100,580,64,15,0.5,100,2070,65,4,12,39,15,8,30,Other
-Sonic,"All Beef All-american Style Dog â€“ 6""",370,160,18,7,0,40,1180,40,1,15,12,2,4,8,Other
-Sonic,"All Beef Chicago Dog â€“ 6""",430,180,20,7,0,40,2310,49,1,17,14,4,6,10,Other
-Sonic,"All Beef Chili Cheese Coney â€“ 6""",410,230,26,11,0,65,1140,30,2,4,17,10,2,20,Other
-Sonic,"All Beef New York Dog â€“ 6""",340,170,19,7,0,40,1250,30,3,4,13,2,10,8,Other
-Sonic,"All Beef Regular Hot Dog â€“ 6""",320,160,18,7,0,40,870,27,1,3,11,0,2,8,Other
+Sonic,Ultimate Chicken Club,1040,580,64,15,0.5,100,2070,65,4,12,39,15,8,30,Other
+Sonic,"All Beef All-american Style Dog ‰ÛÒ 6""",370,160,18,7,0,40,1180,40,1,15,12,2,4,8,Other
+Sonic,"All Beef Chicago Dog ‰ÛÒ 6""",430,180,20,7,0,40,2310,49,1,17,14,4,6,10,Other
+Sonic,"All Beef Chili Cheese Coney ‰ÛÒ 6""",410,230,26,11,0,65,1140,30,2,4,17,10,2,20,Other
+Sonic,"All Beef New York Dog ‰ÛÒ 6""",340,170,19,7,0,40,1250,30,3,4,13,2,10,8,Other
+Sonic,"All Beef Regular Hot Dog ‰ÛÒ 6""",320,160,18,7,0,40,870,27,1,3,11,0,2,8,Other
 Sonic,Cheesy Bacon Pretzel Dog - 6 In.,500,240,26,10,0,50,1410,46,2,7,15,1,3,8,Other
 Sonic,Corn Dog,210,100,11,4,0,20,530,23,2,4,6,0,0,4,Other
 Sonic,Footlong Quarter Pound Coney,830,490,54,22,1,85,1940,54,3,9,30,15,4,30,Other
@@ -261,7 +261,7 @@ Burger King,Spicy Chicken Nuggets,530,333,37,7,0,55,1420,28,NA,0,20,NA,NA,NA,Oth
 Burger King,Spicy Crispy Chicken Jr.,410,220,25,4.5,0,35,850,35,2,5,12,NA,NA,NA,Other
 Burger King,Spicy Crispy Chicken Sandwich,700,378,42,7,0,65,1140,57,3,8,25,NA,NA,NA,Other
 Burger King,Spicy Crispy Jalapeno Chicken Sandwich,760,405,45,11,0,95,1720,58,3,8,32,NA,NA,NA,Other
-Dairy Queen,1/2 lb. FlameThrowerÂ® GrillBurger,1000,660,74,26,2,170,1610,40,2,9,46,25,8,30,Other
+Dairy Queen,1/2 lb. FlameThrowerå¨ GrillBurger,1000,660,74,26,2,170,1610,40,2,9,46,25,8,30,Other
 Dairy Queen,1/2 lb. GrillBurger with Cheese,800,460,51,20,2,135,1280,44,3,13,40,25,6,35,Other
 Dairy Queen,1/4 lb. Bacon Cheese GrillBurger,630,330,37,13,1,95,1250,44,2,13,30,20,6,25,Other
 Dairy Queen,1/4 lb. GrillBurger with Cheese,540,270,30,11,1,70,1020,44,3,13,23,20,6,25,Other
@@ -287,7 +287,7 @@ Dairy Queen,Deluxe Cheeseburger,400,160,18,9,1,65,930,35,1,9,20,20,6,10,Other
 Dairy Queen,Deluxe Double Cheeseburger,640,310,34,18,2,125,1240,35,1,9,34,25,6,20,Other
 Dairy Queen,Deluxe Double Hamburger,540,240,26,13,1,100,750,34,1,9,29,15,6,4,Other
 Dairy Queen,Deluxe Hamburger,350,130,14,7,1,50,680,34,1,9,17,15,6,4,Other
-Dairy Queen,DQ UltimateÂ® Burger,780,430,48,22,2,150,1390,34,1,7,41,20,6,20,Other
+Dairy Queen,DQ Ultimateå¨ Burger,780,430,48,22,2,150,1390,34,1,7,41,20,6,20,Other
 Dairy Queen,Pork Tenderloin Sandwich,580,310,34,7,0,45,910,48,2,6,19,NA,NA,NA,Other
 Dairy Queen,Steak Finger Basket,910,430,48,13,0.5,45,2210,95,5,2,23,NA,NA,NA,Other
 Dairy Queen,3 chicken strips Chicken Strips,350,180,20,3,0,60,960,22,10,0,22,NA,NA,NA,Other
@@ -378,7 +378,7 @@ Subway,Carved Turkey Salad,150,30,4,0,0,45,680,8,3,3,19,40,40,6,Other
 Subway,Chicken & Bacon Ranch Melt Salad (includes Ranch dressing),510,340,38,12,1,100,1040,14,4,7,30,60,60,30,Other
 Subway,Cold Cut Combo Salad,180,95,11,4,0,45,820,12,4,5,12,50,50,10,Other
 Subway,Double Chicken Salad,220,35,5,1.5,0,100,490,10,4,4,36,50,60,8,Other
-Subway,Italian B.M.T.Â® Salad,230,135,15,6,0,45,1060,12,4,6,14,50,50,6,Other
+Subway,Italian B.M.T.å¨ Salad,230,135,15,6,0,45,1060,12,4,6,14,50,50,6,Other
 Subway,Italian Hero Salad,230,140,15,5,0,45,1060,13,4,8,14,40,60,4,Other
 Subway,Meatball Marinara Salad,310,150,17,7,1,30,720,25,6,10,16,60,70,10,Other
 Subway,Oven Roasted Chicken Salad,140,25,3,0.5,0,50,280,10,4,4,19,50,60,8,Other
@@ -386,7 +386,7 @@ Subway,Roast Beef Salad,140,30,4,1,0,40,450,10,4,5,18,25,45,4,Other
 Subway,Spicy Italian Salad,310,205,23,9,1,50,1280,11,4,6,15,50,50,8,Other
 Subway,Steak & Cheese Salad,210,75,8,4,0,50,830,14,4,6,20,50,50,15,Other
 Subway,Subway Club Salad,140,30,4,1,0,40,640,11,4,5,17,25,45,6,Other
-Subway,Subway MeltÂ® Salad,200,85,10,5,0,45,910,13,4,6,18,50,50,15,Other
+Subway,Subway Meltå¨ Salad,200,85,10,5,0,45,910,13,4,6,18,50,50,15,Other
 Subway,Sweet Onion Chicken Teriyaki Salad,200,25,3,1,0,50,660,24,4,16,20,25,50,6,Other
 Subway,Tuna Salad,310,215,24,4,0,40,370,10,4,4,15,50,50,6,Other
 Subway,Turkey Breast & Ham Salad,110,20,3,1,0,25,580,11,4,5,12,25,45,6,Other
@@ -404,11 +404,11 @@ Taco Bell,1/2 lb.* Combo Burrito,460,170,18,7,1,45,1320,53,9,3,21,NA,NA,NA,Other
 Taco Bell,7-Layer Burrito,510,170,19,7,0,20,1090,68,11,4,16,NA,NA,NA,Other
 Taco Bell,Bean Burrito,370,100,11,4,0,5,960,56,9,3,13,NA,NA,NA,Other
 Taco Bell,Beefy 5-Layer Burrito,550,200,22,8,0,35,1270,68,8,5,19,NA,NA,NA,Other
-Taco Bell,Beefy FritosÂ® Burrito,440,160,18,5,0,20,1030,55,4,3,13,NA,NA,NA,Other
+Taco Bell,Beefy Fritoså¨ Burrito,440,160,18,5,0,20,1030,55,4,3,13,NA,NA,NA,Other
 Taco Bell,Black Bean Burrito,410,110,12,4,0,10,1100,62,8,3,14,NA,NA,NA,Other
-Taco Bell,Burrito SupremeÂ® â€“ Beef,420,140,16,7,0,35,1090,53,8,5,16,NA,NA,NA,Other
-Taco Bell,Burrito SupremeÂ® - Chicken,390,110,12,5,0,40,1050,52,7,5,19,NA,NA,NA,Other
-Taco Bell,Burrito SupremeÂ® - Steak,390,120,13,5,0,30,1090,52,7,5,17,NA,NA,NA,Other
+Taco Bell,Burrito Supremeå¨ ‰ÛÒ Beef,420,140,16,7,0,35,1090,53,8,5,16,NA,NA,NA,Other
+Taco Bell,Burrito Supremeå¨ - Chicken,390,110,12,5,0,40,1050,52,7,5,19,NA,NA,NA,Other
+Taco Bell,Burrito Supremeå¨ - Steak,390,120,13,5,0,30,1090,52,7,5,17,NA,NA,NA,Other
 Taco Bell,Cantina Power Burrito - Chicken,760,240,27,6,0,60,1960,96,12,7,32,NA,NA,NA,Other
 Taco Bell,Cantina Power Burrito - Steak,780,250,28,7,0,50,1900,98,13,7,33,NA,NA,NA,Other
 Taco Bell,Cantina Power Burrito - Veggie,740,230,26,5,0,10,1750,107,17,8,20,NA,NA,NA,Other
@@ -433,50 +433,50 @@ Taco Bell,XXL Grilled Stuft Burrito - Beef,880,380,42,14,1,75,2020,94,12,6,31,NA
 Taco Bell,XXL Grilled Stuft Burrito - Chicken,830,320,35,11,0,85,1940,91,10,6,37,NA,NA,NA,Other
 Taco Bell,XXL Grilled Stuft Burrito - Steak,820,320,36,12,1,70,2020,91,10,7,33,NA,NA,NA,Other
 Taco Bell,Chicken Soft Taco,170,50,6,3,0,30,460,18,1,1,12,NA,NA,NA,Other
-Taco Bell,Cool RanchÂ® DoritosÂ® Double DeckerÂ® Taco,320,120,14,5,0,25,770,36,6,2,13,NA,NA,NA,Other
-Taco Bell,Cool RanchÂ® DoritosÂ® Locos Taco,160,90,10,3.5,0,25,350,13,2,1,8,NA,NA,NA,Other
-Taco Bell,Cool RanchÂ® DoritosÂ® Locos Taco Supreme,200,100,12,4.5,0,35,370,15,3,3,9,NA,NA,NA,Other
+Taco Bell,Cool Ranchå¨ Doritoså¨ Double Deckerå¨ Taco,320,120,14,5,0,25,770,36,6,2,13,NA,NA,NA,Other
+Taco Bell,Cool Ranchå¨ Doritoså¨ Locos Taco,160,90,10,3.5,0,25,350,13,2,1,8,NA,NA,NA,Other
+Taco Bell,Cool Ranchå¨ Doritoså¨ Locos Taco Supreme,200,100,12,4.5,0,35,370,15,3,3,9,NA,NA,NA,Other
 Taco Bell,Crunchy Taco,170,90,10,4,0,25,290,12,3,1,8,NA,NA,NA,Other
-Taco Bell,Crunchy Taco SupremeÂ®,200,110,12,5,0,35,320,15,3,2,9,NA,NA,NA,Other
-Taco Bell,Double DeckerÂ® Taco,320,120,14,5,0,25,640,37,7,2,13,NA,NA,NA,Other
-Taco Bell,DOUBLE DECKERÂ® Taco SupremeÂ®,350,140,16,6,0,35,670,40,7,3,14,NA,NA,NA,Other
+Taco Bell,Crunchy Taco Supremeå¨,200,110,12,5,0,35,320,15,3,2,9,NA,NA,NA,Other
+Taco Bell,Double Deckerå¨ Taco,320,120,14,5,0,25,640,37,7,2,13,NA,NA,NA,Other
+Taco Bell,DOUBLE DECKERå¨ Taco Supremeå¨,350,140,16,6,0,35,670,40,7,3,14,NA,NA,NA,Other
 Taco Bell,Spicy Sweet Double Stacked Taco,340,160,18,7,0,35,640,32,4,6,12,10,2,15,Other
 Taco Bell,Cool Ranch Habanero Double Stacked Taco,350,180,20,8,0.5,40,630,30,4,3,13,15,2,20,Other
 Taco Bell,Nacho Crunch Double Stacked Taco,380,170,19,6,0,35,650,39,5,2,13,8,2,20,Other
-Taco Bell,Fiery DoritosÂ® Double DeckerÂ® Taco,320,120,13,5,0,25,770,36,7,2,14,NA,NA,NA,Other
-Taco Bell,Fiery DoritosÂ® Locos Taco,170,90,10,3.5,0,25,370,12,3,1,8,NA,NA,NA,Other
-Taco Bell,Fiery DoritosÂ® Locos Taco Supreme,200,110,12,5,0,30,390,15,3,2,9,NA,NA,NA,Other
+Taco Bell,Fiery Doritoså¨ Double Deckerå¨ Taco,320,120,13,5,0,25,770,36,7,2,14,NA,NA,NA,Other
+Taco Bell,Fiery Doritoså¨ Locos Taco,170,90,10,3.5,0,25,370,12,3,1,8,NA,NA,NA,Other
+Taco Bell,Fiery Doritoså¨ Locos Taco Supreme,200,110,12,5,0,30,390,15,3,2,9,NA,NA,NA,Other
 Taco Bell,Grilled Steak Soft Taco,250,130,14,4,0,30,550,19,2,2,11,NA,NA,NA,Other
-Taco Bell,Nacho Cheese DoritosÂ® Double DeckerÂ® Taco,320,120,13,5,0,25,760,36,7,2,14,NA,NA,NA,Other
-Taco Bell,Nacho Cheese DoritosÂ® Locos Tacos,170,80,9,4,0,25,340,13,2,1,8,NA,NA,NA,Other
-Taco Bell,Nacho Cheese DoritosÂ® Locos Tacos Supreme,200,100,11,5,0,35,370,15,3,2,9,NA,NA,NA,Other
-Taco Bell,Soft Taco SupremeÂ® â€“ Beef,230,100,11,5,0,35,530,22,3,3,10,NA,NA,NA,Other
+Taco Bell,Nacho Cheese Doritoså¨ Double Deckerå¨ Taco,320,120,13,5,0,25,760,36,7,2,14,NA,NA,NA,Other
+Taco Bell,Nacho Cheese Doritoså¨ Locos Tacos,170,80,9,4,0,25,340,13,2,1,8,NA,NA,NA,Other
+Taco Bell,Nacho Cheese Doritoså¨ Locos Tacos Supreme,200,100,11,5,0,35,370,15,3,2,9,NA,NA,NA,Other
+Taco Bell,Soft Taco Supremeå¨ ‰ÛÒ Beef,230,100,11,5,0,35,530,22,3,3,10,NA,NA,NA,Other
 Taco Bell,Soft Taco-Beef,200,80,9,4,0,25,510,19,3,1,10,NA,NA,NA,Other
 Taco Bell,Spicy Potato Soft Taco,250,120,13,3,0,10,510,28,3,1,6,NA,NA,NA,Other
-Taco Bell,Chalupa SupremeÂ® - Chicken,340,160,18,4,0,40,530,29,3,4,16,NA,NA,NA,Other
-Taco Bell,Chalupa SupremeÂ® - Steak,340,170,18,4,0,30,570,29,3,4,14,NA,NA,NA,Other
-Taco Bell,Chalupa SupremeÂ®â€“Beef,370,190,21,5,0,30,570,31,4,4,13,NA,NA,NA,Other
+Taco Bell,Chalupa Supremeå¨ - Chicken,340,160,18,4,0,40,530,29,3,4,16,NA,NA,NA,Other
+Taco Bell,Chalupa Supremeå¨ - Steak,340,170,18,4,0,30,570,29,3,4,14,NA,NA,NA,Other
+Taco Bell,Chalupa Supremeå¨‰ÛÒBeef,370,190,21,5,0,30,570,31,4,4,13,NA,NA,NA,Other
 Taco Bell,Double Chalupa,600,310,35,8,0.5,50,1010,50,6,5,21,15,4,15,Other
 Taco Bell,Wild Naked Chicken Chalupa,420,250,28,6,0,65,1070,23,4,2,19,6,4,6,Other
 Taco Bell,Mild Naked Chicken Chalupa,440,270,30,7,0,70,1090,22,3,1,20,6,4,6,Other
 Taco Bell,Spicy Double Chalupa,600,310,35,8,0.5,50,1240,52,7,5,21,15,8,15,Other
 Taco Bell,Fresco Bean Burrito,350,80,9,3,0,0,950,57,9,3,11,NA,NA,NA,Other
-Taco Bell,Fresco Burrito SupremeÂ® â€“ Chicken,340,80,8,3,0,25,1020,50,7,4,17,NA,NA,NA,Other
-Taco Bell,Fresco Burrito SupremeÂ® â€“ Steak,340,80,9,3,0,15,1060,50,7,4,15,NA,NA,NA,Other
+Taco Bell,Fresco Burrito Supremeå¨ ‰ÛÒ Chicken,340,80,8,3,0,25,1020,50,7,4,17,NA,NA,NA,Other
+Taco Bell,Fresco Burrito Supremeå¨ ‰ÛÒ Steak,340,80,9,3,0,15,1060,50,7,4,15,NA,NA,NA,Other
 Taco Bell,Fresco Chicken Soft Taco,150,35,4,1,0,25,460,18,2,2,11,NA,NA,NA,Other
 Taco Bell,Fresco Crunchy Taco,140,70,8,2,0,20,290,13,3,1,6,NA,NA,NA,Other
 Taco Bell,Fresco Grilled Steak Soft Taco,150,35,4,2,0,15,500,19,2,2,9,NA,NA,NA,Other
 Taco Bell,Fresco Soft Taco,170,60,7,3,0,20,500,20,3,2,8,NA,NA,NA,Other
 Taco Bell,Cheesy Gordita Crunch,490,260,29,10,1,55,810,39,5,6,20,NA,NA,NA,Other
-Taco Bell,DoritosÂ® Cheesy Gordita Crunch - Cool Ranch,490,250,28,10,1,55,890,40,5,5,20,NA,NA,NA,Other
-Taco Bell,DoritosÂ® Cheesy Gordita Crunch - Fiery,490,250,28,10,1,55,890,40,5,4,20,NA,NA,NA,Other
-Taco Bell,DoritosÂ® Cheesy Gordita Crunch - Nacho Cheese,490,250,28,10,1,55,880,40,5,5,20,NA,NA,NA,Other
+Taco Bell,Doritoså¨ Cheesy Gordita Crunch - Cool Ranch,490,250,28,10,1,55,890,40,5,5,20,NA,NA,NA,Other
+Taco Bell,Doritoså¨ Cheesy Gordita Crunch - Fiery,490,250,28,10,1,55,890,40,5,4,20,NA,NA,NA,Other
+Taco Bell,Doritoså¨ Cheesy Gordita Crunch - Nacho Cheese,490,250,28,10,1,55,880,40,5,5,20,NA,NA,NA,Other
 Taco Bell,Double Cheesy Gordita Crunch,570,290,32,12,1,70,1110,44,7,5,25,15,2,30,Other
-Taco Bell,Gordita SupremeÂ® â€“ Beef,300,120,14,5,0,30,550,31,4,6,13,NA,NA,NA,Other
-Taco Bell,Gordita SupremeÂ® - Chicken,270,90,10,4,0,40,510,29,2,6,16,NA,NA,NA,Other
-Taco Bell,Gordita SupremeÂ® - Steak,270,90,11,4,0,30,550,29,2,6,14,NA,NA,NA,Other
+Taco Bell,Gordita Supremeå¨ ‰ÛÒ Beef,300,120,14,5,0,30,550,31,4,6,13,NA,NA,NA,Other
+Taco Bell,Gordita Supremeå¨ - Chicken,270,90,10,4,0,40,510,29,2,6,16,NA,NA,NA,Other
+Taco Bell,Gordita Supremeå¨ - Steak,270,90,11,4,0,30,550,29,2,6,14,NA,NA,NA,Other
 Taco Bell,Nacho Fries Bellgrande,710,360,41,6,0,30,1420,73,10,4,13,10,4,8,Other
-Taco Bell,Nachos BellGrandeÂ®,760,360,39,6,0,30,1100,82,13,5,18,NA,NA,NA,Other
+Taco Bell,Nachos BellGrandeå¨,760,360,39,6,0,30,1100,82,13,5,18,NA,NA,NA,Other
 Taco Bell,Nachos Supreme,430,210,23,5,0,30,690,44,7,3,12,NA,NA,NA,Other
 Taco Bell,Triple Layer Nachos,320,140,15,1.5,0,0,600,41,6,2,7,NA,NA,NA,Other
 Taco Bell,Triple Melt Nachos,260,140,16,4.5,0,30,550,19,3,1,10,6,0,10,Other
@@ -494,12 +494,12 @@ Taco Bell,Chickstar,620,340,37,8,0,50,1290,53,4,4,17,8,6,15,Other
 Taco Bell,Chili Cheese Burrito,380,150,17,8,1,35,930,41,5,2,16,NA,NA,NA,Other
 Taco Bell,Chipotle Crispy Chicken Griller,290,170,18,3,0,25,640,22,1,1,9,NA,NA,NA,Other
 Taco Bell,Crispy Chicken Quesadilla,650,340,37,13,0.5,75,1480,51,5,3,26,10,2,45,Other
-Taco Bell,Crunchwrap SupremeÂ®,540,190,21,6,0,30,1110,71,7,7,16,NA,NA,NA,Other
+Taco Bell,Crunchwrap Supremeå¨,540,190,21,6,0,30,1110,71,7,7,16,NA,NA,NA,Other
 Taco Bell,Double Tostada,270,100,11,4,0,15,650,32,8,2,12,NA,NA,NA,Other
 Taco Bell,Express Taco Salad w/ Chips,580,260,29,9,1,60,1270,59,8,7,23,NA,NA,NA,Other
 Taco Bell,Loaded Potato Griller,470,200,22,6,0,25,1120,55,4,5,13,NA,NA,NA,Other
 Taco Bell,Mexican Pizza,540,270,31,8,1,40,860,47,7,2,20,NA,NA,NA,Other
-Taco Bell,MexiMeltÂ®,270,130,14,7,1,40,740,21,3,2,14,NA,NA,NA,Other
+Taco Bell,MexiMeltå¨,270,130,14,7,1,40,740,21,3,2,14,NA,NA,NA,Other
 Taco Bell,Steak Quesalupa,440,210,23,10,0.5,60,840,36,3,3,22,15,6,35,Other
 Taco Bell,Chicken Quesalupa,440,200,23,10,0.5,60,840,37,3,3,22,15,8,35,Other
 Taco Bell,Beef Quesalupa,460,240,26,11,1,50,890,38,4,3,19,15,6,35,Other
