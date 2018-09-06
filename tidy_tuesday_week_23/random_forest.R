@@ -116,4 +116,26 @@ results_rpart %>%
 
 ##
 rpart.plot::rpart.plot(rpartFit$finalModel, extra = 2, main = "Decision tree model (Complexity parameter = 0.007)", fallen.leaves = FALSE,
-                       cex = .6, clip.facs = TRUE,trace = -1)
+                       cex = .4, clip.facs = TRUE,trace = -1)
+
+rf_varimp <- varImp(rfFit)$importance %>%
+    as_tibble() %>%
+    mutate(variable = rownames(varImp(rfFit)$importance)) %>%
+    select(variable, Overall) %>% arrange(desc(Overall)) %>%
+    mutate(variable = str_to_title(str_replace(variable,"_"," "))) %>%
+    mutate(model = "Random Forest")
+
+rpart_varimp <- varImp(rpartFit)$importance %>%
+    as_tibble() %>%
+    mutate(variable = rownames(varImp(rpartFit)$importance)) %>%
+    select(variable, Overall) %>% arrange(desc(Overall)) %>%
+    mutate(variable = str_to_title(str_replace(variable,"_"," "))) %>%
+    mutate(model = "Classification Tree")
+
+bind_rows(rf_varimp, rpart_varimp) %>%
+    mutate(variable = ifelse(model == "Random Forest", paste0(variable," "),variable))%>%
+    ggplot(aes(x = reorder(variable, Overall), y = Overall, fill = model)) + geom_col(show.legend = FALSE) + 
+    facet_wrap(~model, scales = "free_y") + coord_flip() + 
+    scale_fill_brewer(palette = "Set1") + theme_minimal() + 
+    labs(x = "Variable", y = "Scaled importance", title = "Variable importance") + 
+    theme(plot.title = element_text(size = 14, face = "bold"))
