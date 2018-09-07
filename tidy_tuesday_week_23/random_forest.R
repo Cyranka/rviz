@@ -139,3 +139,7 @@ bind_rows(rf_varimp, rpart_varimp) %>%
     scale_fill_brewer(palette = "Set1") + theme_minimal() + 
     labs(x = "Variable", y = "Scaled importance", title = "Variable importance") + 
     theme(plot.title = element_text(size = 14, face = "bold"))
+
+
+##Errors
+k <- x[-rowsToTrain,] %>% mutate(predictions = predict(rfFit, testSet)) %>% select(restaurant, item, predictions)
