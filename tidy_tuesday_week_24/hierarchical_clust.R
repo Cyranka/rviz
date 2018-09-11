@@ -105,6 +105,7 @@ with_cluster %>%
        title = "Continental map of the United States colored by cluster assigment",
        subtitle = "States clustered on % of dog owners and % of cat owners (DC excluded)",
        caption = "Tidy tuesday week 24\nSource: AVA") + 
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) + 
   scale_fill_manual(values =alpha(c("gold4","purple","forestgreen","firebrick","darkturquoise"),0.4)) + 
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -112,11 +113,14 @@ with_cluster %>%
         axis.title.x = element_blank(),
         axis.text.y = element_blank(),
         axis.title.y = element_blank(),
-        plot.title = element_text(face = "bold", size = 15, color = "black"),
-        plot.subtitle = element_text(size = 13, color = "black", face = "bold"),
+        plot.title = element_text(face = "bold", size = 15, color = "black", hjust = 0.5),
+        plot.subtitle = element_text(size = 13, color = "black", hjust = 0.5),
         legend.title = element_text(color = "black", face = "bold"),
         legend.text = element_text(color = "black"),
-        plot.background = element_rect(fill = "white"))
+        text=element_text(family="Roboto"),
+        plot.background = element_rect(fill = "white"),
+        legend.position = "bottom") + 
+  guides(fill = guide_legend(keywidth = 4, keyheight = 0.5, title="Cluster", label.position = "bottom", label.hjust = 0.5))
 
 
 
