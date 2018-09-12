@@ -19,8 +19,8 @@ z <- x %>% inner_join(y) %>%
   filter(state != "DC") %>%
   mutate(dog_cat_ratio = dog_population/cat_population)
 
-z %>%  ggplot(aes(x = trump, y = dog_cat_ratio)) + 
-  geom_point() + 
+z %>%  ggplot(aes(x = trump, y = dog_cat_ratio, size = dog_cat_ratio)) + 
+  geom_point(show.legend = FALSE) + 
   geom_smooth(method = "lm", se = FALSE) + theme_minimal()
 
 summary(lm(dog_cat_ratio~trump, data = z))
