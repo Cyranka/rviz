@@ -94,7 +94,7 @@ x %>% inner_join(y) %>%
   geom_point(show.legend = FALSE) + geom_smooth(se = FALSE, method = "lm", show.legend = FALSE, size = 0.5, linetype = 1) + 
   theme_minimal() + labs(x = "% of non-hispanic whites among registered voters",
                          y = "Cuomo proportion of the Nixon/Cuomo vote",
-                         title = "Scatterplot of Cuomo vote by % of non-hispanics white among registered voters",
+                         title = "Scatterplot of Cuomo vote by % of non-hispanics whites among registered voters",
                          subtitle = "Fitted line: OLS estimate",
                          caption = "Source: NY Times and L2 Political\nLabels selected at random") + 
   ggrepel::geom_text_repel(aes(y =  cuomo_pct*100, x = prop_white*100, label = county), data = x %>% inner_join(y) %>%
