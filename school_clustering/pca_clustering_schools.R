@@ -89,7 +89,8 @@ cluster_statistics %>%
   geom_col(show.legend = FALSE) + geom_label(show.legend = FALSE, fill = "white", size = 3) + 
   facet_wrap(~measure, scales = "free", ncol = 2) + theme_bw() + 
   labs(x = "Cluster", title = "Cluster statistics", y = "Total",
-       subtitle = "Data on 25,000 public schools")
+       subtitle = "Data on 25,000 public schools",
+       caption = "Source: Department of Education")
 
 
 ####Create Cluster Map####
