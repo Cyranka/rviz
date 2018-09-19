@@ -33,8 +33,10 @@ urbnmapr::states %>% filter(!state_abbv %in% c("AK","HI")) %>%
         axis.title.x = element_blank(),
         axis.text.y = element_blank(),
         axis.title.y = element_blank(),
+        plot.title = element_text(hjust = 0.5),
         legend.position = "bottom") + 
-  labs(color = "Airport classification", size = "Total passengers") + 
+  labs(color = "Airport classification", size = "Total passengers",
+       title = "Airport locations in the lower 48 states") + 
   guides(color = guide_legend(title.position = "top", 
                              title.hjust = 0.5, barwidth = 20,
                              barheight = 0.5,keywidth = 4,keyheight = 1,nrow = 3, ncol = 1),
