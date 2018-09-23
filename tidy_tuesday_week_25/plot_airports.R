@@ -2,7 +2,7 @@ remove(list = ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_25/")
+
 library(tidyverse)
 
 x <- read_csv("us_airports.csv")
@@ -47,4 +47,9 @@ urbnmapr::states %>% filter(!state_abbv %in% c("AK","HI")) %>%
                              title.hjust = 0.5,
                              ncol = 2)) + 
   scale_color_manual(values = c("red", "chocolate1", "yellow")) + 
-  scale_size_continuous(range = c(2,15))
+  scale_size_continuous(range = c(2,15),
+                        labels = c("0","1,000,000",
+                                   "2,000,000",
+                                   "3,000,000",
+                                   "4,000,000",
+                                   "5,000,000"))
