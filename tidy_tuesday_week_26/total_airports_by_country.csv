@@ -1,0 +1,237 @@
+country,total_airports,date_info
+United States,13513,2013
+Brazil,4093,2013
+Mexico,1714,2013
+Canada,1467,2013
+Russia,1218,2013
+Argentina,1138,2013
+Bolivia,855,2013
+Colombia,836,2013
+Paraguay,799,2013
+Indonesia,673,2013
+South Africa,566,2013
+Papua New Guinea,561,2013
+Germany,539,2013
+China,507,2013
+Chile,481,2013
+Australia,480,2013
+France,464,2013
+United Kingdom,460,2013
+Venezuela,444,2013
+Ecuador,432,2013
+India,346,2013
+Iran,319,2013
+Guatemala,291,2013
+Philippines,247,2013
+Sweden,231,2013
+Saudi Arabia,214,2013
+"Congo, Democratic Republic of the",198,2013
+Kenya,197,2013
+Zimbabwe,196,2013
+Peru,191,2013
+Ukraine,187,2013
+Angola,176,2013
+Japan,175,2013
+Tanzania,166,2013
+Costa Rica,161,2013
+Algeria,157,2013
+Pakistan,151,2013
+Spain,150,2013
+Finland,148,2013
+Nicaragua,147,2013
+Libya,146,2013
+Uruguay,133,2013
+Cuba,133,2013
+Oman,132,2013
+Italy,129,2013
+Czechia,128,2013
+Poland,126,2013
+New Zealand,123,2013
+Panama,117,2013
+Guyana,117,2013
+Malaysia,114,2013
+Namibia,112,2013
+"Korea, South",111,2013
+Honduras,103,2013
+Iraq,102,2013
+Thailand,101,2013
+Mozambique,98,2013
+Turkey,98,2013
+Kazakhstan,96,2013
+Iceland,96,2013
+Norway,95,2013
+Syria,90,2013
+Zambia,88,2013
+South Sudan,85,2013
+Madagascar,83,2013
+Egypt,83,2013
+"Korea, North",82,2013
+Denmark,80,2013
+Greece,77,2013
+Botswana,74,2013
+Sudan,74,2013
+Croatia,69,2013
+Bulgaria,68,2013
+El Salvador,68,2013
+Belarus,65,2013
+Burma,64,2013
+Portugal,64,2013
+Switzerland,63,2013
+Lithuania,61,2013
+"Bahamas, The",61,2013
+Somalia,61,2013
+Chad,59,2013
+Ethiopia,57,2013
+Yemen,57,2013
+Suriname,55,2013
+Morocco,55,2013
+French Polynesia,54,2013
+Nigeria,54,2013
+Uzbekistan,53,2013
+Austria,52,2013
+Afghanistan,52,2013
+Belize,47,2013
+Uganda,47,2013
+Israel,47,2013
+Nepal,47,2013
+Romania,45,2013
+Vietnam,45,2013
+Mongolia,44,2013
+Gabon,44,2013
+United Arab Emirates,43,2013
+Latvia,42,2013
+Belgium,41,2013
+Laos,41,2013
+Hungary,41,2013
+Ireland,40,2013
+Central African Republic,39,2013
+Taiwan,37,2013
+Azerbaijan,37,2013
+Solomon Islands,36,2013
+Dominican Republic,36,2013
+Slovakia,35,2013
+Cameroon,33,2013
+Malawi,32,2013
+Vanuatu,31,2013
+Niger,30,2013
+Mauritania,30,2013
+Liberia,29,2013
+Tunisia,29,2013
+Puerto Rico,29,2013
+Netherlands,29,2013
+Fiji,28,2013
+Kyrgyzstan,28,2013
+Jamaica,28,2013
+Cote d'Ivoire,27,2013
+"Congo, Republic of the",27,2013
+Turkmenistan,26,2013
+Serbia,26,2013
+New Caledonia,25,2013
+Mali,25,2013
+Bosnia and Herzegovina,24,2013
+Tajikistan,24,2013
+Lesotho,24,2013
+Burkina Faso,23,2013
+Antarctica,23,2013
+Georgia,22,2013
+Senegal,20,2013
+Sri Lanka,19,2013
+Kiribati,19,2013
+Bangladesh,18,2013
+Jordan,18,2013
+Estonia,18,2013
+Cambodia,16,2013
+Slovenia,16,2013
+Guinea,16,2013
+Cyprus,15,2013
+Marshall Islands,15,2013
+Greenland,15,2013
+Haiti,14,2013
+Swaziland,14,2013
+Seychelles,14,2013
+Eritrea,13,2013
+Djibouti,13,2013
+Cook Islands,11,2013
+Armenia,11,2013
+Macedonia,10,2013
+Ghana,10,2013
+Cabo Verde,9,2013
+Singapore,9,2013
+Maldives,9,2013
+Guinea-Bissau,8,2013
+Lebanon,8,2013
+Turks and Caicos Islands,8,2013
+Togo,8,2013
+Sierra Leone,8,2013
+Burundi,7,2013
+Equatorial Guinea,7,2013
+Rwanda,7,2013
+Kuwait,7,2013
+Moldova,7,2013
+Falkland Islands (Islas Malvinas),7,2013
+Benin,6,2013
+Kosovo,6,2013
+"Micronesia, Federated States of",6,2013
+Western Sahara,6,2013
+Saint Vincent and the Grenadines,6,2013
+Timor-Leste,6,2013
+Tonga,6,2013
+Qatar,6,2013
+Guam,5,2013
+Northern Mariana Islands,5,2013
+Montenegro,5,2013
+Mauritius,5,2013
+Albania,4,2013
+Bahrain,4,2013
+British Virgin Islands,4,2013
+Comoros,4,2013
+Trinidad and Tobago,4,2013
+Samoa,4,2013
+Spratly Islands,4,2013
+Svalbard,4,2013
+French Southern and Antarctic Lands,4,2013
+American Samoa,3,2013
+Antigua and Barbuda,3,2013
+Palau,3,2013
+Grenada,3,2013
+Cayman Islands,3,2013
+Anguilla,2,2013
+Bhutan,2,2013
+Dominica,2,2013
+Guernsey,2,2013
+Hong Kong,2,2013
+Luxembourg,2,2013
+West Bank,2,2013
+Saint Lucia,2,2013
+Saint Pierre and Miquelon,2,2013
+Sao Tome and Principe,2,2013
+Virgin Islands,2,2013
+Wallis and Futuna,2,2013
+Saint Kitts and Nevis,2,2013
+Aruba,1,2013
+Wake Island,1,2013
+Bermuda,1,2013
+British Indian Ocean Territory,1,2013
+Brunei,1,2013
+Christmas Island,1,2013
+Cocos (Keeling) Islands,1,2013
+Faroe Islands,1,2013
+"Gambia, The",1,2013
+Gaza Strip,1,2013
+Gibraltar,1,2013
+Isle of Man,1,2013
+Jan Mayen,1,2013
+Jersey,1,2013
+Macau,1,2013
+Malta,1,2013
+Montserrat,1,2013
+Nauru,1,2013
+Niue,1,2013
+Norfolk Island,1,2013
+Paracel Islands,1,2013
+Saint Barthelemy,1,2013
+"Saint Helena, Ascension, and Tristan da Cunha",1,2013
+Saint Martin,1,2013
+Sint Maarten,1,2013
+Tuvalu,1,2013
+Barbados,1,2013
