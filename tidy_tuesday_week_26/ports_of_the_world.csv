@@ -20,7 +20,7 @@ Algeria,10
 Chile,10
 Venezuela,10
 Iran,9
-Korea (South),9
+"Korea, South",9
 Russia,9
 Saudi Arabia,9
 Sweden,9
@@ -30,8 +30,7 @@ Indonesia,8
 Ireland,8
 Libya,8
 Netherlands,8
-"United Arab
-Emirates",8
+United Arab Emirates,8
 Denmark,7
 Greece,7
 Morocco,7
@@ -42,8 +41,7 @@ Turkey,7
 Angola,6
 Colombia,6
 Cyprus,6
-"Dominican
-Republic",6
+"DominicanRepublic",6
 Ecuador,6
 Iceland,6
 Jamaica,6
@@ -54,8 +52,7 @@ Portugal,6
 South Africa,6
 Taiwan,6
 Tanzania,6
-"Trinidad and
-Tobago",6
+"Trinidad andTobago",6
 Tunisia,6
 Belgium,5
 Cuba,5
@@ -63,8 +60,7 @@ Fiji,5
 Honduras,5
 Israel,5
 Lebanon,5
-"Papua New
-Guinea",5
+Papua New Guinea,5
 Puerto Rico,5
 Suriname,5
 Ukraine,5
@@ -74,7 +70,7 @@ Costa Rica,4
 Egypt,4
 Gabon,4
 Greenland,4
-Korea (North),4
+"Korea, North",4
 Madagascar,4
 New Zealand,4
 Qatar,4
@@ -92,8 +88,7 @@ Kuwait,3
 Latvia,3
 Liberia,3
 Myanmar,3
-"Netherlands
-Antilles",3
+"NetherlandsAntilles",3
 Panama,3
 Slovenia,3
 Sri Lanka,3
@@ -102,13 +97,11 @@ Bahamas,2
 Bahrain,2
 Bangladesh,2
 Bermuda,2
-"Brunei
-Darussalam",2
+Brunei,2
 Cambodia,2
 Canary Islands,2
 Comoros,2
-"Congo, Dem.
-Republic of",2
+Democratic Republic of the Congo,2
 Dominica,2
 El Salvador,2
 Estonia,2
@@ -124,15 +117,12 @@ Namibia,2
 New Caledonia,2
 Pakistan,2
 Saint Lucia,2
-"Sao Tome and
-Principe",2
+Sao Tome and Principe,2
 Sierra Leone,2
 Togo,2
-"Turks and Caicos
-Islands",2
+"Turks and CaicosIslands",2
 Vanuatu,2
-"Virgin Islands
-(US)",2
+"Virgin Islands(US)",2
 American Samoa,1
 Aruba,1
 Ascension Island,1
@@ -143,8 +133,8 @@ Benin,1
 Bulgaria,1
 Cape Verde,1
 Cayman Islands,1
-Congo,1
-Côte d'Ivoire,1
+Republic of the Congo,1
+Cote d'Ivoire,1
 Djibouti,1
 French Guiana,1
 French Polynesia,1
@@ -165,20 +155,16 @@ Micronesia,1
 Monaco,1
 Montserrat,1
 Nauru,1
-"Northern Mariana
-Islands",1
+"Northern MarianaIslands",1
 Reunion,1
-"Saint Kitts and
-Nevis",1
-"Saint Vincent and
-the Grenadines",1
+"Saint Kitts andNevis",1
+"Saint Vincent andthe Grenadines",1
 Samoa,1
 Senegal,1
 Seychelles,1
 Singapore,1
 St. Helena,1
-"St. Pierre and
-Miquelon",1
+"St. Pierre andMiquelon",1
 Sudan,1
 Switzerland,1
 Syria,1
