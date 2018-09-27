@@ -3,11 +3,13 @@ options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
 setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_26/")
-library(readxl);library(tidyverse)
+library(readxl);library(tidyverse);library(extrafont)
+
+loadfonts()
 
 air <- read_csv("total_airports_by_country.csv") %>% select(-date_info)
 ports <- read_csv("ports_of_the_world.csv") %>%
-  rename(major_ports = n) 
+  dplyr::rename(major_ports = n) 
 
 
 ports_air <- air %>% left_join(ports, by = c("country" = "country"))
@@ -49,7 +51,7 @@ with_entries %>% ggplot(aes(x = major_entries,y = n, label = country, color = st
   theme(
     plot.background = element_rect(fill = "black"),
     plot.title = element_text(size = 18, face = "bold", color = "white"),
-    plot.caption = element_text(size = 10, color = "white"),
+    plot.caption = element_text(size = 10, color = "white", face = "bold"),
     plot.subtitle = element_text(size = 12, color = "white"),
     axis.title.x = element_text(color = "white",face = "bold", size = 12),
     axis.text.x = element_text(color = "white", face= "bold", size = 12),
@@ -60,13 +62,14 @@ with_entries %>% ggplot(aes(x = major_entries,y = n, label = country, color = st
     panel.grid.minor.x = element_blank(),
     legend.position = "bottom",
     legend.title = element_text(color = "white", face = "bold"),
-    legend.text = element_text(color = "white"),
-    text = element_text(family = "Courier")
+    legend.text = element_text(color = "white", face = "bold", size =10),
   ) +
   scale_x_continuous(limits = c(0,610),
                      breaks = c(0,100,200,300,400,500,600))  + 
-  ggrepel::geom_text_repel(aes(x = major_entries, y = n, label = country), data = top_10, color = 'white', size =4,direction = "both",
-                           segment.alpha = 0,segment.size = 1,point.padding = 0.24) + 
+  ggrepel::geom_text_repel(aes(x = major_entries, y = n, label = country), data = top_10, color = 'white',
+                           size =4,direction = "both",
+                           segment.alpha = 0,
+                           segment.size = 1,point.padding = 0.24) + 
   guides(color = guide_legend(title = "Country type", title.position = "top", title.hjust = 0.5)) + 
   scale_colour_manual(values = c("cyan", "firebrick1","lawngreen"))
 
