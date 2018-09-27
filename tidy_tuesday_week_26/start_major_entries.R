@@ -60,13 +60,14 @@ with_entries %>% ggplot(aes(x = major_entries,y = n, label = country, color = st
     panel.grid.minor.x = element_blank(),
     legend.position = "bottom",
     legend.title = element_text(color = "white", face = "bold"),
-    legend.text = element_text(color = "white")
+    legend.text = element_text(color = "white"),
+    text = element_text(family = "Courier")
   ) +
   scale_x_continuous(limits = c(0,610),
                      breaks = c(0,100,200,300,400,500,600))  + 
   ggrepel::geom_text_repel(aes(x = major_entries, y = n, label = country), data = top_10, color = 'white', size =4,direction = "both",
                            segment.alpha = 0,segment.size = 1,point.padding = 0.24) + 
-  guides(color = guide_legend(title = "Nation status", title.position = "top", title.hjust = 0.5)) + 
+  guides(color = guide_legend(title = "Country type", title.position = "top", title.hjust = 0.5)) + 
   scale_colour_manual(values = c("cyan", "firebrick1","lawngreen"))
 
 
