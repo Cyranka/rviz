@@ -41,12 +41,12 @@ no_us %>% filter(election == "Midterm") %>%
                    filter(election == "Midterm"),inherit.aes = FALSE,size =3, alpha  =0.35, color = "steelblue") + 
     theme_minimal() +
     theme(
+        text = element_text(family = "Roboto"),
         panel.grid.minor.x = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.grid.major.x =element_blank(),
         panel.grid.major.y = element_blank(),
-        axis.line.x.bottom = element_line(color = "black", size =0.5),
-        axis.line.x.top = element_line(color = "black", size =0.5),
+        axis.line.x = element_line(color = "black", size =0.5),
         axis.title.x = element_text(size = 12, face = "bold"),
         axis.text.x = element_text(size = 11),
         axis.title.y = element_text(size = 12, face = "bold"),
