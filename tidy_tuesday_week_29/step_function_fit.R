@@ -48,18 +48,18 @@ x %>% filter(!is.na(ShareWomen)) %>%
   geom_vline(xintercept = c(25,50,75),linetype = 2, size= 0.15) + 
   geom_segment(aes(x = 1, y = 120000, xend = 24,yend=120000), 
                size = 0.1, col = "gray45", lineend = "butt") + 
-  geom_segment(aes(x = 26, y = 120000, xend = 49,yend=120000), 
+  geom_segment(aes(x = 26, y = 100000, xend = 49,yend=100000), 
                size = 0.1, col = "gray45", lineend = "butt") + 
-  geom_segment(aes(x = 51, y = 120000, xend = 74,yend=120000), 
+  geom_segment(aes(x = 51, y = 80000, xend = 74,yend=80000), 
                size = 0.1, col = "gray45", lineend = "butt") + 
-  geom_segment(aes(x = 76, y = 120000, xend = 99,yend=120000), 
+  geom_segment(aes(x = 76, y = 60000, xend = 99,yend=60000), 
                size = 0.1, col = "gray45", lineend = "butt") + 
   annotate("text", label = "Predicted salary: U$ 54,036", x = 12.5, y = 122000, color = "black",
            size = 3, fontface = "bold") + 
-  annotate("text", label = "Predicted salary: U$ 43,604", x = 37.5, y = 122000, color = "black",
+  annotate("text", label = "Predicted salary: U$ 43,604", x = 37.5, y = 102000, color = "black",
            size = 3, fontface = "bold") + 
-  annotate("text", label = "Predicted salary: U$ 35,335", x = 62.5, y = 122000, color = "black",
+  annotate("text", label = "Predicted salary: U$ 35,335", x = 62.5, y = 82000, color = "black",
            size = 3, fontface = "bold") + 
-  annotate("text", label = "Predicted salary: U$ 33,074", x = 87.5, y = 122000, color = "black",
+  annotate("text", label = "Predicted salary: U$ 33,074", x = 87.5, y = 62000, color = "black",
            size = 3, fontface = "bold") + 
   scale_color_viridis(option = "A", discrete = TRUE, begin = 0.5, end = 0.8)
