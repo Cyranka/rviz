@@ -28,9 +28,11 @@ x %>% filter(!is.na(ShareWomen)) %>%
   geom_line(aes(x = ShareWomen*100, y = predicted_salary), inherit.aes = FALSE, data = pred_df,linetype = 1, size =0.3) + 
   labs(x = "\n% of female graduates", y = "Major median salary", color = "Categories",
        title = "Step function fit of major median salary on % of female graduates",
-       subtitle = "Bins selected at 25, 50, and 75%") + 
+       subtitle = "Bins selected at 25, 50, and 75%. Fitted line in black.",
+       caption = "Tidy tuesday week 29: Salary by major") + 
   theme_minimal() + 
   theme(
+    text = element_text(family = "Roboto"),
     legend.position = "bottom",
     panel.grid.minor.y = element_blank(),
     plot.title = element_text(size = 14, face = "bold")
