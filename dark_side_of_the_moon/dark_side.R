@@ -17,7 +17,11 @@ ggplot(aes(x = x, y= x), data = tibble(x = 1:50, y = 1:50)) +
   theme_minimal() + 
   theme(
     plot.background = element_rect(fill = "black"),
-    panel.grid = element_blank()
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank()
   ) + 
   annotate(geom = "text", x = 35,y = 0, label = "Pink Floyd: The Dark Side of the Moon", color = "white",
            fontface = "bold", family = "Arial")
