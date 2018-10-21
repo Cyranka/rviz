@@ -2,7 +2,7 @@ remove(list = ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_20/")
+#setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_20/")
 library(tidyverse);library(tidytext)
 
 
@@ -31,7 +31,7 @@ tweets_joined  <- data_frame(document = (as.integer(rownames(sparse_tweets)))) %
 
 ##Fit the model and split the sample
 set.seed(1)
-train_rows <- sample(1:19660, 15000)
+train_rows <- sample(1:19526, 15000)
 
 library(glmnet)
 response_model <- tweets_joined$account_type == "Right"
@@ -75,7 +75,7 @@ coefficients %>% filter(term!="(Intercept)") %>%
   theme_minimal() + 
   labs(x = "Term", y = "Coefficient", title = "Largest and smallest coefficients: Lasso fit") + 
   theme(
-    text = element_text(family = "Roboto")
+    text = element_text(family = "Arial")
   )
 
 
@@ -87,14 +87,14 @@ pROC::roc(original_classifications, predictions)
 
 
 ##Predicted right, but actually left
-mistakes <- classifications %>% filter(account_type == "Left" & probability > 0.7)
+mistakes <- test_classification %>% filter(account_type == "Left" & probability > 0.7)
 
 ##Do a word cloud of the mistakes 
 x_2 %>% filter(document %in% mistakes$document) %>% 
   select(text) %>% unnest_tokens(word, text, token = "tweets") %>%
   anti_join(stop_words) %>% group_by(word) %>% tally() %>% arrange(desc(n)) %>%
   slice(1:200) %>%
-  wordcloud2::wordcloud2(color = "firebrick", fontFamily = "Roboto")
+  wordcloud2::wordcloud2(color = "firebrick", fontFamily = "Arial")
 
 test_classification %>%
   ggplot(aes(x = probability*100, y = ..density.., fill = account_type)) + 
@@ -110,3 +110,6 @@ test_classification %>%
   guides(fill = guide_legend(title = "Account type", title.position = "top", 
                              title.hjust = 0.5, barwidth = 20,
                              barheight = 0.5,keywidth = 5,keyheight = 0.5,nrow = 1,label.position = "bottom"))
+
+
+##TF-IDF of accounts
