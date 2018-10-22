@@ -87,7 +87,7 @@ pROC::roc(original_classifications, predictions)
 
 
 ##Predicted right, but actually left
-mistakes <- classifications %>% filter(account_type == "Left" & probability > 0.7)
+mistakes <- test_classification %>% filter(account_type == "Left" & probability > 0.7)
 
 ##Do a word cloud of the mistakes 
 x_2 %>% filter(document %in% mistakes$document) %>% 
@@ -110,3 +110,6 @@ test_classification %>%
   guides(fill = guide_legend(title = "Account type", title.position = "top", 
                              title.hjust = 0.5, barwidth = 20,
                              barheight = 0.5,keywidth = 5,keyheight = 0.5,nrow = 1,label.position = "bottom"))
+
+
+##Building a TF-IDF
