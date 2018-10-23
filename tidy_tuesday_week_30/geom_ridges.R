@@ -7,7 +7,7 @@ library(tidyverse);library(lubridate);library(ggridges)
 
 
 ##Need to remove duplicates
-x <- read_csv("movie_profit.csv") %>%
+x <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018-10-23/movie_profit.csv") %>%
   mutate(release_date = mdy(release_date)) %>%
   mutate(decade = year(floor_date(release_date, years(10)))) %>%
   filter(!worldwide_gross ==0)
@@ -23,9 +23,9 @@ x %>%
              alpha = 0.5)) +
   labs(x = "\nWorldwide gross over budget (base 2 log)",
        y = "Genre",
-       title = "Distribution of base 2 log of worldwide gross over budget by genre and decade",
+       title = "Distribution of worldwide gross over budget by genre and decade",
        subtitle = "X-axis corresponds to the metric's base 2 log\nMovies before 1970 were removed",
-       caption = "Tidy tuesday week 30: Horror movies and profit") + 
+       caption = "Tidy tuesday week 30: Horror movies and profit\n Median of each distribution in black") + 
   geom_density_ridges(panel_scaling = FALSE,
                       quantile_lines = TRUE,
                       quantiles = 2) + 
@@ -47,5 +47,11 @@ x %>%
   ) + 
   viridis::scale_fill_viridis(discrete = TRUE, option = "B", begin = 0.5) + 
   scale_x_continuous(limits = c(-15.25, 9),
-                     breaks = c(-15, -10, -5, 0, 5,10,15))
+                     breaks = c(-15, -10, -5, 0, 5,10,15)) + 
+  geom_text(data = x %>% group_by(genre, decade) %>% filter(!decade < 1970) %>%
+              summarise(log_gross_over_budget = median(log_gross_over_budget)),
+            aes(x = log_gross_over_budget, y =  factor(genre,
+                                                       levels = c("Horror", "Drama", "Comedy", "Adventure","Action")),
+                label = round(log_gross_over_budget,1)),inherit.aes = FALSE,
+            nudge_y = 0.5, nudge_x = 0.5, col = "black")
 
