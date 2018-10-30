@@ -41,7 +41,8 @@ x_2 %>% mutate(os = case_when(
   theme_minimal() + facet_wrap(~os, ncol = 1,scales = "free") + 
   labs(x = "\nMonth", y = "Total donwloads",
        title = "Distribution of downloads by month and operational system",
-       subtitle = "Dotted line connects the median for each month") + 
+       subtitle = "Dotted line connects the median for each month",
+       caption = "Tidy tuesday week 31\nR and R package downloads") + 
   theme(
     text = element_text(family = "Roboto"),
     axis.title.x = element_text(hjust = 0.5, family = "Roboto", face = "bold", size = 11),
@@ -51,6 +52,7 @@ x_2 %>% mutate(os = case_when(
     axis.line.x = element_blank(),
     panel.grid.minor = element_blank(),
     strip.text = element_text(face = "bold"),
+    strip.background = element_rect(fill = "gray90"),
     plot.title = element_text(size = 13, face = "bold"),
     plot.subtitle = element_text(size = 11),
     plot.caption = element_text(size = 10)

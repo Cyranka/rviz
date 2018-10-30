@@ -25,8 +25,7 @@ osx <- filter(x_2, os == "Osx")
 ##Begin graph: osx
 osx_graph <- osx %>% mutate(month = lubridate::month(date, label = TRUE),
                year = lubridate::year(date)) %>%
-  mutate(month_year = factor(paste0(month, "-", year),levels = month_levels)) %>%
-  filter(!month_year %in% c("Oct-2017")) %>%
+  mutate(month_year = factor(paste0(month, "-", year),levels = month_levels))%>%
   ggplot(aes(x = date, y = n,fill = month)) +
   geom_area(show.legend = FALSE,size = 0.5, col = "gray50") + 
   facet_wrap(~month_year,scales = "free_x", nrow = 1) + 
@@ -49,7 +48,7 @@ osx_graph <- osx %>% mutate(month = lubridate::month(date, label = TRUE),
   labs(x = "Date",
        y = "Total downloads",
        title = "Total downloads by date by OSX users",
-       subtitle = "October, 2017 was excluded\nDotted line represents the average for the period",
+       subtitle = "Dotted line represents the average for the period",
        caption = "Tidy tuesday week 31\nR and R package downloads") + 
   scale_fill_viridis(discrete = TRUE, option = "A",begin = 0.3, end = 0.8) + 
   scale_y_continuous(limits = c(0,2000),
@@ -62,8 +61,7 @@ win <- filter(x_2, os == "Win")
 
 win_graph <- win %>% mutate(month = lubridate::month(date, label = TRUE),
                             year = lubridate::year(date)) %>%
-  mutate(month_year = factor(paste0(month, "-", year),levels = month_levels)) %>%
-  filter(!month_year %in% c("Oct-2017")) %>%
+  mutate(month_year = factor(paste0(month, "-", year),levels = month_levels))%>%
   ggplot(aes(x = date, y = n,fill = month)) +
   geom_area(show.legend = FALSE,size = 0.5, col = "gray50") + 
   facet_wrap(~month_year,scales = "free_x", nrow = 1) + 
@@ -86,7 +84,7 @@ win_graph <- win %>% mutate(month = lubridate::month(date, label = TRUE),
   labs(x = "Date",
        y = "Total downloads",
        title = "Total downloads by date by Windows users",
-       subtitle = "October, 2017 was excluded\nDotted line represents the average for the period",
+       subtitle = "Dotted line represents the average for the period",
        caption = "Tidy tuesday week 31\nR and R package downloads") + 
   scale_fill_viridis(discrete = TRUE, option = "D",begin = 0.5) + 
   scale_y_continuous(limits = c(0,5000),
