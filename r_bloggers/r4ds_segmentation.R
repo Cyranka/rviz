@@ -15,7 +15,7 @@ library(clue)
 library(wordcloud)
 library(dplyr)
 library(ggplot2)
-
+library(viridis)
 ##
 my_words <- readxl::read_excel("most_common_words_english_for_twitter.xlsx")
 ##Define Clean Corpus Function
@@ -91,20 +91,35 @@ cluster_words %>%
   arrange(desc(weighted_score)) %>%
   ungroup() %>%
   ggplot(aes(
-    x = reorder(word, weighted_score),
+    x = reorder(stringr::str_to_title(word), weighted_score),
     y = weighted_score,
     fill = cluster
   )) + geom_col(show.legend = FALSE) +
   facet_wrap( ~ factor(cluster, levels = c(
     "1", "2", "3", "4", "5",
     "6", "7", "8", "9", "10"
-  )), scales = "free") +
+  )), scales = "free",nrow = 2) +
   coord_flip() +
-  theme_bw() +
-  labs(x = "Weighted Score",
-       y = "Word",
-       title = "Most important words by cluster",
-       subtitle = "Spherical K-means algorithm")
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold", size = 15, hjust = 0.5),
+    plot.subtitle = element_text(size =13, hjust = 0.5),
+    axis.line.x = element_line(size = 0.5, color = "gray30"),
+    axis.title.x = element_text(size = 13, face = "bold"),
+    axis.text.x = element_blank(),
+    axis.title.y = element_text(size = 13),
+    plot.caption = element_text(size = 13),
+    strip.text = element_text(size = 11),
+    strip.background = element_rect(fill = "gray90", color = "gray90")
+  ) + 
+  labs(x = "Most important words by cluser",
+       y = "\nCluster",
+       title = "R4DS twitter followers: bio clustering",
+       subtitle = "Clustering determined by spherical K-means algorithm", 
+       caption = "Based on 1,500 randomly sampled bios in English") + 
+  scale_fill_viridis(option = "A",discrete = TRUE, end = 0.9)
+  
 
 
 table(soft.part$cluster)
@@ -112,14 +127,4 @@ round(prop.table(table(soft.part$cluster))*100,1)
 
 1500 - sum(table(soft.part$cluster))  ##Empty Bios
 
-length_1 <- length(as.vector(table(soft.part$cluster)))
 
-
-tibble(Cluster = 1:length_1, Total = as.vector(unname(table(soft.part$cluster))),
-       `%` = paste0(as.vector(unname(round(prop.table(table(soft.part$cluster))*100,1))),"%")) %>%
-  writexl::write_xlsx("cluster_table.xlsx")
-
-##
-png("wordcloud_clusters.png", width=8,height=7, units='in', res=300)
-comparison.cloud(s.clus.proto, max.words = 200, title.size = 0.01,random.order = FALSE, colors = gg_color_hue(change_number))
-dev.off()
