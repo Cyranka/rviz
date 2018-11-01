@@ -44,7 +44,7 @@ x %>% ggplot(aes(x = price, y = fct_rev(year), fill = Region)) +
        title = "Distribution of average tuition price by region",
        subtitle = "Solid line denotes the median",
        caption = "Tidy tuesday week 1: Tuition price by state") + 
-  scale_fill_viridis(alpha = 0.9, option = "C", discrete = TRUE) + 
+  scale_fill_viridis(alpha = 0.9, option = "C", discrete = TRUE, begin = 0.3) + 
   theme(
     panel.grid.minor.x = element_blank(),
     plot.title = element_text(size = 15, face = "bold"),
@@ -86,7 +86,7 @@ x %>%
   labs(x = "\nYear",
        y = "Median tuition price",
        title = "Change in median tuition price",
-       subtitle = "Regional changes highlighted") +
+       subtitle = "Median regional changes highlighted") +
   guides(color = guide_legend(
     title.position = "top",
     title.hjust = 0.5,
@@ -94,3 +94,6 @@ x %>%
     keywidth = 4
   )) + 
   viridis::scale_color_viridis(alpha = 0.9, option = "C", discrete = TRUE)
+
+
+##Change in variance
