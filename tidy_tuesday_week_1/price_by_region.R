@@ -3,7 +3,7 @@ options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
 setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_1/")
-library(tidyverse);library(viridis)
+library(tidyverse);library(viridis);library(gridExtra)
 
 
 x <- readxl::read_excel("us_avg_tuition.xlsx") %>%
@@ -96,4 +96,72 @@ x %>%
   viridis::scale_color_viridis(alpha = 0.9, option = "C", discrete = TRUE)
 
 
-##Change in variance
+##Change in standard deviation
+sd_median <-x %>% group_by(Region, year) %>%
+  summarise(sd = sd(price),
+            mean = mean(price)) %>%
+  mutate(rows = row_number())
+
+##Do a different graph for median and for std_deviation
+##Std deviation
+stdev <- sd_median %>% gather(measure, value, -Region, -year, -rows) %>%
+  filter(measure == "sd") %>%
+  ggplot(aes(x = rows, y = value, color = Region))  + geom_line(size =2) + 
+  geom_point(show.legend = FALSE, size = 4) + 
+  scale_y_continuous(breaks = seq(750,2500,by = 250),
+                     labels = prettyNum(as.character(seq(750,2500,by = 250)),big.mark = ",")) + 
+  scale_x_continuous(breaks = seq(1, 12, by = 1),
+                     labels = unique(x$year)) +
+  theme_minimal() + 
+  labs(x = "\nYear", y = "Standard deviation",
+       title = "Change in standard deviation of average tuition price\n") + 
+  theme(
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "black", size = 0.1),
+    axis.title.x = element_text(size = 15, face = "bold"),
+    axis.title.y = element_text(size = 15, face = "bold"),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    plot.title = element_text(size = 20, face = "bold"),
+    plot.background = element_rect(fill = "gray95"),
+    legend.title = element_text(size = 13, face = "bold"),
+    legend.text = element_text(size = 11)
+  ) + 
+  guides(color= guide_legend(
+    title.position = "top",
+    title.hjust = 0.5,keywidth = 0.5,label.position = "bottom"
+  ))
+  
+##
+mean <- sd_median %>% gather(measure, value, -Region, -year, -rows) %>%
+  filter(measure == "mean") %>%
+  ggplot(aes(x = rows, y = value, color = Region))  + geom_line(size =2) + 
+  geom_point(show.legend = FALSE, size = 4) + 
+ scale_y_continuous(breaks = seq(5000,13000,by = 1000),
+                      labels = prettyNum(as.character(seq(5000,13000,by = 1000)),big.mark = ",")) + 
+  scale_x_continuous(breaks = seq(1, 12, by = 1),
+                     labels = unique(x$year)) +
+  theme_minimal() + 
+  labs(x = "\nYear", y = "Mean",
+       title = "Change in average tuition price by region\n") + 
+  theme(
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "black", size = 0.1),
+    axis.title.x = element_text(size = 15, face = "bold"),
+    axis.title.y = element_text(size = 15, face = "bold"),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    plot.title = element_text(size = 20, face = "bold"),
+    plot.background = element_rect(fill = "gray95"),
+    legend.title = element_text(size = 13, face = "bold"),
+    legend.text = element_text(size = 11)
+  ) + 
+  guides(color= guide_legend(
+    title.position = "top",
+    title.hjust = 0.5,keywidth = 0.5,label.position = "bottom"
+  ))
+
+
+gridExtra::grid.arrange(mean,stdev)
