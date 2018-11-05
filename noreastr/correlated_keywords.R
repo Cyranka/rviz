@@ -1,4 +1,4 @@
-rmeove(list = ls())
+remove(list = ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
