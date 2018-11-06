@@ -70,6 +70,7 @@ waffle_1 <- waffle(parts =c(`Midwest` = 34, `Southwest` = 33, `West` = 27, North
        caption = "Tidy tuesday week 32: US wind turbine data",
        x = "Each square represents ~1% (Proportions were rounded to the nearest tenth)") + 
   theme(
+    text = element_text(family = "Roboto"),
     plot.title = element_text(size = 12,face = "bold"),
     plot.subtitle = element_text(size = 9),
     plot.caption = element_text(size = 9),
