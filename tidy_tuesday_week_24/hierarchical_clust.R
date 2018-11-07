@@ -101,13 +101,13 @@ with_cluster %>%
   inner_join(urbnmapr::states,by = c("state" = "state_name")) %>%
   ggplot(aes(long, lat, group = group, fill = as.character(cluster))) + 
   geom_polygon(color = "gray25", size = .25) + theme_minimal() + 
-  labs(fill = "Cluster",
-       title = "Continental map of the United States colored by cluster assigment",
+  labs(title = "Continental map of the United States colored by cluster assigment",
        subtitle = "States clustered on % of dog owners and % of cat owners (DC excluded)",
        caption = "Tidy tuesday week 24\nSource: AVA") + 
   coord_map(projection = "albers", lat0 = 39, lat1 = 45) + 
   scale_fill_manual(values =alpha(c("gold4","purple","forestgreen","firebrick","darkturquoise"),0.4)) + 
-  theme(panel.grid.major = element_blank(),
+  theme(
+        panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.text.x = element_blank(),
         axis.title.x = element_blank(),
@@ -118,9 +118,12 @@ with_cluster %>%
         legend.title = element_text(color = "black", face = "bold"),
         legend.text = element_text(color = "black"),
         text=element_text(family="Roboto"),
-        plot.background = element_rect(fill = "white"),
+        #plot.background = element_rect(fill = "white"),
         legend.position = "bottom") + 
-  guides(fill = guide_legend(keywidth = 4, keyheight = 0.5, title="Cluster", label.position = "bottom", label.hjust = 0.5))
+  guides(fill = guide_legend(title = "Cluster assignment",
+                             title.position = "top",
+                             title.hjust = 0.5,
+                             keywidth = 4, keyheight = 0.5, label.position = "bottom", label.hjust = 0.5))
 
 
 
