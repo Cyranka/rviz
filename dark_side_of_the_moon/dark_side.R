@@ -16,6 +16,7 @@ ggplot(aes(x = x, y= x), data = tibble(x = 1:50, y = 1:50)) +
   scale_x_continuous(limits = c(0,50)) + 
   theme_minimal() + 
   theme(
+    text = element_text(family = "Roboto"),
     plot.background = element_rect(fill = "black"),
     panel.grid = element_blank(),
     axis.title.x = element_blank(),
