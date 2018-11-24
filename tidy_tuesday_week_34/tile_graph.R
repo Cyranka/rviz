@@ -19,12 +19,13 @@ us <- readxl::read_excel("us_locations_fixed.xlsx") %>%
 
 
 us %>% group_by(region, year, cause_of_death) %>% tally()  %>%
-  ggplot(aes(x = factor(year), y = fct_rev(cause_of_death), fill = n,label = n)) + geom_tile(color = "black") + 
+  ggplot(aes(x = year, y = fct_rev(cause_of_death), fill = n,label = n)) + geom_tile(color = "black") + 
   facet_wrap(~factor(region,levels = c("South", "Midwest", "Northeast", "West", "Southwest")),
              scales = "free", ncol = 1) + geom_text(fontface = "bold", color = "white", size = 3) + 
   scale_fill_viridis(option = "A", alpha = 1, begin = 0.5, end= 0.8,
                      breaks = seq(1,12,by = 1)) + 
   theme_minimal() + 
+    scale_x_continuous(breaks = seq(2007, 2018, by = 1)) + 
   labs(x = "\nYear", y = "Cause of death",
        title = "Murders of transgender individuals in the United States since 2007",
        subtitle = "Regions sorted by total number of cases",
@@ -42,7 +43,8 @@ us %>% group_by(region, year, cause_of_death) %>% tally()  %>%
     legend.title = element_text(color= "white", face = "bold"),
     plot.title = element_text(color = "white", size = 16, face = "bold"),
     plot.subtitle = element_text(color= "white", size = 14),
-    plot.caption = element_text(color = "white", size = 12)
+    plot.caption = element_text(color = "white", size = 12),
+    text = element_text(family = "Calibri")
   ) + 
   guides(fill = guide_colorbar(title = "Total deaths",
                                title.position = "top",title.hjust = 0.5,barwidth = 15))
