@@ -194,11 +194,3 @@ y %>% slice(-train_rows) %>%
                                barwidth = 10))
   
 ##
-rpart_test <- rpart(condition~.,data = y, subset = train_rows)
-plot(rpart_test, uniform=TRUE, 
-     main="Pruned Regression Tree for Mileage")
-
-text(rpart_test, use.n=TRUE, all=TRUE, pretty = 0, cex = 0.6)
-
-rpart_predictions <- predict(rpart_test, test_predictors, type = "class") 
-table(test_predictors$condition, rpart_predictions)
