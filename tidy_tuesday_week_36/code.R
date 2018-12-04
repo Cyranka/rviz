@@ -63,8 +63,8 @@ word_pairs %>%
                 segment.alpha = 0) +
   theme_void() + 
   theme(
-    text = element_text(family = "Roboto"),
-    panel.grid = element_line(color = "white", size = 0.1),
+    text = element_text(family = "Arial"),
+    panel.grid = element_line(color = "white", size = 0.05),
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     legend.position = "bottom",
@@ -80,6 +80,6 @@ word_pairs %>%
                    labels = c("200", "400", "600", "800", "1,000", "2,000", "4,000", "6,000")) +
   scale_edge_alpha(range = c(0.6,1), breaks = c(0.5,0.6,0.7,0.8,0.9,1)) + 
   guides(edge_width = guide_legend(title.position = "top", title.hjust = 0.5, nrow = 1)) + 
-  labs(title = "Pairwise counts of words in the titles of Medium data science articles",
-       subtitle = "Pairs that appeared less than 200 times were removed", 
+  labs(title = "  Pairwise counts of words in the titles of Medium data science articles",
+       subtitle = "   Pairs that appeared less than 200 times were removed", 
        caption = "Tidy tuesday week 36\nMedium data science articles metadata")
