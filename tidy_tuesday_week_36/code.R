@@ -71,7 +71,7 @@ word_pairs %>%
     plot.background = element_rect(fill = "black"),
     plot.title = element_text(size = 18, color = "White",face = "bold"),
     plot.subtitle = element_text(size = 13, color = "White",face = "bold"),
-    plot.caption = element_text(size = 10, color = "White"),
+    plot.caption = element_text(size = 10, color = "White", face = "bold"),
     legend.text = element_text(color = "white", face = "bold"),
     legend.title = element_text(color = "white", face = "bold")
    )  + 
