@@ -81,5 +81,4 @@ for_ggword %>%
   theme(
     plot.background = element_rect(fill = "black"),
     text = element_text(family = "Roboto")) + 
-  viridis::scale_color_viridis(begin = 0.5, discrete = TRUE, option = "A") + 
-  facet_wrap(~cluster, scales = "free")
+  viridis::scale_color_viridis(begin = 0.5, discrete = TRUE, option = "B")
