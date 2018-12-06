@@ -48,12 +48,13 @@ plot(hc, cex = 0.8, hang = -1)
 
 
 ##
-dend1 <- color_labels(hc, k = 5,col =viridis::viridis(6, begin = 0,end = 1, option = "C"))
+my_palette <- c("black",viridis::viridis(n=4,begin = 0.6,end = 0.9,option = "B",direction = 1))
+dend1 <- color_labels(hc, k = 5,col =my_palette)
 
-plot(dend1 %>% color_branches(k = 6,col =viridis::viridis(6, begin = 0,end = 0.6, option = "C")) %>% set("labels_cex", 0.75),
-     ylab = "Height",xlab = "Distance",cex.lab = 0.75,
-     main = "Hierarchical clustering dendrogram\nBranches and leaves colored by cluster assignment",
-     sub = "Tidy tuesday week 36",cex.axis = 0.75, cex.main = 1, cex.sub = 0.65)
+plot(dend1 %>% color_branches(k = 5,col =my_palette) %>% set("labels_cex", 0.75),
+     ylab = "Labels represent document id",xlab = "Distance",cex.lab = 0.75,
+     main = "Hierarchical clustering dendrogram of a sample of english titles with over 120 characters\nBranches and leaves colored by cluster assignment",
+     sub = "Tidy tuesday week 36",cex.axis = 0.75, cex.main = 1, cex.sub = 0.65,axes = FALSE)
 
 
 ##
@@ -80,5 +81,12 @@ for_ggword %>%
   scale_size_area(max_size = 25) + 
   theme(
     plot.background = element_rect(fill = "black"),
-    text = element_text(family = "Roboto")) + 
-  viridis::scale_color_viridis(begin = 0.5, discrete = TRUE, option = "B")
+    text = element_text(family = "Roboto"),
+    plot.title = element_text(color = "white", size = 18, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(color = "white", size = 12, hjust = 0.5, face = "bold"),
+    plot.caption = element_text(color = "white", size = 10, face = "bold"))+ 
+  viridis::scale_color_viridis(begin = 0.6, discrete = TRUE, option = "B") + 
+  labs(title = "Word cloud of top words by cluster",
+       subtitle = "Clusters defined by hierarchical clustering based on a cosine distance matrix",
+       caption = "Tidy tuesday week 36\nMedium data science articles metadata\nCluster 5 deleted due to size")
+
