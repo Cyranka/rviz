@@ -5,7 +5,7 @@ options(scipen = 999)
 setwd("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_20/")
 library(tidyverse);library(lubridate)
 
-x <- read_csv("/Users/harrocyranka/Desktop/rviz/tidy_tuesday_week_20/sampled_tweets.csv")
+x <- read_csv("sampled_tweets.csv")
 
 ##
 k <- x %>% mutate(row = 1:nrow(x)) %>%
@@ -22,7 +22,11 @@ k2 <- k %>% group_by(day_of_the_week, hour) %>% tally() %>%
 
 
 k2 %>% arrange(hour, day_of_the_week) %>%
-  ggplot(aes(y = reorder(day_order,-day_order), x = hour, fill = n)) + geom_tile(color = "black") + theme_minimal() + 
+  ggplot(aes(y = reorder(day_order,-day_order), x = hour, fill = n)) + geom_tile(color = "black") + 
+  theme_minimal() + 
+  theme(
+     text = element_text(size = 15)
+  ) + 
   scale_fill_continuous(high = "firebrick", low = "white") + 
   scale_y_discrete(labels = c("1" = "Mon", "2" = "Tue","3" = "Wed","4" = "Thu", "5" = "Fri", "6" = "Sat", "7" = "Sun")) + 
   scale_x_continuous(breaks = c(0:23)) + labs(y = "Day of the week", x = "Hour", fill = "Total tweets",
