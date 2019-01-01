@@ -14,7 +14,7 @@ x <- x %>%
     filter(year(created_at) >= 2009)
 
 ##
-set.seed(10)
+set.seed(5)
 df_sample <- x %>% group_by(year(created_at)) %>%
     sample_n(2500) %>% ungroup() %>%
     select(-`year(created_at)`)
@@ -44,8 +44,8 @@ rowTotals <- apply(dtm_2 , 1, sum)
 dtm_2 <- dtm_2[rowTotals >0,]
 
 #
-set.seed(10)
-n_cluster <- 10
+set.seed(20)
+n_cluster <- 15
 sk_means <- skmeans::skmeans(dtm_2, n_cluster, m = 1, control = 
                          list(nruns = 5, verbose = TRUE))
 
@@ -54,9 +54,6 @@ sk_means <- skmeans::skmeans(dtm_2, n_cluster, m = 1, control =
 assignments <- tidy(sk_means$cluster) %>% count(x) %>%
     mutate(proportion = n/sum(n)) %>%
     magrittr::set_colnames(c("Cluster", "Total", "Proportion"))
-
-assignments %>% 
-    ggplot(aes(x = factor(Cluster), y = Proportion)) + geom_col()
 
 #
 gg_color_hue <- function(n) {
@@ -95,8 +92,9 @@ cluster_words %>%
     )) + geom_col(show.legend = FALSE) +
     facet_wrap( ~ factor(cluster, levels = c(
         "1", "2", "3", "4", "5",
-        "6", "7", "8", "9", "10"
-    )), scales = "free",nrow = 2) + 
+        "6", "7", "8", "9", "10", "11", "12",
+        "13","14", "15"
+    )), scales = "free",nrow = 3) + 
     coord_flip() +
     theme_minimal() +
     theme(
@@ -117,6 +115,38 @@ cluster_words %>%
          y = "\nCluster",
          title = "Clustering of tweets with the hashtag #rstats",
          subtitle = "Clustering determined by spherical K-means", 
-         caption = "Based on a sample of 21,763 tweets\nStop words were removed") 
+         caption = "Based on a sample of 21,628 tweets\nStop words were removed") 
 
 cluster_words %>% write_csv("cluster_words.csv")
+
+##
+assignments %>% 
+    ggplot(aes(x = factor(Cluster), y = round(Proportion*100,0),
+               fill = as.character(Cluster),
+               label = paste0(round(Proportion*100,1),"%"))) + 
+    geom_col(show.legend = FALSE) +
+    geom_text(nudge_y = 0.75,size = 4, angle = 90,
+              color = "white", fontface = "bold") + 
+    labs(x = "Cluster", y = "% of Total",
+         title = "Proportion of tweets in each cluster",
+         subtitle = "Clustering determined by spherical K-means",
+         caption = "Based on a sample of 21,628 tweets\nStop words were removed") + 
+    theme_minimal() + 
+    theme(
+        
+        panel.grid = element_blank(),
+        plot.background = element_rect(fill = "black"),
+        plot.title = element_text(color = "white",face = "bold", size = 15, hjust = 0.5),
+        plot.subtitle = element_text(color = "white",size =13, hjust = 0.5),
+        axis.line.x = element_line(size = 0.5, color = "gray30"),
+        axis.title.x = element_text(color = "white",size = 13, face = "bold"),
+        axis.text.x = element_text(color = "white"),
+        axis.text.y = element_text(color ="white"),
+        axis.title.y = element_text(color = "white", size = 13),
+        plot.caption = element_text(color = "white",size = 11),
+        strip.text = element_text(color = "white",size = 11),
+        strip.background = element_rect(fill = "gray30", color = "gray30")
+    ) + 
+    scale_y_continuous(breaks = c(0,3,6,9,12),
+                       labels = c("0","3","6","9","12"),
+                       limits = c(0,12))
