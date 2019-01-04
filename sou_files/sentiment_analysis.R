@@ -3,7 +3,7 @@ options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
 setwd("/Users/harrocyranka/Desktop/rviz/sou_files/")
-library(tidyverse);library(tidytext)
+library(tidyverse);library(tidytext);library(topicmodels)
 
 files_to_read <- grep("\\.txt", list.files(), value = TRUE)
 speech_names <- str_replace(str_to_title(str_replace(files_to_read,pattern = "_", " ")),"\\.Txt","")
@@ -89,7 +89,7 @@ my_tally %>% group_by(word, sentiment) %>%
 
 ##LDA
 transform_into_unnest_tokens <- function(x){
-  y <-x %>% select(value) %>% unnest_tokens(word, value)
+  y <-x %>% select(value) %>% unnest_tokens(word, value) %>% anti_join(stop_words)
   return(y)
 }
 
@@ -101,10 +101,51 @@ for(i in 1:length(df_list)){
 }
 remove(i)
 
+##Get TF-IDF
+tf_idf_frame <- df_list %>% bind_rows() %>%
+  count(word, year, sort = TRUE)%>% bind_tf_idf(word,year, n) %>%
+  filter(tf_idf >0)
 
-dtm_1 <- df_list %>% bind_rows() %>%
-  count(word, year, sort = TRUE) %>%
+##
+dtm_1 <- tf_idf_frame %>%
+  select(word, year,n) %>%
   cast_dtm(year, word, n)
+
+##Words in each topic
+sou_lda <- LDA(dtm_1, k =10, control = list(seed = 1234))
+sou_topics <- tidy(sou_lda, matrix = "beta")
+top_terms <- sou_topics %>% 
+  filter(!str_detect(term, "[0-9]")) %>%
+  group_by(topic) %>%
+  arrange(topic,desc(beta)) %>%
+  slice(1:20) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>% 
+  group_by(term)%>% top_n(1,wt = beta) %>%
+  ggplot(aes(x = reorder(term, beta), y = beta, fill = topic)) + 
+  geom_col(show.legend = FALSE) + 
+  facet_wrap(~topic, scales = "free", ncol = 2) + coord_flip() + 
+  theme_minimal() + 
+  theme(
+    text = element_text(family = "Roboto", size = 13),
+    plot.title = element_text(family = "Roboto", size = 17, face = "bold"),
+    plot.subtitle = element_text(family = "Roboto", size = 17, face = "bold"),
+    panel.grid = element_line(size =0.05, linetype = 1, color = "black"),
+    strip.background = element_rect(fill = "gray95", color = "white")
+  ) + 
+  labs(x = "Beta", y = "Term", title = "Most common terms in each topic in State of the Union speeches since 2001", 
+       subtitle = "LDA model with 10 topics", 
+       caption = "Duplicate words removed") + 
+  viridis::scale_fill_viridis(option = "D",begin =.2,end = 0.9)
+
+##topics in each document
+sou_gamma <- tidy(sou_lda, matrix = "gamma")
+sou_gamma %>% mutate(document = reorder(document, gamma * topic)) %>%
+  ggplot(aes(factor(topic), gamma)) +
+  geom_boxplot() +
+  facet_wrap(~ document, scales = "free_x")
 
 
 ##Avg sentiment
