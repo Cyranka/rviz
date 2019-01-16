@@ -33,20 +33,23 @@ cumulative %>% ungroup() %>%
   scale_fill_manual(values = c("steelblue", "firebrick2")) + 
   labs(x = "\nYear", y = "Total launches",
        title = "The race for space during the Cold War",
-       subtitle = "The USSR overtook the United States in 1967") + 
+       subtitle = "Total launches by the USSR and the USA between 1957 and 1991") + 
   theme_minimal() + 
   theme(
+    text = element_text(size = 14, family = "Roboto"),
     legend.position = "bottom",
-    plot.background = element_rect(fill = "gray85"),
+    plot.background = element_rect(fill = "gray95"),
     panel.grid.minor = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(size =0.3),
-    axis.text.x = element_text(angle = 90)
+    axis.text.x = element_text(angle = 90),
+    plot.title = element_text(size = 18, face = "bold"),
+    plot.subtitle = element_text(size = 16)
   ) + 
   guides(fill = guide_legend(title = "Country", title.position = "top", title.hjust = 0.5,
                              label.position = "bottom",keyheight =0.5,
                              keywidth = 3)) + 
-  annotate("text", x = 1966.5, y = 85, label = "1967: The USSR overtakes the US", angle = 90, size = 3) + 
-  annotate("text", x = 1957, y = 85, label = "1957: Sputnik launched", angle = 90, size = 3) + 
-  annotate("text", x = 1990.5, y = 85, label = "1991: End of the USSR", angle = 90, size = 3)
+  annotate("text", x = 1966.5, y =90, label = "1967: The USSR overtakes the US", angle = 90, size = 3) + 
+  annotate("text", x = 1957, y = 90, label = "1957: Sputnik launched", angle = 90, size = 3) + 
+  annotate("text", x = 1990.5, y = 90, label = "1991: End of the USSR", angle = 90, size = 3)
