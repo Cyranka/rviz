@@ -15,15 +15,16 @@ state_milk <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytu
 
 state_milk %>%
   filter(year %in%c(1970,1980,1990,2001,2010,2017)) %>%
-  ggplot(aes(x = milk_produced, y = fct_rev(factor(year)), group = year, fill = year)) + 
+  ggplot(aes(x = milk_produced, y = fct_rev(factor(year)), group = year, fill = region)) + 
   ggridges::geom_density_ridges_gradient(show.legend = FALSE, 
                                          color = "white", scale = 1.5) + 
   labs(y = "Year", x = "\nTotal milk produced (millions of pounds) (log scale)", 
-       title = "Evolution of milk production in the United States",
+       title = "Changes in the distribution of milk production in the United States by region",
        subtitle = "Regional division differs from original dataset",
        caption = "Tidy tuesday week 5: dairy in the United States") +  
   scale_x_log10(labels = scales::comma) + 
-  scale_fill_viridis_c(option = "C",begin = 0.4,end = 0.7, alpha = 0.9) + 
+    scale_y_discrete(expand = c(0,2)) + 
+  scale_fill_viridis_d(option = "D",alpha = 0.9) + 
   hrbrthemes::theme_modern_rc() + 
   theme(
     text = element_text(size = 14, color = "white", family = "Helvetica"),
