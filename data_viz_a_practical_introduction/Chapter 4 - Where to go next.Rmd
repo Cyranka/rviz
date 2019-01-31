@@ -1,0 +1,114 @@
+---
+title: 'Chapter 4: where to go next'
+author: "Harro Cyranka"
+date: "1/7/2019"
+output: html_document
+---
+
+##Loading libraries
+```{r, echo=TRUE,message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gapminder)
+library(here)
+library(socviz)
+```
+
+
+1) Using different ways to facet the data, using the gapminder data.
+1.1 Faceting data on year
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = gapminder, aes(x = gdpPercap,
+                                  y = pop))
+p + geom_point(aes(group = country)) + 
+    facet_wrap(~year)
+```
+
+1.2 Faceting data on country
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = gapminder, aes(x = gdpPercap,
+                                  y = pop)) + 
+    geom_point(aes(group = country)) + 
+    facet_wrap(~country)
+
+ggsave("faceting_data_by_country.png", plot = p, dpi = 400)
+```
+
+2) Using GSS data to differentiate between two calls of facet_grid
+2.1 facet_grid(sex ~ race): gender are rows, while race are columns
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = age, y = childs))
+p + geom_point(alpha = 0.2) + 
+    geom_smooth() + 
+    facet_grid(sex~race) ##Wall against ground
+
+```
+
+2.2 facet_grid(race ~ sex): race are rows, while gender are columns
+
+
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = age, y = childs))
+p + geom_point(alpha = 0.2) + 
+    geom_smooth() + 
+    facet_grid(race~sex) ##Wall against ground
+
+```
+
+
+3) Using more complex formulas with facet_wrap.
+Graphs are equal to facet_grid(sex~race). However it does not wrap results in a fully cross-classified grid.
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = age, y = childs))
+p + geom_point(alpha = 0.2) + 
+    geom_smooth() + 
+    facet_wrap(~sex + race) ##Wall against ground
+
+```
+
+4) Using geom_freqpoly instead of histograms
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+p <- ggplot(data = midwest,
+            mapping = aes(x = poptotal))
+p + geom_freqpoly() + 
+    scale_x_log10()
+```
+
+5) Using geom_bin2d()
+* These are useful to show densities for two variables at the same time
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = gapminder, 
+            mapping = aes(x =gdpPercap,
+                          y = lifeExp))
+
+p + geom_bin2d(bins= c(20,50))
+```
+
+* Using geom_hexagon, which is similar
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = gapminder, 
+            mapping = aes(x =gdpPercap,
+                          y = lifeExp))
+
+p + geom_hex()
+```
+
+6) Using geom_density_2d
+
+*These graphs are similar to contour plots
+6.1: Using without a geom_point() layer
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = midwest, aes(x = percbelowpoverty,
+                                y = percollege))
+p + geom_density_2d()
+```
+
+6.2: Using with a geom_point() layer
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = midwest, aes(x = percbelowpoverty,
+                                y = percollege))
+p + geom_point(size = 4, alpha = 0.5) + 
+    geom_density_2d()
+```

@@ -1,0 +1,462 @@
+---
+title: "Chapter 8 - Refine your plots"
+author: "Harro Cyranka"
+date: "1/21/2019"
+output: html_document
+---
+
+```{r, echo=FALSE,message=FALSE, warning=FALSE,results='hide'}
+library(tidyverse)
+library(gapminder)
+library(here)
+library(socviz)
+library(ggrepel)
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+head(asasec,n = 5)
+
+```
+
+Figure 8.1: Back to basics
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = subset(asasec,Year == 2014),
+            mapping = aes(x = Members,
+                          y = Revenues,
+                          label = Sname))
+
+p + geom_point() + geom_smooth()
+
+```
+
+Figure 8.2: Refining the plot
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+#Introduce some outliers, switch from loess to OLS and introduce a third variable
+
+p <- ggplot(data = subset(asasec, Year == 2014),
+            mapping = aes(x = Members,
+                          y = Revenues,
+                          label = Sname))
+p + geom_point(mapping = aes(color = Journal)) + 
+    geom_smooth(method = "lm") + 
+    theme(legend.position = "top")
+```
+
+Figure 8.3: Refining the axes
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p0 <- ggplot(data = subset(asasec, Year == 2014),
+             mapping = aes(x = Members,
+                           y = Revenues,
+                           label = Sname))
+
+p1 <- p0 + geom_smooth(method = "lm", se = FALSE, color = "gray80") + 
+    geom_point(mapping = aes(color = Journal))
+
+p2 <- p1 + geom_text_repel(data = subset(asasec, Year == 2014 &
+                                             Revenues > 7000), size = 2)
+
+##Changing the axes
+p3 <- p2 + labs(x = "Membership",
+                y = "Revenues",
+                color = "Section has own Journal",
+                title = "ASA Sections",
+                subtitle = "2014 Calendar Year.",
+                caption = "Source: ASA annual report.")
+p4 <- p3 + scale_y_continuous(labels = scales::dollar) + 
+    theme_bw() + 
+    theme(legend.position = "bottom")
+
+p4
+```
+
+
+### 8.1 Use color to your advantage
+
+* You should choose a color palette based on its ability to express the data you are plotting.
+
+* Do not map sequential scales to categorical palettes, or use a diverging palette for a variable with no well-defined midpoint.
+
+* We choose color palettes for mappings through one of the scale_ functions for color or fill.
+
+* RColorBrewer should be used to access color palettes.
+
+Figure 8.7.1: Color palette Set2
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = drop_na(organdata,world),
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+
+p + geom_point(size = 2) + 
+    scale_color_brewer(palette = "Set2") + 
+    theme(legend.position = "top")
+
+```
+
+Figure 8.7.2: Color palette Pastel2
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = drop_na(organdata,world),
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+
+p + geom_point(size = 2) + 
+    scale_color_brewer(palette = "Pastel2") + 
+    theme(legend.position = "top")
+
+```
+
+Figure 8.7.2: Color palette Dark2
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = drop_na(organdata,world),
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = world))
+
+p + geom_point(size = 2) + 
+    scale_color_brewer(palette = "Dark2") + 
+    theme(legend.position = "top")
+
+
+```
+
+* Colors can also be specified manually, via scale_color_manual() or scale_fill_manual(). These functions take a value argument that can be specified as a vector of color names or color values that can be identified by R.
+
+* Alternatively to color names, color values can be specified via their hexadecimal RGB value.
+
+Figure 8.8: Color blind friendly palette
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+cb_palette <- c("#999999","#E69F00","#56B4E9",
+                "#009E73","#F0E442","#0072B2",
+                "#D55E00","#CC79A7")
+
+p4 + scale_color_manual(values = cb_palette)
+```
+
+* The ability to manually specify colors can be useful when the meaning of a category itself has strong color association (ex: political parties).
+
+### Layer color and text together
+
+* Aside from mapping variables directly, color is also useful when we want to pick out or highlight some aspect of our data.
+
+Figure 8.10: The background layer
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+party_colors <- c("#2E74C0",
+                  "#CB454A")
+
+p0 <- ggplot(data = subset(county_data,
+                           flipped == "No"),
+             mapping = aes(x = pop,
+                           y = black/100))
+
+p1 <- p0 + geom_point(alpha = 0.15,color = "gray50") + 
+    scale_x_log10(label = scales::comma) ##Interesting use of scales::comma
+
+p1
+```
+
+Figure 8.11: Using a second layer that is a complement of the first
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p2 <- p1 + geom_point(
+    data = subset(county_data,flipped == "Yes"),
+    mapping = aes(color = partywinner16)
+) + scale_color_manual(values = party_colors)
+
+p2
+
+```
+
+Figure 8.12: Adding guides and labels, and fixing the y scale
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p3 <- p2 + scale_y_continuous(labels = scales::percent) + 
+    labs(color = "County flipped to ...",
+         x = "County Population (log scale)",
+         y = "Percent Black Population",
+         title = "Flipped counties, 2016",
+         caption = "Counties in gray did not flip.")
+p3 + theme_bw()
+
+```
+
+Figure 8.13: County-level election data from 2016
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p4 <- p3 + theme_bw() + 
+    geom_text_repel(data = subset(county_data,
+                                  flipped == "Yes" &
+                                      black > 25),
+                    mapping = aes(x = pop,
+                                  y = black/100,
+                                  label = state), size = 2)
+p4 + theme_minimal() +
+    theme(legend.position = "top")
+
+```
+
+* When producing a graphic in ggplot, or when looking at plots made by others, it should gradually become your habit to see not just the content of the plot but also the implicit or explicit structure that it has.
+
+
+### 8.3 Change the apperance of plots with themes
+
+* Themes can be truned on or off using the theme_set() function. It takes the name of a theme as an argument.
+
+* Theme functions are a set of detailed instricutions to turn on, turn off, or modify a large number of graphical elements on the plot.
+
+* Once set, a theme applies to all subsequent plots, and it remains active until it is replaced by a different theme.
+
+Figure 8.14: Economist and WSJ theme
+```{r, echo=TRUE, message=FALSE,warning=FALSE}
+library(ggthemes)
+
+##Setting the economist theme
+theme_set(theme_economist())
+p4 + theme_economist() + 
+    theme(legend.position = "top")
+
+##Setting the WSJ theme
+theme_set(theme_wsj())
+p4 + theme_wsj() +  
+    theme(plot.title = element_text(size = rel(0.6)),
+           legend.title = element_text(size = rel(0.35)),
+           plot.caption = element_text(size = rel(0.35)),
+           legend.position = "top")
+```
+
+* The theme() function allows you to exert fine-grained control over the appearance of all kinds of text and graphical elements in a plot.
+
+### Use theme elements in a substantive way
+
+* It makes good sense to use themes as a way to fix design elements because that means you can subsequently ignore them and focus on the data.
+
+
+Figure 8.16: A customized small multiple
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+##Create the dataframe
+yrs <- c(seq(1972,1988,4), 1993, seq(1996,2016,4))
+mean_age <- gss_lon %>%
+    filter(age %nin% NA && year %in% yrs) %>%
+    group_by(year) %>%
+    summarize(xbar = round(mean(age, na.rm = TRUE),0))
+
+mean_age$y <- 0.3 ##Define height for mean lab
+
+yr_labs <- data_frame(x = 85,y = 0.8,
+                      year = yrs) ##Define height for year lab
+
+p <- ggplot(data = subset(gss_lon, year %in% yrs),
+            mapping = aes(x = age))
+
+
+##y = ..scaled.. scales the y-axis between 0 and 1
+p1 <- p + geom_density(fill = "gray20", color = FALSE,
+                       alpha = 0.9, mapping = aes(y = ..scaled..)) + 
+    geom_vline(data = subset(mean_age, year %in% yrs),
+               aes(xintercept = xbar), color = "white",
+               size = 0.5) + 
+    geom_text(data = subset(mean_age, year %in% yrs),
+              aes(x = xbar, y = y, label = xbar), nudge_x = 7.5,
+              color = "white",size = 3.5, hjust = 1) + 
+    geom_text(data = subset(yr_labs, year %in% yrs),
+              aes(x = x, y = y, label = year)) + 
+    facet_grid(year ~., switch = "y") ##Switch move the labels to the left
+
+p1 + theme_minimal(base_size = 10) + 
+    theme(
+        plot.title = element_text(size = 12),
+        axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size= 10),
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(0.1,"lines")
+    ) + 
+    labs(x = "Age",
+         y = NULL,
+         title = "Age distribution of\nGSS Respondents")
+```
+
+* ggridges offers a different take on small-multiple density plots by allowing the distributions to overlap vertically to an interesting effect.
+
+Figure 8.17: Ridgeplot version of the age distribution plot
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(ggridges)
+
+theme_set(theme_minimal())
+
+
+p <- ggplot(data = gss_lon,
+            mapping = aes(x = age, y = factor(year, levels = rev(unique(year)),ordered = TRUE)))
+
+p + geom_density_ridges(alpha =0.6, fill = "lightblue", scale = 1.5) + 
+    scale_x_continuous(breaks = c(25,50,75)) + 
+    scale_y_discrete(expand = c(0,4)) + 
+    labs(x = "Age", y = NULL,
+         title = "Age distribution of\nGSS respondents") + 
+    theme(title = element_text(size = 14, face = "bold"))
+
+```
+
+* The first argument to expand gives expansion equal to its multiplication by limit range; the second argument gives the absolute expansion added to both end of the axis.
+
+* The scale argument in geom_density_ridges controls the degree to which the plots overlap.
+
+### 8.5 Case studies
+
+#### Two y-axes
+* Most of the time when people draw plots with two y-axes they want to line the series up as closely as possible because they suspect that there is a substantive association between them.
+
+* The main problem with using two y-axes is tha tit makes it even easier than usual to foll yourself (or someone else) about the degree of association between the variables, because you can adjust the scaling of the axes relative to one another in a way that moves the data series around.
+
+*Index numbers can have complications of their own, but they allow us to use one axis instead of two, and to calculate a sensible difference between the two series and plot that.
+
+Figure 8.20: Indexed series with a running difference below, using separate plots
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+fredts_m <- fredts %>% select(date, sp500_i, monbase_i) %>%
+    gather(key = series, value = score, sp500_i:monbase_i)
+
+p <- ggplot(data = fredts_m,
+            aes(x = date,
+                y = score,
+                group = series,
+                color = series))
+p1 <- p + geom_line() + 
+    theme(legend.position = "top") + 
+    labs(x = "Date",
+         y = "Index", 
+         color = "Series")
+
+p <- ggplot(data = fredts,
+            mapping = aes(x = date, y = sp500_i - monbase_i))
+
+p2 <- p + geom_line() + 
+    labs(x = "Date",
+         y = "Difference")
+
+
+cowplot::plot_grid(p1, p2, nrow = 2, rel_heights = c(0.75,0.25),
+                   align = "v")
+```
+
+
+#### Redrawing a bad slide
+
+* Use geom_path() and use line segments to "join the dots" of the yearly observations in order.
+
+Figure 8.22: Redrawing yahoo graph as a connected scatterplot
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+p <- ggplot(data = yahoo,
+            mapping = aes(x = Employees, y = Revenue))
+
+p + geom_path(color = "gray60",size = 0.5) + 
+    geom_text(aes(color = Mayer,
+                  label = Year),
+              size = 3, fontface = "bold") + 
+    hrbrthemes::theme_ipsum_rc() + 
+    theme(legend.position = "bottom",
+          panel.grid = element_line(size =0.01)) + 
+    labs(color = "Mayer is CEO",
+         x = "Employees",
+         y = "Revenue (Million)",
+         title = "Yahoo employees vs revenues, 2004-2014") + 
+    scale_y_continuous(labels = scales::dollar) + 
+    scale_x_continuous(labels = scales::comma) + 
+    scale_color_manual(values = c("red", "darkblue"))
+```
+
+Figure 8.23: Plotting the ratio of revenue to employee
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = yahoo,
+            aes(x = Year, y = Revenue/Employees))
+
+p + geom_line(size = 2, color = "gray60") + 
+    geom_vline(xintercept = 2012) + 
+    labs(title = "Yahoo revenue to employee ratio, 2004-2014",
+         x = "Year\n",
+         y = "Revenue/Employees") + 
+    annotate("text", x  = 2013.1, y = 0.44,label = "Mayer becomes CEO",
+             size = 2.5) + 
+    hrbrthemes::theme_ipsum_rc()
+
+```
+
+#### Saying to no pie
+
+Figure 8.25: Faceting the pie charts
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p_xlab <- "Amount owed, in thousands of dollars"
+p_title <- "Outstanding student loans"
+p_subtitle <- "44 million borrowers owe a total of $1.3 trillion"
+p_caption <- "Source: FRB NY"
+
+f_labs <- c(`Borrowers` = "Percent of\nall borrowers",
+            `Balances` = "Percent of\n all balances")
+
+p <- ggplot(data = studebt,
+            mapping = aes(x = Debt, y = pct/100,fill = type))
+
+p + geom_bar(stat = "identity") + 
+    scale_fill_brewer(type = "qual", palette = "Dark2") + 
+    scale_y_continuous(labels = scales::percent) + 
+    guides(fill = FALSE) + 
+    theme(strip.text.x = element_text(face = "bold")) + 
+    labs(y = NULL, 
+         x = p_xlab,
+         caption = p_caption,
+         title = p_title,
+         subtitle = p_subtitle) + 
+    facet_grid(~type, labeller = as_labeller(f_labs)) + 
+    coord_flip()
+```
+
+* Use labeller = as_labeller(labs) to change the facet titles. It has to be a vector with names.
+
+* To emphasize proportionality (as in bar hcharts), we can array the percentages for each distribution proportionally within a single bar.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(viridis)
+
+p <- ggplot(studebt, aes(y = pct/100,x = type, fill = Debtrc))
+p + geom_bar(stat = "identity",
+             color = "gray80") + 
+    scale_x_discrete(labels = as_labeller(f_labs)) + 
+    scale_y_continuous(labels = scales::percent) + 
+    scale_fill_viridis(discrete = TRUE) + 
+    guides(fill = guide_legend(
+        reverse = TRUE,
+        title.position = "top",
+        label.position = "bottom",
+        keywidth = 3,
+        nrow = 1
+    )) + 
+    labs(x = NULL, y = NULL,
+         fill = "Amount owed, in thousands of US$",
+         caption = p_caption,
+         title = p_title,
+         subtitle = p_subtitle) + 
+    theme(legend.position = "top",
+          axis.text.x = element_text(face = "bold",hjust = 1,size = 12),
+          axis.ticks.length = unit(0,"cm"),
+          panel.grid.major.y = element_blank()) + 
+    coord_flip()
+
+```

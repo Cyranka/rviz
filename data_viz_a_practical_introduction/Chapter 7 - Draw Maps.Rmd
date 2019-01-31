@@ -1,0 +1,572 @@
+---
+title: "Chapter 7 - Creating Maps"
+author: "Harro Cyranka"
+date: "1/19/2019"
+output: html_document
+---
+
+## Draw Maps
+
+```{r, echo=FALSE,message=FALSE, warning=FALSE,results='hide'}
+library(tidyverse)
+library(gapminder)
+library(here)
+library(socviz)
+library(ggrepel)
+```
+
+* Choropleth maps show geographical regions colored, shaded, or graded according to some variable.
+* Often a map is like a weird grid that you are forced to conform to even though you know it systematically misrepresents what you want to show.
+
+### 7.1 Map U.S State-Level Data
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+election %>% select(state, total_vote,
+                    r_points, pct_trump, party, census) %>%
+    sample_n(5)
+
+```
+
+* The FIPS code is a federal code that numbers states and territories of the United States. It extends to the county level with an additional four digits, so every U.S county has a unique 6 digit identifier, where the first two digits represent the state.
+
+* The first thing you should keep in mind is that spatial data does not have to be represented spatially.
+
+Figure 7.2: 2016 election results using a dotplot
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+party_colors <- c("#2E74C0","#CB454A")
+
+p0 <- ggplot(data = subset(election, st %nin% "DC"),
+             mapping = aes(x = r_points,
+                           y = reorder(state, r_points),
+                           color = party))
+
+p1 <- p0 + geom_vline(xintercept = 0, color = "gray30") + 
+    geom_point(size = 2)
+
+p2 <- p1 + scale_color_manual(values = party_colors)
+
+p3 <- p2 + scale_x_continuous(
+    breaks = seq(-30,40,by = 10),
+    labels = c("30\nClinton","20",10,0,
+               "10","20","30","40\n(Trump)"))
+p3 + facet_wrap(~census, ncol = 1, scales = "free_y") + 
+    guides(color = FALSE) + labs(x = "Point Margin", y = "") + 
+    theme(axis.text = element_text(size =8))
+```
+
+* The first task of drawing a map is to get a data frame with the right information in it, and in the right order.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##maps package provides coordinates for some predrawn map data
+library(maps)
+us_states <- map_data("state")
+head(us_states)
+```
+
+Figure 7.3: A first US map
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = us_states,
+            mapping = aes(x = long,
+                          y = lat,
+                          group = group))
+p + geom_polygon(fill = "white",
+                 color = "black")
+```
+
+Figure 7.4: Coloring the states
+
+```{r,echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = us_states,
+            aes(x = long,
+                y = lat, 
+                group = group,
+                fill = region))
+
+p + geom_polygon(color = "gray90",
+                 size =0.1) + 
+    guides(fill = FALSE)
+
+```
+
+* We can transform the default projection used by geom_polygon() via the coord_map() function.
+
+* The Albers projection requires two additional parameters, lat0 and lat1, passed to the geom_polygon function.
+
+Figure 7.5: Improving the projection using an Albers projection
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+p <- ggplot(data =us_states,
+            mapping = aes(x = long,
+                          y = lat,
+                          group = group,
+                          fill = region))
+
+p + geom_polygon(color = "gray90",
+                 size =0.1) + 
+    coord_map(projection = "albers",lat0= 39,lat1 = 45) + 
+    guides(fill = FALSE)
+
+```
+
+* Maps that look broken when you draw them are usually caused by merge errors.
+
+Figure 7.6: Mapping the results
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##Merging the coordinates with our election data
+election$region <- tolower(election$state)
+us_states_elec <- left_join(us_states, election)
+
+p <- ggplot(data = us_states_elec,
+            aes(x = long,
+                y = lat,
+                group = group,
+                fill = party))
+
+p + geom_polygon(color = "gray90",size =0.1) + 
+    coord_map(projection = "albers",
+              lat0 = 39, 
+              lat1 = 45) + 
+    theme(legend.position = "top",
+          legend.text = element_text(size = 8),
+          legend.title = element_text(size =10)) + 
+    guides(fill = guide_legend(title = "Party", title.position = "top"))
+```
+
+Figure 7.7: Election 2016 by state
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+party_colors <- c("#2E74C0","#CB454A")
+p0 <- ggplot(data = us_states_elec,
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = party))
+
+p1 <- p0 + geom_polygon(color = "gray90",
+                        size =0.1) + 
+    coord_map(projection = "albers",
+              lat0 = 39,
+              lat1 = 45)
+
+p2 <- p1 + scale_fill_manual(values = party_colors) + 
+    labs(title = "Election Results 2016", fill = NULL)
+p2 + 
+    theme_minimal() + 
+    theme(
+        legend.position = c(0.1,0),##Use numbers to justify the legend
+        legend.text = element_text(face = "bold"),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    )
+
+```
+
+
+Figure 7.8: Two versions of percent Trump by state
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+p0 <- ggplot(data = us_states_elec,
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = pct_trump))
+
+p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) + 
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45)
+
+##First graph
+p1 + labs(title = "Trump vote") + 
+    theme_minimal() +
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold"),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + 
+    labs(fill = "Percent")
+
+##Second graph
+p2 <- p1 + scale_fill_gradient(low = "white",
+                               high = "#CB454A") + 
+    labs(title = "Trump vote")
+
+p2 + theme_minimal() +  
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold"),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + labs(fill = "Percent")
+
+```
+
+* The scale_gradient2() function gives us a blue-red spectrum that passes through white by default.
+
+Figure 7.9: Changing midpoint of scale_gradient2
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+##Plot 1
+p0 <- ggplot(data = us_states_elec,
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = d_points))
+
+p1 <- p0 + geom_polygon(color = "gray90", size = 0.1) +
+    coord_map(projection = "albers", lat0 = 39, lat1 = 45)
+
+p2 <- p1 + scale_fill_gradient2() + labs(title = "Winning margins")
+p2 + theme_minimal() + 
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold"),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + labs(fill = "Percent")
+
+##Plot 2
+p3 <- p1 + scale_fill_gradient2(low = "red",
+                                mid =scales::muted("purple"),
+                                high = "blue",
+                                breaks = c(-25,0,25,75)) + 
+    labs(title = "Winning margins")
+
+p3 + theme_minimal() + 
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold"),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    )  + labs(fill = "Percent")
+```
+
+
+### 7.2 America's Ur-choropleths
+
+* In the US case, administrative areas vary widely in geographical area and also in population size.
+* County level maps obey the same procedure: we need two data frames, one containing the map data(points that draw the map), and the other containing the fill variables we want plotted.
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+#Inspecting county data
+county_map %>% sample_n(5) %>% round_df(2)
+
+county_data %>%
+    select(id, name, state, pop_dens, pct_black) %>%
+    sample_n(5)
+
+county_full <- left_join(county_map, county_data, by = "id")
+
+```
+
+Figure 7.11: U.S Population density by county
+
+```{r, echo=TRUE, warning=FALSE,echo=FALSE}
+p <- ggplot(data = county_full,
+            mapping = aes(x = long,
+                          y = lat,
+                          fill = pop_dens,
+                          group = group))
+
+p1 <- p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+p2 <- p1 + scale_fill_brewer(palette = "Blues",
+                             labels = c("0-10","10-50","50-100","100-500",
+                                        "500-1,000","1,000-5,000",">5,000"))
+
+p2 + labs(fill = "Population per\nsquare mile") +
+    theme_minimal() +
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold",size = 8),
+        legend.title = element_text(size = 10),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + guides(fill = guide_legend(nrow = 1)) +
+    theme(legend.position = "bottom")
+```
+
+
+* The use of coord_equal() makes sure that the relative scale of our map does not change even if we alter the overall dimensions of the plot.
+
+Figure 7.12: Percent black population by county
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = county_full,
+            mapping = aes(x = long,
+                          y = lat, 
+                          fill = pct_black,
+                          group = group))
+
+p1 <- p + geom_polygon(color = "black", size = 0.05) + coord_equal()
+p2 <- p1 + scale_fill_brewer(palette = "Greens")
+p2 + labs(fill = "US Population, Percent Black") + 
+    guides(fill = guide_legend(nrow = 1)) + 
+    theme_minimal() +
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold",size = 8),
+        legend.title = element_text(size = 10),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + theme(legend.position = "bottom")
+    
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+##Create an orange palette
+orange_pal <- RColorBrewer::brewer.pal(n = 6, name = "Oranges")
+orange_pal
+
+##Create an orange palette which is the reverse of the original scale.
+orange_rev <- rev(orange_pal)
+orange_rev
+```
+
+* The brewer.pal() function produces evenly spaced color schemes to order from any one of several named palettes.
+
+Figure 7.13.1: Gun related suicides by county
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+gun_p <- ggplot(data = county_full,
+                mapping = aes(x = long,
+                              y = lat,
+                              fill = su_gun6,
+                              group = group))
+
+gun_p1 <- gun_p + geom_polygon(color = "gray90", size = 0.05) + coord_equal()
+gun_p2 <- gun_p1 + scale_fill_manual(values = orange_pal)
+gun_p2 + labs(title = "Gun-related suicides, 1999-2015",
+              fill = "Rate per 100,000 pop.") + 
+    theme_minimal() + 
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold",size = 8),
+        legend.title = element_text(size = 10),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + theme(legend.position = "bottom")
+    
+
+```
+
+Figure 7.13.2: Population density by county
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+pop_p <- ggplot(data = county_full,
+                mapping = aes(x = long,
+                              y = lat,
+                              fill = pop_dens6,
+                              group = group))
+pop_p1 <- pop_p  + geom_polygon(color = "gray90", size = 0.05) + 
+    coord_equal()
+
+pop_p2 <- pop_p1 + scale_fill_manual(values = orange_rev)
+pop_p2 + 
+    labs(title = "Reverse-coded population density",
+         fill = "People per square mile")+ 
+    theme_minimal() + 
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold",size = 8),
+        legend.title = element_text(size = 10),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank()
+    ) + theme(legend.position = "bottom")
+
+```
+
+
+* Normally, we standardize frequency to control for the fact that larger populations have higher numbers just because they have more people in them.
+
+* However, this sort of standardization has its limits. In particular, when the event of interest is not very common, and there is wide variation in the base size of the unites, then the denominator starts to be epressed more and ore in the standardized measure.
+
+* Data is subject to reporting constraints connected to population size.
+
+* Small differences in reporting, combined with coarse binning and miscoding, will produce spatially misleading and substantively mistaken results.
+
+### 7.3 Statebins
+
+* As an alternative to state-level choropleths, it is possible to consider *state-bins*.
+
+* Statebins needs, as arguments, the basic data frame (state_data argument), a vector of state names(state_col), and the value being shown (value_col). In addition, we can optionally tell it the color palette we want and the color of the text to label the state boxes.
+
+Figure 7.14.1: Statebins of election results (percent Trump)
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(statebins)
+statebins_continuous(state_data = election,
+                     state_col = "state",
+                     text_color = "white",
+                     value_col = "pct_trump",
+                     brewer_pal = "Reds",
+                     font_size = 3,
+                     legend_title = "Percent Trump")
+
+```
+
+Figure 7.14.2: Statebins of election results (percent Clinton)
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+statebins_continuous(state_data = subset(election, !st%in% "DC"),
+                     state_col = "state",
+                     text_color = "black",
+                     value_col = "pct_clinton",
+                     brewer_pal = "Blues",
+                     font_size = 3,
+                     legend_title = "Percent Clinton")
+
+```
+
+Figure 7.15.1: Manually specifying colors for statebins
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##We specify the color scheme as a variable in the data frame instead of using a mapping to 
+## the ggplot() call
+election <- election %>%
+    mutate(color = recode(party, Republican = "darkred",
+                          Democrat = "royalblue"))
+
+statebins_manual(state_data = election,
+                 state_col = "st",
+                 color_col = "color",
+                 text_color = "white",
+                 font_size = 3,
+                 legend_title = "Winner",
+                 labels = c("Trump", "Clinton"),
+                 legend_position = "right")
+```
+
+Figure 7.15.2: Manually specifying colors for statebins
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+statebins(state_data = election,
+                 state_col = "state",
+                 value_col = "pct_trump",
+                 text_color = "white",
+                 breaks = 4,
+                 labels = c("4-21","21-37","37-53","53-70"),
+                 brewer_pal = "Reds",
+                 font_size = 3,
+                 legend_title = "Percent Trump")
+
+```
+
+### 7.4 Small-multiple maps
+
+* Sometimes we have geographical data with repeated observations over time. In these cases, we might want to make a small multiple map to show changes over time.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+head(opiates) %>% 
+    as_tibble() %>%
+    round_df(2)
+
+us_states <-as_tibble(us_states)
+opiates <- as_tibble(opiates) %>%
+    mutate(region_1 = tolower(state))
+
+opiates_map <- left_join(us_states,opiates,by = c("region" = "region_1"))
+```
+
+* Because the opiates data includes the year variable, it is possible to make a faceted small-multiple with one map for each year in the data.
+
+* The viridis colors run in low-to-high sequences and do a very good job of combining perceptually uniform colors with easy-to-see, easily contrasted hues along their scales.
+
+
+Figure 7.16: A small-multiple map
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+library(viridis)
+
+p0 <- ggplot(data = subset(opiates_map, year > 1999),
+             mapping = aes(x = long,
+                           y = lat,
+                           group = group,
+                           fill = adjusted))
+
+p1 <- p0 + geom_polygon(color = "gray90",size = 0.05) + 
+    coord_map(projection = "albers",lat0 =39, lat1 = 45)
+p2 <- p1 + scale_fill_viridis_c(option = "plasma")
+p2 + theme_minimal() + 
+    theme(
+        ##Use numbers to justify the legend
+        legend.text = element_text(face = "bold",size = 8),
+        legend.title = element_text(size = 10),
+        legend.position = "bottom",
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        panel.grid = element_blank(),
+        strip.background = element_blank()) +
+        facet_wrap(~year, ncol = 3) + 
+    labs(fill = "Death rate per 100,000 population",
+         title = "Opiate related deaths by state, 2000-2014")
+```
+
+* A common problem with representing data using US maps is that the differences in geographical size of states makes spotting changes more difficult again.
+
+### 7.5 Is your data really spatial
+
+* Even if the data is collected via or grouped into spatial unites, it is always worth asking whether a map is the best way to represent it.
+
+* Much county, state, and national data is not properly spatial, insofar as it is really about individuals rather than the geographical distribution of those units per se.
+
+Figure 7.17: Time-series plots of opiates in all states
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+p <- ggplot(data = opiates,
+            mapping = aes(x = year, y = adjusted,
+                          group = state))
+
+p + geom_line(color = "gray70")
+
+```
+
+
+Figure 7.18: Opiated data as a faceted time series
+
+```{r, echo=TRUE, warning = FALSE, message=FALSE}
+#Dropping rows that have missing observations on the specified variables
+p0 <- ggplot(data = drop_na(opiates,division_name),
+             mapping = aes(x = year,
+                           y = adjusted))
+
+p1 <- p0 + geom_line(color = "gray70",
+                     mapping = aes(group = state))
+
+p2 <- p1 + geom_smooth(mapping = aes(group = division_name),
+                       se = FALSE)
+
+##Putting the label for each state in the end of the series using ggrepel
+
+##Call to coord_cartesian serve to set the axis limits
+p3 <- p2 + 
+    geom_text_repel(data = subset(opiates,
+                                  year == max(year) & abbr !="DC"),
+                    mapping = aes(x = year, y = adjusted,
+                                  label = abbr),
+                    size = 1.8,segment.color = NA, nudge_x = 30) + 
+    coord_cartesian(c(min(opiates$year),
+                      max(opiates$year)))+
+    labs(x = "",
+           y = "Rate per 100,000 population",
+           title = "State-Level Opiate Death Rates by Census Division, 1999-2014") + 
+    facet_wrap(~reorder(division_name, -adjusted, na.rm = TRUE),
+               nrow = 3)
+
+p3
+```
+
+
+
+

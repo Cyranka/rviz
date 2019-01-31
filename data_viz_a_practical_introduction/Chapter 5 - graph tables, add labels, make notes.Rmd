@@ -1,0 +1,392 @@
+---
+title: 'Chapter 5: graph tables, add labels, make notes'
+author: "Harro Cyranka"
+date: "1/8/2019"
+output: html_document
+---
+```{r, echo=TRUE,message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gapminder)
+library(here)
+library(socviz)
+library(ggrepel)
+```
+* Often it is better to get things into the right shape before we send anything to ggplot.
+* Think of the %>% (pipe) operator as allowing us to start with a data frame and perform a **sequence** or **pipeline** of operations to turn it into another, usually smaller and more aggregated, table.
+
+```{r, echo = TRUE, message = FALSE, warning=FALSE}
+rel_by_region <- gss_sm %>%
+    group_by(bigregion, religion) %>%
+    summarise(N = n()) %>%
+    mutate(freq = N/sum(N),
+           pct = round(freq*100,0))
+
+```
+
+###5.1 Use pipes to summarize data
+* Plots that do not require sequential aggregation and transformation of the data before they are displayed are usually easy to write directly in ggplot.
+* However, when we want to display something that is removed from the original data, then it can make sense to use dplyr to produce summary tables first.
+
+Figure 5.2: Religious preferences by region
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(rel_by_region, aes(x = bigregion, y = pct, fill = religion))
+p + geom_col(position = "dodge2") + 
+    labs(x = "Region", y = "Percent", fill = "Religion") + 
+    theme(legend.position = "top")
+```
+
+* Dodge 2 preserves the width of each element.
+* As a rule, dodged charts can be more cleanly expressed as faceted plots. Faceting removes the need for a legend and thus makes the chart simpler to read.
+* coord_flip() is an useful function to transform the coordinate system that the results are plotted in, so that the x and y axes are flipped. Sometimes, this makes labels more easily readable.
+
+Figure 5.3: Religious preferences by region, faceted version
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(rel_by_region, aes(x = religion, y = pct, fill = religion))
+p + geom_col(position = "dodge2") + 
+    labs(x = NULL, y = "Percent", fill = "Religion") + 
+    guides(fill = FALSE) + 
+    coord_flip() + 
+    facet_grid(~bigregion)
+```
+
+###5.2 Continuous variables by group or category
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+organdata %>% select(1:6) %>% sample_n(size = 10)
+```
+
+Figure 5.4: Not informative scatterplot
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata, aes(x = year, y = donors))
+p + geom_point()
+```
+
+Figure 5.5: A faceted lineplot
+
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+p <- ggplot(data = organdata, aes(x = year, y = donors))
+p + geom_line(aes(group = country)) + 
+    facet_wrap(~country)
+```
+
+* We can use geom_boxplot() to get a picture of the variation by year across countries. Just as geom_bar() calculates a count of observations by the category mapped to x, the stat_boxplot() function calculates a number of statistics that allow the box and whiskers to be drawn.
+
+Figure 5.6: A first attempt at boxplots by country
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata, aes(x = country, y = donors))
+p + geom_boxplot()
+
+```
+
+Figure 5.7: Moving countries to the y - axis
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = organdata, aes(x = country, y = donors))
+p + geom_boxplot() + 
+    coord_flip()
+```
+
+* Figure 5.7 is an improvement over 5.6. However, we would like to present the data in a meaningful order.
+* The reorder function allows to reorder categories. It takes two required arguments. The first is the categorical variable or factor that we want to order. The second is the variable we want to reorder it by. The third and optional is the function we want to use as a summary statistic.
+* If FUN argument is not passed into reorder(), the first variable will be reordered by the mean values of the second.
+* Other possible functions are median, sd, etc.
+
+Figure 5.8: Boxplots reordered by median donation rate
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+        mapping = aes(x = reorder(country, donors,FUN = mean,na.rm = TRUE),
+                      y = donors))
+
+p + geom_boxplot() + labs(x = NULL) + 
+    coord_flip() + theme(legend.position = "top")
+
+```
+
+Figure 5.9: A boxplot with the fill aesthetic mapped
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+        mapping = aes(x = reorder(country, donors,FUN = mean,na.rm = TRUE),
+                      y = donors,
+                      fill = world))
+
+p + geom_boxplot() + labs(x = NULL) + 
+    coord_flip() + theme(legend.position = "top")
+
+```
+
+
+* If the number of observations is relatively small, we can skip or supplement the boxplots and show the individiual observations, too.
+
+Figure 5.10: Using points instead of a boxplot
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE, FUN = mean),
+                          y = donors,
+                          color = world))
+p + geom_point() + 
+    labs(x = NULL) + 
+    coord_flip() + theme(legend.position = "top")
+```
+
+* Sometimes, when using geom_point() there might be some overlapping between observations. Thus, it might be useful to "perturb" the data a bit to get a better sense of how many observations there are at different values. This can be achieved with geom_jitter()
+
+Figure 5.12.1: A jittered plot
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors,FUN = mean,na.rm = TRUE),
+                          y = donors,
+                          color = world))
+
+p + geom_jitter() + 
+    labs(x = NULL) + 
+    coord_flip() + 
+    theme(legend.position = "top")
+
+```
+
+
+Figure 5.12.2: A jittered plot with width parameters changed
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors,FUN = mean,na.rm = TRUE),
+                          y = donors,
+                          color = world))
+
+p + geom_jitter(width = 0.15) + 
+    labs(x = NULL) + 
+    coord_flip() + 
+    theme(legend.position = "top")
+
+```
+
+* Cleveland plots are useful alternatives to bar charts or tables, when presenting data that has just one point per category.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+by_country <- organdata %>%
+    group_by(consent_law, country) %>%
+    summarise(donors_mean = mean(donors, na.rm = TRUE),
+              donors_sd = sd(donors, na.rm = TRUE),
+              gdp_mean = mean(gdp, na.rm = TRUE),
+              health_mean = mean(gdp, na.rm = TRUE),
+              roads_mean = mean(roads, na.rm = TRUE),
+              cerebvas_mean = mean(cerebvas, na.rm = TRUE))
+
+by_country <- organdata %>% group_by(consent_law, country) %>%
+    summarise_if(is.numeric, funs(mean, sd), na.rm = TRUE) %>%
+    ungroup()
+```
+
+
+Figure 5.13: A Cleveland dotplot, with colored points
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = by_country,
+            mapping = aes(x = donors_mean,
+                          y = reorder(country, donors_mean),
+                          color = consent_law))
+
+p + geom_point(size = 3) + 
+    labs(x = "Donor Procurement rate",
+         y = "", 
+         color = "Consent law") + 
+    theme(legend.position = "top")
+```
+
+Figure 5.14: A faceted dotplot with free scales on the y-axis
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = by_country,
+            mapping = aes(x = donors_mean,
+                          y = reorder(country, donors_mean)))
+
+p + geom_point(size = 3) + 
+    facet_wrap(~consent_law, scales = "free_y", ncol = 1) + 
+    labs(x = "Donor Procurement rate",
+         y = "")
+```
+
+
+* The Clevealnd-style dotplot can be extended to cases where we want to include some information about the variance or error in the plot.
+* Using geom_pointrange(), we can tell ggplot to show a point estimate and a range around it.
+* geom_pointrange() needs to know the range of the line to draw on either side of the point, defined by the arguments ymax and ymin.
+
+Figure 5.15: A dot-and-whisker plot, with the range defined by the standard deviation of the measured variable.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = by_country,
+            mapping = aes(x = reorder(country, donors_mean),
+                          y = donors_mean))
+p + geom_pointrange(
+    mapping = aes(ymin = donors_mean - donors_sd,
+                ymax = donors_mean + donors_sd)) + 
+        labs(x = "", y = "Donor Procurement Rate") + 
+        coord_flip()
+```
+
+###5.3 Plot text directly
+* It is sometimes useful to plot the labels along with the points in a scatterplot, or just plot informative labels directly using geom_text()
+
+Figure 5.16: Plotting labels and text
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = by_country,
+            mapping = aes(x = roads_mean,
+                          y = donors_mean))
+p + geom_point() + geom_text(aes(label = country))
+
+```
+
+* It is possible to adjust the position of the text by using the hjust argument within geom_text(). hjust = 0 left justifies the text; hjust = 1 right justifies the text.
+
+```{r}
+p <- ggplot(data = by_country,
+            mapping = aes(x = roads_mean, y = donors_mean))
+
+p + geom_point() + 
+    geom_text(aes(label = country), hjust = 0)
+```
+
+* Using different values of hjust to adjust the labels is not a robust approach, because the space is added  in proportion of the lenght of the label. Thus, longer labels move further away from the points than you want.
+
+* ggrepel provides robust extensions to adding labels and text.
+
+Figure 5.18: Text labels with ggrepel
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p_title <- "Presidential elections: popular & electoral college margins"
+p_subtitle <- "1824-2016"
+p_caption <- "Data for 2016 are provisional"
+x_label <- "Winner's share of popular vote"
+y_label <- "Winner's share of Electoral College vote"
+
+p <- ggplot(elections_historic,
+            aes(x = popular_pct,
+                y = ec_pct,
+                label = winner_label))
+
+p + geom_hline(yintercept = 0.5, size = 1.4, color = "gray80") + 
+    geom_vline(xintercept = 0.5, size = 1.4, color = "gray80") + 
+    geom_point() + 
+    geom_text_repel() + 
+    scale_x_continuous(labels = scales::percent) + 
+    scale_y_continuous(labels = scales::percent) + 
+    labs(x = x_label, y = y_label,title = p_title,
+         subtitle = p_subtitle,
+         caption = p_caption)
+```
+
+* geom_abline() is useful to draw lines at an angle, because it takes a user supplied slope and an intercept.
+* For most purposes ggrepel is a superior choice than geom_text()
+
+###5.4 Label outliers
+* Sometimes we want to pick out some points of interest in the data without labeling every single item. To do so, we need to first determine what points we would like to label.
+
+Figure 5.19: *Top*: Labeling text according to a single criterion. *Bottom*: Labeling according to several criteria.
+```{r}
+p <- ggplot(data = by_country,
+            aes(x = gdp_mean, y = health_mean))
+p + geom_point() + 
+    geom_text_repel(data = subset(by_country, gdp_mean > 25000),
+                    mapping = aes(label = country)) 
+
+p <- ggplot(data = by_country,
+            mapping = aes(x = gdp_mean, y = health_mean))
+
+p + geom_point() + 
+    geom_text_repel(data = subset(by_country,
+                                  gdp_mean > 25000|health_mean < 1500|country %in% "Belgium"),mapping = aes(label = country))
+```
+
+
+* Note to self, use guides() instead of show.legend = FALSE
+
+Figure 5.20: Labeling using a dummy variable
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+organdata <- organdata %>%
+    mutate(ind = case_when(
+        ccode %in% c("Ita", "Spa") & year >1998 ~TRUE,
+        TRUE ~ FALSE
+    ))
+
+p <- ggplot(organdata,
+            mapping = aes(x = roads,
+                          y = donors,
+                          color = ind))
+
+p + geom_point() + 
+    geom_text_repel(data = subset(organdata, ind),
+                    mapping = aes(label = ccode)) + 
+    guides(label = FALSE, color = FALSE)
+```
+
+###5.5 Write and draw in the plot area
+* The most obvious use case for annotate is to put arbitrary text on the plot.
+
+Figure 5.21: Arbitrary text with annotate()
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = organdata,
+            aes(x = roads, y = donors))
+p + geom_point() + 
+    annotate(geom = "text",x = 91, y = 33,
+             label = "A surprisingly high \nrecovery rate.",
+             hjust = 0)
+```
+
+Figure 5.22: Using two different geoms with annotate()
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+p <- ggplot(data = organdata,
+            aes(x = roads, y = donors))
+p + geom_point() + 
+    annotate(geom = "rect", xmin = 125, xmax = 155,
+             ymin = 30, ymax = 35, fill = "red",
+             alpha = 0.2) + 
+    annotate(geom = "text", x = 157, y = 33,
+             label = "A surprisingly high \nrecovery rate.", hjust = 0)
+
+```
+
+###5.6 Understanding scales, guides, and themes
+* Each geom_ function takes mappings tailored to the king of graph it draws.
+
+* Every aesthetic mapping has a scale. If you want to adjust how that scale is marked or graduated, then you use a scale_ function.
+* Many scales come with a legend or key to help the reader interpret the graph. These are called *guides*. You can make adjustments to them with the guides() function.
+* Graphs have other features not strictly connected to the logical structure of the data being displayed: background color, typeface, or legend placement. These are controlled using theme.
+
+mapping -> scale_
+legend -> guides()
+superfluous -> theme()
+
+* Scale and guides are closely connected. It is possible to make adjustments to guides form inside the various scale_ functions. However, it is easier using guides() directly.
+
+Figure 5.23: Every mapped variable has a scale
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+            aes(x = roads,
+                y = donors,
+                color = world))
+p + geom_point()
+
+```
+
+Figure 5.25: Making some scale adjustments
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads, y = donors, 
+                          color = world))
+
+p + geom_point() + scale_x_log10() + 
+    scale_y_continuous(breaks = c(5,15,25),
+                       labels = c("Five", "Fifteen", "Twenty Five"))
+
+```
+
+Figure 5.26: Relabeling via a scale function
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads, y = donors, 
+                          color = world))
+
+p + geom_point() + scale_color_discrete(
+    labels = c("Corporatist", "Liberal", "Social Democratic", "Unclassified")) +
+    labs(x = "Road deaths",y = "Donor Procurement", color = "Welfare State")
+```
+

@@ -1,0 +1,423 @@
+---
+title: 'Chapter 6: working with models'
+author: "Harro Cyranka"
+date: "1/15/2019"
+output: html_document
+---
+```{r, echo=FALSE,message=FALSE, warning=FALSE,results='hide'}
+library(tidyverse)
+library(gapminder)
+library(here)
+library(socviz)
+library(ggrepel)
+library(broom)
+library(margins)
+library(survey)
+library(srvyr)
+```
+
+* Data visualization is more than generating figures that display the raw numbers from a table of data. It also involves summarizing or transforming parts of the data and then plotting the results. 
+
+* Visualizations are also useful to display the properties and fit of statistical models.
+
+Figure 6.1: Comparison of model fits
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = log(gdpPercap), y = lifeExp))
+
+p + geom_point(alpha = 0.1) + 
+    geom_smooth(color = "tomato", fill = "tomato", method = MASS::rlm) + 
+    geom_smooth(color = "steelblue", fill = "steelblue", method = "lm")
+
+p + geom_point(alpha = 0.1) + 
+    geom_smooth(color = "tomato", method = "lm", size = 1.2,
+                formula = y~splines::bs(x,3), se = FALSE)
+
+p + geom_point(alpha = 0.1) + 
+    geom_quantile(color = "tomato", size = 1.2, method = "rqss",
+                  lambda = 1, quantiles = c(0.2, 0.5,0.85))
+```
+
+* The geom_smooth() function can take a range of method arguments to fit LOESS, OLS, and robust regression lines, among others.
+
+* The geom_quantile() function is a specialized version of geom_smooth() that can fit quantile regression lines using a variety of methods.
+
+###6.1 Show several fits at once, with a legend
+* We can look at several fits at once on the same pot by layering new smoothers with geom_smooth().
+
+```{r, echo=FALSE,message=FALSE, warning=FALSE}
+#Create model colors
+model_colors <- RColorBrewer::brewer.pal(3, "Set1")
+model_colors
+```
+
+Figure 6.2: Fitting smoothers with a legend
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p0 <- ggplot(data = gapminder,
+             mapping = aes(x = log(gdpPercap), y = lifeExp))
+
+p1 <- p0 + geom_point(alpha = 0.2) + 
+    geom_smooth(method = "lm", aes(color = "OLS", fill = "OLS")) + 
+    geom_smooth(method = "lm", formula = y~splines::bs(x, df = 3),
+                aes(color = "Cubic Spline", fill  = "Cubic Spline")) + 
+    geom_smooth(method = "loess",
+                aes(color = "LOESS", fill = "LOESS"))
+
+p1 + scale_color_manual(name = "Models", values = model_colors) + 
+    scale_fill_manual(name = "Models", values = model_colors) + 
+    theme(legend.position = "top")
+```
+
+* The model-fitting features of ggplot make it very useful for exploratory work and make it straightforward to generate and compare model-based trends and other summaries as part of the process of descriptive data visualization.
+
+###6.2 Look inside model objects
+* We are always working with objects, and objects have an internal structure consisting of named pieces. Sometimes these are single numbers, sometimes vectors, and sometimes lists of things like vectors, matrices, or formulas.
+
+* We can use the str() function to learn more about the internal structure of any object.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+out <-lm(formula = lifeExp ~ gdpPercap + pop + continent, data = gapminder)
+summary(out)
+```
+
+* When you call summary(), what is printed to the console is partly information that is stored inside the model object, and partly information that the summary() function has calculated and formatted for display on screen. Behind the scenes, summary() gets help from other functions.
+
+* The output of summary() gives a synopsis of the model, but it does not allow for further analysis from it directly. The information necessary to make plots is inside the object, but it is not obvious how to use it.
+
+* The summary() function is selecting and printing only a small amount of core information, in comparison to what is stored in the model object.
+
+* Output from summary() of models is *efficient* but *untidy* meaning that it is difficult to manipulate the output.
+
+###6.3 Get model-based graphics right
+* Model results usually carry a considerable extra burden of interpretation and necessary background knowledge.
+
+* Useful model-based plots show results in ways that are substantively meaningful and directly interpretable with respect to the questions the analysis is trying to answer. This means showing results in a context where other variables in the analysis are held at sensible values, such as at their means or medians.
+
+* At a minium, having decided on an appropriate measure of model fit or the right assessment of confidence, you should show their range when you present your results.
+
+###6.4 Generate predictions to graph
+* Having fitted a model, we might want to get a picture of the estimates it produces over the range of some particular variable, holding other covariates constant at some sensible values.
+
+* For predict() to calculate new values, it needs some new data to fit the model to. You must generate a new data frame whose columns have the same names as the variables in the model's original data, but where the rows have new values.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##Using expand.grid() to quickly generate new prediction data
+min_gdp <- min(gapminder$gdpPercap)
+max_gdp <- max(gapminder$gdpPercap)
+med_pop <- median(gapminder$pop)
+
+pred_df <- expand.grid(
+    gdpPercap = seq(from = min_gdp, to = max_gdp,length.out = 100),
+    pop = med_pop,
+    continent = c("Africa", "Americas", "Asia", "Europe", "Oceania")
+)
+
+head(pred_df, n = 20)
+
+```
+
+
+```{r, echo=TRUE,message=FALSE, warning=FALSE}
+###Predicting new observatiobs
+pred_out <- predict(object = out, newdata = pred_df, interval = "predict")
+head(pred_out)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+pred_df <- cbind(pred_df, pred_out)
+head(pred_df)
+```
+
+
+Figure 6.4: OLS predictions
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = subset(pred_df,
+                          continent %in% c("Europe", "Africa")),
+            aes(x = gdpPercap,
+                y = fit,
+                ymin = lwr,
+                ymax = upr,
+                color = continent,
+                fill = continent,
+                group = continent))
+
+p + geom_point(data = subset(gapminder,
+                             continent %in% c("Europe", "Africa")),
+               aes(x = gdpPercap, y = lifeExp,
+                   color = continent),
+               alpha = 0.5,
+               inherit.aes = FALSE) + 
+    geom_line() + 
+    geom_ribbon(alpha = 0.2, color = FALSE) + 
+    scale_x_log10(labels = scales::dollar)
+```
+
+* For each x value, geom_ribbon displays a y interval defined by ymin and ymax.
+
+###6.5 Tidy model objects with broom
+
+* The broom package takes model objects and turn pieces of them into data frames that can easily be used with ggplot.
+
+* Broom returns three types of information:
+    + *Component level* information about the aspects of the model itself, such as coefficients and t-statistics.
+    + *Observation level* information about the model's connection to the underlying data, including fitted values and residuals.
+    + *Model level* information that summarizes the fit as a whole, including the F-statistic, the model deviance, and the R^2^.
+    
+* The tidy() function takes a model object and returns a data frame of component-level information.
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+out_comp <- tidy(out)
+out_comp %>% round_df()
+```
+
+Figure 6.5: Basic plot of OLS estimates (No confidence intervals)
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+p <- ggplot(out_comp, mapping = (aes(x = term, y = estimate)))
+p + geom_point() + coord_flip()
+```
+
+
+* With the use of tidy, it is possible to expand the graphs with the inclusion of confidence intervals.
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+##Calculating confidence intervals
+out_conf <- tidy(out, conf.int = TRUE)
+out_conf %>% round_df()
+```
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+out_conf <- subset(out_conf, term %nin% "(Intercept)")
+out_conf$nicelabs <- prefix_strip(out_conf$term, "continent")
+out_conf %>% round_df(2)
+```
+
+Figure 6.6: A plot of OLS estimates with confidence intervals
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(out_conf, aes(x = reorder(nicelabs, estimate),
+                          y = estimate,
+                          ymin = conf.low,
+                          ymax = conf.high))
+p + geom_pointrange() + 
+    coord_flip() + 
+    labs(x = "", y = "OLS Estimate")
+    
+```
+
+
+* The values returned by augment() are all statistics calculated at the level of the original observations. As such, they can be added on to the data frame that the model is based on.
+* Working from a call to augment() will return a data frame with all the original observations used in the estimation of the model, together with columns included in the functionc all (Check book page 149).
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+out_aug <- augment(out)
+head(out_aug) %>% round_df()
+```
+
+Figure 6.7: Residuals vs. fitted values
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(out_aug, aes(x = .fitted, y = .resid))
+p + geom_point()
+```
+
+* The glance() function organizes the information typically presented at the bottom of a model's summary() output.
+
+* Notice how the every function of tidy() takes a model as an input.
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+glance(out) %>% round_df()
+```
+
+
+### Grouped Analysis and List Columns
+
+* Broom makes it possible to quickly fit models to different subsets of your data and get consistent and usable tables of results out of the other end.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##Nesting the data
+out_le <- gapminder %>%
+    group_by(continent, year) %>%
+    nest()
+```
+
+* With nest(), the grouped data now lives within a list column that contains a small table of data corresponding to each continent-year group.
+
+* The usefulness of list columns reside in the fact that we can pass functions to subsets of the data, simply by applying the function to each list columns.
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+##Mapping a function to every list column in the nested gapminder
+fit_ols <- function(df){
+    lm(lifeExp ~ log(gdpPercap), data = df)
+}
+
+out_le <- gapminder %>%
+    group_by(continent, year) %>%
+    nest() %>%
+    mutate(model = map(data, fit_ols))
+
+out_tidy <- gapminder %>%
+    group_by(continent, year) %>%
+    nest() %>%
+    mutate(model = map(data, fit_ols),
+           tidied = map(model, tidy)) %>%
+    unnest(tidied, .drop = TRUE) %>%
+    filter(term %nin% "(Intercept)" & continent %nin% "Oceania")
+out_tidy %>% sample_n(5)
+```
+
+* Nested dataframes also allow (as the example above shows) for the creation of list columns that contain models.
+
+Figure 6.9: Yearly estimates of the association between GDP and life expectancy, pooled by continent
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = out_tidy,
+            aes(x = year, y = estimate,
+                ymin = estimate - 2*std.error,
+                ymax = estimate + 2*std.error,
+                group = continent,
+                color = continent))
+
+p + geom_pointrange(position = position_dodge(width = 1)) + 
+    scale_x_continuous(breaks = unique(gapminder$year)) + 
+    theme(legend.position = "top") + 
+    labs(x = "Year", y = "Estimate", color= "Continent")
+
+```
+
+
+### Plot marginal effects
+* Recently, estimating and plotting *partial* or *marginal effects* from a model has become an increasingly common way of presenting accurate and interpretatively useful predictions.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##Change reference
+gss_sm$polviews_m <- relevel(gss_sm$polviews, ref = "Moderate") 
+out_bo <- glm(obama~polviews_m + sex*race, family = "binomial",
+              data = gss_sm)
+
+
+#Calculate margins
+bo_m <- margins(out_bo)
+print(summary(bo_m), digits = 2)
+```
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##Fixing the margins output
+bo_gg <- as_tibble(summary(bo_m))
+prefixes <- c("polviews_m", "sex")
+
+##Get rid of bad prefixes, and replace others
+bo_gg$factor <- prefix_strip(bo_gg$factor, prefixes)
+bo_gg$factor <- prefix_replace(bo_gg$factor, "race", "Race: ")
+bo_gg %>% select(factor, AME, lower, upper) %>% round_df(2)
+
+```
+
+6.11: Conditional effects plot
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = bo_gg,
+            aes(x = reorder(factor,AME),
+                y = AME, ymin = lower, ymax = upper))
+
+p + geom_hline(yintercept = 0, color = "gray80") +
+    geom_pointrange() + 
+    coord_flip() + 
+    labs(x = NULL, y = "Average Marginal Effect")
+
+```
+
+### Plots from complex surveys
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+##Defining a survey design
+options(survey.lonely.psu = "adjust")
+options(na.action = "na.pass")
+
+gss_wt <- subset(gss_lon, year > 1974) %>%
+    mutate(stratvar = interaction(year, vstrat)) %>%
+    as_survey_design(ids = vpsu,
+                     strata = stratvar,
+                     weights = wtssall,
+                     nest = TRUE)
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+out_grp <- gss_wt %>%
+    filter(year %in% seq(1976,2016, by = 4)) %>%
+    group_by(year, race, degree) %>%
+    summarise(prop = survey_mean(na.rm = TRUE))
+out_grp
+
+```
+
+* The interaction() function produces variable labels that are a compound of the two variables we interacted, with each combination of categories separated by a period.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+out_mrg <- gss_wt %>%
+    filter(year %in% seq(1976, 2016, by = 4)) %>%
+    mutate(racedeg = interaction(race, degree)) %>%
+    group_by(year, racedeg) %>%
+    summarize(prop = survey_mean(na.rm = TRUE))
+
+out_mrg %>% separate(racedeg, into = c("race", "degree"),sep = "\\.") %>%
+    mutate_if(is_double, ~round(.,2))
+
+```
+
+
+Figure 6.12: Dynamite plot
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = subset(out_grp, race %nin% "Other"),
+            mapping = aes(x = degree, y = prop,
+                          ymin = prop - 2*prop_se,
+                          ymax = prop + 2*prop_se,
+                          fill = race,
+                          color = race,
+                          group = race))
+
+dodge <- position_dodge(width = 0.9)
+p + geom_col(position = "dodge", alpha =0.2) +
+    geom_errorbar(position = dodge, width =0.2) + 
+    scale_x_discrete(labels = scales::wrap_format(10)) + 
+    scale_y_continuous(labels = scales::percent) + 
+    scale_color_brewer(type = "qual", palette = "Dark2") + 
+    scale_fill_brewer(type = "qual", palette = "Dark2") + 
+    labs(title = "Educational Attainment by Race",
+         subtitle = "GSS 1976 - 2016",
+         fill = "Race",
+         color = "Race",
+         x = NULL, y = "Percent") + 
+    facet_wrap(~year, ncol = 2) + 
+    theme(legend.position = "top")
+```
+
+* The scales::wrap_format() function will break long labels into lines. It takes a single numerica argument that is the maximum lentgh a strong can be before it is wrapped onto a new line.
+
+Figure 6.13: Faceting by education instead
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+p <- ggplot(data = subset(out_grp, race %nin% "Other"),
+            mapping = aes(x = year, y = prop,
+                          ymin = prop - 2*prop_se,
+                          ymax = prop + 2*prop_se,
+                          fill = race,
+                          color = race,
+                          group = race))
+
+p + geom_ribbon(alpha = 0.3, aes(color= NULL)) + 
+    geom_line() + 
+    facet_wrap(~degree, ncol = 1) + 
+    scale_y_continuous(labels = scales::percent) + 
+    scale_color_brewer(type = "qual", palette = "Dark2") + 
+    scale_fill_brewer(type = "qual", palette = "Dark2") + 
+    labs(title = "Educational Attainment by Race", 
+         subtitle = "GSS 1976-2016",
+         fill = "Race",
+         color = "Race", x = NULL, y = "Percent") + 
+    theme(legend.position = "top")
+    
+```

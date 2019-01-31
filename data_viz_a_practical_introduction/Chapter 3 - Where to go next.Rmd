@@ -1,0 +1,65 @@
+---
+title: 'Chapter 3: where to go next'
+author: "Harro Cyranka"
+date: "1/4/2019"
+output: html_document
+---
+##Loading libraries
+```{r, echo=TRUE,message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gapminder)
+library(here)
+```
+
+##Where to go next 1
+What happens when geom_smooth() precedes geom_point(). The points are drawn OVER the smooth. This is useful when building plots, because we can work in layers, adding new information as we progress.
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE}
+gapminder:: gapminder %>%
+    ggplot(aes(x = gdpPercap, y= lifeExp)) + 
+    geom_smooth() + geom_point()
+```
+
+##Where to go next 2
+Replacing per capita GDP with population. Each point represents a country in a different year.
+```{r, echo=FALSE, warning = FALSE, message = FALSE}
+gapminder:: gapminder %>%
+    ggplot(aes(x = pop, y = lifeExp)) + 
+    geom_point() + geom_smooth()
+
+```
+
+
+##Where to go next 4
+Mapping color to year instead of continent. Since year is a continuous variable, the points get shaded using a gradient scale.
+
+```{r, echo=FALSE, warning = FALSE, message = FALSE}
+gapminder::gapminder %>%
+    ggplot(aes(x = gdpPercap, y = lifeExp, color = year)) + 
+    geom_point() + scale_x_log10()
+
+```
+
+
+##Where to go next 5
+Changing year to a factor variable and mapping it to color. Now each year gets shaded with a color from the palette.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+gapminder::gapminder %>%
+    ggplot(aes(x = gdpPercap, y = lifeExp, color = factor(year))) + 
+    geom_point() + scale_x_log10()
+
+```
+
+
+##Where to go next 6
+Adding some structure to the data.
+
+```{r, echo=FALSE, warning = FALSE, message = FALSE}
+gapminder::gapminder %>%
+    ggplot(aes(x = gdpPercap, y = lifeExp)) + 
+    geom_point() + geom_smooth() + 
+    facet_wrap(~year) + 
+    scale_x_log10()
+    
+```

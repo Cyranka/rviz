@@ -1,0 +1,238 @@
+---
+title: "Chapter 4 - Show the Right Numbers"
+author: "Harro Cyranka"
+date: "1/6/2019"
+output: html_document
+---
+##Loading libraries
+```{r, echo=TRUE,message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gapminder)
+library(here)
+library(socviz)
+```
+
+###4.1 Colorless green data sleeps furiously
+
+* The grammar of graphics is a set of rules for producing graphics from data, taking pieces of data and mapping them to geometric objects that have aesthetic attributes, together with further rules for transforming the data if needed, adjusting scales, and projecting the results onto a different coordinate system.
+
+* A key point is that, like other rules of syntax, the grammar limits the structure of what you can say, but it does not automatically make what you say sensible or meaningful.
+
+###4.2 Grouped data and the "group" aesthetic
+
+Figure 4.1: Trying to plot the data over time by country
+```{r, echo = FALSE, warning=FALSE,message = FALSE}
+ggplot(gapminder, mapping = aes(x = year, y = gdpPercap)) + 
+    geom_line()
+
+```
+
+* When ggplot succesfully makes a plot but the results looks insane, the reason is almost always that something has gone wrong in the mapping between the data and aesthetics for the geom being used.
+
+Figure 4.2: Plotting the data over time by country (grouping variable)
+```{r, echo=FALSE, warning = FALSE,message= FALSE}
+ggplot(gapminder, mapping = aes(x = year, y = gdpPercap)) + 
+    geom_line(aes(group = country))
+```
+
+* The **group** aesthetic is usually only needed when the grouping information you need to tell ggplot about is not built into the variables being mapped.
+
+###4.3 Facet to Make Small Multiples
+
+* Facets are not a geom, but rather a way of organizing a series of geoms. A separate panel is drwan for each value of the faceting variable. This allows information to be presented compactly and in a consistently comparable way.
+
+Figure 4.3: Faceting by continent
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(gapminder, aes(x = year, y = gdpPercap)) + 
+    geom_line(aes(group = country)) + facet_wrap(~continent)
+
+```
+
+* It is still possible to include geoms, but they will be layered within each facet.
+
+Figure 4.4: Faceting by continent, again
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(gapminder, mapping = aes(x = year, y = gdpPercap))
+p + geom_line(color = "gray70", aes(group = country)) + 
+    geom_smooth(size = 1.1, method = "loess", se = FALSE) + 
+    scale_y_log10(labels = scales::dollar) + 
+    facet_wrap(~continent, ncol = 5) + 
+    labs(x = "Year",
+         y = "GDP per capita",
+         tible = "GDP per capita on Five Continents")
+
+```
+
+* The facet_wrap() function is best used when you want a series of small multiples based on a single categorical variable.
+
+* Using facet_grid() it is possible to cross-classify some data by two categorical variables.
+
+Figure 4.5: Faceting on two categorical variables. Each panel plots the relationship between age and number of children, with the facets breaking out the data by sex and race.
+
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = age, y = childs))
+p + geom_point(alpha = 0.2) + 
+    geom_smooth() + 
+    facet_grid(sex~race) ##Wall against ground
+
+```
+
+* Multipanel layouts of this kind are especially effective when used to summarize continuous variation across two or more categorical variables, with the categories ordered in some sensible way.
+
+###4.4 Geoms can transform data
+
+* Every geom_ function has an associated stat_ function that it uses by default. The reverse is also the case: every stat_ function has an associated geom_ function that it will plot by default if you ask it to.
+
+Figure 4.6: A bar chart
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = gss_sm, mapping = aes(x = bigregion))
+p + geom_bar()
+
+```
+
+* geom_bar has the function stat_count as a default associated with it. Behind the scenes geom_bar called the stat_function associated with stat_count. The function computes two new variables, count and prop. The count statistic is the one geom_bar uses by default.
+
+* Variables created by stat_ functions always beging and end with .. (e.g = ..prop..), to prevent confusion with other variables existing in the original dataset.
+
+* To ensure that the plot will accurately represents, we need to use the group variable so ggplot will not use the underlying region labels, but will rather specify a "dummy group".
+
+Figure 4.8: A bar chart with correct proportions
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = gss_sm, mapping = aes(x = bigregion))
+p + geom_bar(mapping = aes(y =..prop.., group = 1))
+
+```
+
+Figure 4.9: GSS religious preference mapped to *color* and both *color* and *fill*
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(gss_sm, mapping = aes(x = religion, color = religion))
+p + geom_bar()
+
+p <- ggplot(gss_sm, mapping = aes(x = religion, fill = religion))
+p + geom_bar() + guides(fill = FALSE)
+```
+
+* In its simplest form, the guides() function controls whether guiding information about any particular mapping appears or not. guides(fill = FALSE) tells R that the legend for fill is not necessary (possibly alternative to show.legend = FALSE).
+
+###4.5 Frequency plots the slightly awkward way
+* A more appropriate use of the fill aesthetic with geom_bar() is to cross-classify two categorical variables. This is the graphical equivalent of a frequency table of counts or proportions.
+
+Figure 4.10: A stacked bar chart of religious preference by census region.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = gss_sm, mapping = aes(x = bigregion, fill = religion))
+p + geom_bar()
+```
+
+Figure 4.11: Using the fill position adjustment to show relative proportions across categories.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(gss_sm,mapping = aes(x = bigregion, fill = religion))
+p + geom_bar(position = "fill")
+```
+
+Figure 4.13: A second attempt at a dodged bar chart with proportional bars.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = gss_sm, mapping = aes(x = bigregion, fill = religion))
+p + geom_bar(position = "dodge", 
+             mapping = aes(y = ..prop.., group = religion))
+```
+
+Figure 4.14: Faceting proportions within region.
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
+p <- ggplot(data = gss_sm, mapping = aes(x = religion))
+p + geom_bar(position = "dodge",
+             mapping = aes(y = ..prop..,
+                           group = bigregion)) + 
+    facet_wrap(~bigregion, ncol = 2)
+
+```
+
+###4.6: Histograms and density plots
+* A histogram is a way of summarizing a *continuous* variable by chopping it up in segments or "bins" and counting how many observations are found within each bin.
+* Unlike a bar chart, where categories are available from the start, a histogram requires the analyst to decide how finely to bin the data.
+
+Figure 4.15.1: Histogram using default bins
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = ggplot2::midwest, aes(x = area))
+p + geom_histogram()
+```
+
+* Similar to bar charts, geom_histogram also uses a function to calculate new variables.
+
+Figure 4.15.2: Histogram using default bins
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = midwest, aes(x = area))
+p + geom_histogram(bins = 10)
+```
+
+* While histograms summarize single variables, it is also possible to use several at once to compare distributions. We can facet histograms by some variable of interest, or compare them in the same mapping, using fill
+
+```{r, echo= FALSE, warning=FALSE, message=FALSE}
+oh_wi <- c("OH", "WI")
+p <- ggplot(data = midwest %>% filter(state %in% oh_wi),
+            mapping = aes(x = percollege, fill = state))
+p + geom_histogram(alpha =0.4, bins = 20)
+```
+
+* When working with a continuous variable, an alternative to binning the data and making a histogram is to calculate a kernel density estimate of the underlying distribution.
+
+Figure 4.17: Kernel density estimate of county areas
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = midwest, mapping = aes(x = area)) 
+p + geom_density()
+
+```
+
+Figure 4.18: Comparing distributions using kernel density estimates
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data= midwest, mapping = aes(x = area, fill = state,
+                                         color = state))
+p + geom_density(alpha = 0.3)
+
+```
+
+* Just like geom_bar(), the count-based defaults computed by the stat_ functions used by geom_histogram() and geom_density() will return propportional measures.
+
+Figure 4.19: Scaled Densities
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = subset(midwest, subset = state %in% oh_wi),
+            mapping = aes(x = area, fill = state, color = state))
+p + geom_density(alpha =0.3, mapping = aes(y = ..scaled..))
+
+```
+
+###4.7 Avoid Transformations When Necessary
+
+*Often our data is already in summary form. Might happen when we have computed a table of marginal frequencues or percentages from the original data. Using stat = "identity" in the geom_bar() call we tell ggplot to use the data as it is.
+
+Figure 4.20: Surviva on the Titanic, by gender
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = titanic, mapping = aes(x = fate, y = percent,
+                                          fill = sex))
+p + geom_bar(position = "dodge", stat = "identity") + 
+    theme(legend.position = "top")
+```
+
+* geom_col = geom_bar(stat = "identity")
+* The position argument in geom_bar() and geom_col() can also take the value of "identity". Just as stat = "identity" means "do not do any summary calculations", position = "identity" means "just plot the values as given".
+
+Figure 4.21: Using geom_col() to plot negative and positive values in a bar chart.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+p <- ggplot(data = oecd_sum,
+            mapping = aes(x = year, y = diff, fill = hi_lo))
+
+p + geom_col() + guides(fill = FALSE) + 
+    labs(x = NULL,
+         y = "Difference in years",
+         title = "The US Life Expectancy Gap",
+         subtitle = "Difference between the US and OECD average life expectancies, 1960-2015",
+         caption = "Data: OECD. After a chart by Christopher Ingraham, Washington Post, December 27th 2017.")
+
+```

@@ -1,0 +1,172 @@
+---
+title: "Data visualization - Healy (Chapter 3 Code)"
+author: "Harro Cyranka"
+date: "1/2/2019"
+output: html_document
+---
+
+##Loading libraries
+```{r, echo=TRUE,message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gapminder)
+library(here)
+```
+
+##Section 3.3: Mappings link data to things you see
+* A mapping does not directly say what particular colors or shapes will be on the plot. Rather, it says which *variables* in the data will  be *represented* by visual elements like a color, shape, or a point on the plot area.
+
+Figure 3.4: A scatterplot of life expectancy vs GDP
+```{r, echo = TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,y =lifeExp))
+p + geom_point()
+```
+
+
+##Section 3.4: Build your plots layer by laywer
+* ggplot's main idea is of building up plots a piece at a time in a systematic and predictable fashion, beginning with a mapping between a variable and an aesthetic element.
+
+Figure 3.5: Life expectancy vs GDP, using a GAM smoother
+```{r,echo=TRUE, message=TRUE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,y = lifeExp))
+p + geom_smooth()
+```
+
+Figure 3.6: Life expectancy vs GDP, using a GAM smoother and points
+```{r,echo=TRUE, message=FALSE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,y = lifeExp))
+p + geom_smooth() + geom_point()
+```
+
+Figure 3.7: Life expectancy vs GDP, using a linear model and points
+```{r,echo=TRUE, message=TRUE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,y = lifeExp))
+p +  geom_point() + geom_smooth(method = "lm")
+```
+
+* Gross domestic product is not normally distributed across country years. Using a transformation of the x-axis would likely improve the visualization
+
+Figure 3.8: Life expectancy vs GDP scatterplot, with a GAM smoother and a log scale on the x-axis
+```{r,echo=TRUE, message=TRUE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,y = lifeExp))
+p +  geom_point() + geom_smooth(method = "gam") + scale_x_log10()
+```
+
+Figure 3.9: Life expectancy vs GDP scatterplot, with a GAM smoother and a log scale on the x-axis, with x-labels as dollar values
+```{r,echo=TRUE, message=TRUE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,y = lifeExp))
+p +  geom_point() + geom_smooth(method = "gam") + scale_x_log10(labels = scales::dollar)
+```
+
+```{r, echo = TRUE, warning = FALSE}
+ggplot(data = gapminder,
+       mapping = aes(x = gdpPercap,y =lifeExp,color = continent)) + 
+    geom_point() + scale_x_log10(labels = scales::dollar)
+```
+
+
+Figure 3.10: Same as above, but setting color independently of dataset variables.
+```{r, echp = TRUE, warning = FALSE}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp,
+            color = c("purple")))
+
+p + geom_point() + geom_smooth(method = "loess") + scale_x_log10()
+```
+
+* An *aesthetic* is a mapping of variables in your data to properties you can see on the graph. The aes() function is where the mappings are specified: where you can translate variables to graphical properties.
+
+* The code for section 3.10, in effect, creates a new variable for the data. The string "purple" is recycled for every row. 
+
+* The aes() function is for mappings only. Do not use it to change properties to a particular value. If we want to set a property, we should do within each specific geom_ and *outside* the mapping = aes().
+
+Figure 3.11: Setting the color attribute of the points directly
+```{r,echo=TRUE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,
+                                            y = lifeExp))
+
+p + geom_point(color = "purple") + geom_smooth(method = "loess") + 
+    scale_x_log10(labels = scales::dollar)
+```
+
+Figure 3.12: Changing other arguments
+```{r, echo = TRUE, warning = FALSE}
+p <- ggplot(gapminder,aes(x = gdpPercap, y = lifeExp))
+p + geom_point(alpha = 0.3) + geom_smooth(color = "orange", se = FALSE,
+                                          size =1.5, method = "lm") + 
+    scale_x_log10()
+
+```
+
+Figure 3.13: A more polished plt of Life Expectancy vs GDP
+
+```{r, echo = TRUE, warning = FALSE}
+p <- ggplot(gapminder, aes(x = gdpPercap, y = lifeExp))
+p + geom_point(alpha = 0.3) +  ###Setting transparency of points
+    geom_smooth(method = "gam") + ##Setting method
+    scale_x_log10(labels = scales::dollar) + 
+    labs(x = "GDP Per Capita in U$",
+         y = "Life Expectancy in Years",
+         title = "Economic Growth and Life Expectancy",
+         subtitle = "Data points are country years",
+         caption = "Source: Gapminder")
+```
+
+* The labs() function controls the *main labels* of scales. Axis tick-marks is the responsability of the various scale_ functions.
+
+* Unless told otherwise, all geoms layered on top of the original plot object will inherit that object's mapping.
+
+Figure 3.14: Mapping the continent variable to the color aesthetic
+```{r, echo=TRUE, warning=FALSE}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp,
+                          color = continent))
+p + geom_point() + geom_smooth(method = "loess") + scale_x_log10() + 
+    theme(legend.position = "top")
+
+```
+
+* Whereas the color aesthetic affects the appearance of lines and points, fill is for the filled areas of bars, polygons and, also, the interior of smoother's standard error ribbon.
+
+Figure 3.15: Mapping the continent variable to the color and fill aesthetics
+```{r, echo=TRUE, warning=FALSE}
+p <- ggplot(gapminder, aes(x = gdpPercap,
+                           y = lifeExp,
+                           color = continent,
+                           fill = continent))
+p + geom_point() + geom_smooth(method = "loess") + scale_x_log10()
+
+```
+
+* By default, geoms inherit their mappings from the ggplot() function. We can change this by specifying different aesthetics for each geom(). We can use the same mapping = aes(...) expression as in the initial call to ggplot(), but now use it in the geom_ functions as well, specifying the mappings we want to apply to each one.
+
+* Mappings specified in the initial ggplot() function will carry through to all subsequent geoms.
+
+Figure 3.16: Mapping aesthetics on a per geom basis. Color is mapped to continent for the points, but not for the smoother.
+```{r, echo = TRUE, warning=FALSE}
+p <- ggplot(data = gapminder, mapping = aes(x = gdpPercap,
+                                            y = lifeExp))
+
+p + geom_point(mapping = aes(color= continent)) + 
+    geom_smooth(method = "loess") + 
+    scale_x_log10()
+
+```
+
+* It is also possible to map continuous variables to the color aesthetic. When doing so, ggplot producesa gradient scale.
+
+Figure 3.17; Mapping a continuous variable to color
+```{r, echo = TRUE, warning=FALSE}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point(mapping = aes(color = log(pop))) + scale_x_log10()
+```
+
+Figure 3.x1: Setting the size of output for each R markdown chunk
+```{r, echo = TRUE, warning=FALSE, fig.width=12,fig.height=9}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point(mapping = aes(color = log(pop))) + scale_x_log10()
+```
+
+
