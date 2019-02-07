@@ -2,7 +2,7 @@ remove(list = ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-setwd("/Users/harro.cyranka/Desktop/rviz/")
+setwd("/Users/francisco06121988/Desktop/rviz/tidy_tuesday_2019_week_6/")
 library(tidyverse)
 
 x <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-02-05/state_hpi.csv")
@@ -50,13 +50,13 @@ x %>% group_by(year,state) %>%
        y = "Median Price Index",
        title = "Changes in State Price Index",
        subtitle = "Data aggregated by year. Red line represents the US average\nState labels shown represent top and bottom 5",
-       caption = "Tidy Tuesday 2019 - Week 5") + 
+       caption = "Tidy Tuesday 2019 - Week 6") + 
   ggrepel::geom_text_repel(data = subset(top_label,year == max(year)),
                            mapping = aes(x = year, y = state_median, label = state),
-                           size =3, segment.color = "black",color = "white", fontface = "bold", family = "Roboto") + 
+                           size =3, segment.color = "black",color = "white", fontface = "bold") + 
   ggrepel::geom_text_repel(data = subset(down_label,year == max(year)),
                            mapping = aes(x = year, y = state_median, label = state),
-                           size =3,segment.size = 0,segment.color = "black",color = "white", fontface = "bold", family = "Roboto") 
+                           size =3,segment.size = 0,segment.color = "black",color = "white", fontface = "bold") 
   
   
 
