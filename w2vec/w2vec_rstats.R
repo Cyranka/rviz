@@ -45,8 +45,8 @@ row.names(word_vectors) <- rownames(tcm)
 
 
 # vectors -----------------------------------------------------------------
-vector_check <- word_vectors['plot', ,drop = FALSE]
-
+vector_check <- word_vectors['pretty', ,drop = FALSE] + 
+    word_vectors['plot', ,drop = FALSE]
 cos_dist <- dist2(vector_check,word_vectors,'cosine',norm = 'l2')
 head(sort(1 - cos_dist[1,], decreasing = T), 20)
 
