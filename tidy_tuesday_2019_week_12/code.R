@@ -2,7 +2,7 @@ remove(list =ls())
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 
-setwd("/Users/harro.cyranka/Desktop/rviz/")
+setwd("/Users/francisco06121988/Desktop/rviz/tidy_tuesday_2019_week_12/")
 library(tidyverse);library(socviz)
 
 x <- readr::read_csv("https://raw.githubusercontent.com/5harad/openpolicing/master/results/data_for_figures/combined_data.csv") %>%
@@ -26,7 +26,7 @@ plot_data <-  x %>%
 
 # Map for Florida ----------------------------------------------
 
-fl_map <- plot_data %>%
+plot_data %>%
     right_join(urbnmapr::counties %>%
                    filter(state_abbv == "FL"), by = c("state" = "state_abbv",
                                           "county" = "county_name")) %>%
@@ -62,7 +62,7 @@ fl_map <- plot_data %>%
         barheight = 0.5
     ))
 
-k <- plot_data %>%
+plot_data %>%
     mutate(avg = (Black+Hispanic)/2,
            diff = avg - White,
            county = str_replace(county, " County","")) %>%
