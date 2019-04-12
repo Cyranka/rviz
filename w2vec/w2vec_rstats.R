@@ -45,17 +45,57 @@ row.names(word_vectors) <- rownames(tcm)
 
 
 # vectors -----------------------------------------------------------------
-vector_check <- word_vectors['pretty', ,drop = FALSE] + 
-    word_vectors['plot', ,drop = FALSE]
-cos_dist <- dist2(vector_check,word_vectors,'cosine',norm = 'l2')
-head(sort(1 - cos_dist[1,], decreasing = T), 20)
+vector_check_function <- function(word){
+    x <- word_vectors[word, ,drop = FALSE] 
+    cos_dist <- dist2(x,word_vectors,'cosine',norm = 'l2')
+    
+    k <- head(sort(1 - cos_dist[1,], decreasing = T), 16)[2:16]
+    
+    df <- tibble(
+        words = names(k),
+        cosine = k,
+        original_word = word
+    )
+    return(df)
+    
+}
 
+words_to_search <- c("clustering","tidyverse",
+                     "regression", "trees",
+                     "bayesian", "text")
 
-##
-to_kmeans <- as_tibble(word_vectors)
-cluster_1 <- kmeans(to_kmeans, centers = 100,iter.max = 25)
+list_1 <- lapply(words_to_search, vector_check_function)
+names(list_1) <- words_to_search
 
-cluster_assignment <- tibble(word = row.names(word_vectors),
-    cluster = cluster_1$cluster)
- 
-cluster_centers <- cluster_1$centers
+# Use cowplot -------------------------------------------------------------
+##Function to color
+gg_color_hue <- function(n) {
+    hues = seq(15, 375, length = n + 1)
+    hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+my_colors <- gg_color_hue(6)
+
+create_graphs <- function(position){
+    j <- list_1[[position]] %>%
+        ggplot(aes(x = reorder(words, cosine), y = cosine)) + 
+        geom_col(fill = my_colors[position]) + 
+        hrbrthemes::theme_ipsum_rc(axis_text_size = 9,
+                                   axis_title_size = 9) + 
+        coord_flip() + 
+        labs(x = "Cosine similarity", y = "Word", 
+             title = paste0("Words most similar to: ",names(list_1)[position]),
+             subtitle = "Measured by cosine similarity") + 
+        theme(
+            plot.title = element_text(size = 10),
+            plot.subtitle = element_text(size = 8)
+        )
+
+    return(j)
+} 
+
+graph_list <- lapply(1:6, function(i)create_graphs(i))
+
+cowplot::plot_grid(plotlist = graph_list)
+
+##T-SNE
