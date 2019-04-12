@@ -99,3 +99,55 @@ graph_list <- lapply(1:6, function(i)create_graphs(i))
 cowplot::plot_grid(plotlist = graph_list)
 
 ##T-SNE
+set.seed(3)
+to_kmeans <- as_tibble(word_vectors)
+cluster_1 <- kmeans(to_kmeans, centers = 100,iter.max = 25)
+
+cluster_assignment <- tibble(word = row.names(word_vectors),
+                             cluster = cluster_1$cluster)
+
+cluster_centers <- cluster_1$centers
+
+##Interesting words
+target_words <- c("clustering","tidyverse",
+                  "regression", "trees",
+                  "bayesian", "text")
+
+
+word_clusters <- filter(cluster_assignment, word %in% target_words)
+
+cluster_targets <- filter(cluster_assignment, cluster %in% c(word_clusters$cluster))
+
+# Rtsne attempt -----------------------------------------------------------
+set.seed(4)
+tsne_model1 <- Rtsne::Rtsne(as.matrix(word_vectors[cluster_targets$word,]),check_duplicates = FALSE, perplexity = 50,theta = 0.5,dims = 2)
+
+df_tsne = as_tibble(tsne_model1$Y)  
+
+df_tsne %>% 
+    mutate(cluster = cluster_targets$cluster,
+           word = cluster_targets$word) %>%
+    ggplot(aes(V1, V2, text = paste0("Cluster: ",cluster,"\n",
+                                     "Word: ",word))) + 
+    ggrepel::geom_text_repel(aes(color = as.factor(cluster),label = word),
+                             size = 3,
+                             segment.alpha = 0,
+                             fontface = "bold",
+                             family = "Roboto Condensed") + 
+    scale_x_continuous(limits = c(-20,20)) + 
+    scale_y_continuous(limits = c(-20,20)) + 
+    theme_void() + 
+    theme(
+        legend.position = "bottom"
+    ) + 
+    guides(color = guide_legend(title = "Word/cluster",title.position = "top",
+                                title.hjust = 0.5, 
+                                label.position = "bottom",
+                                nrow = 1)) + 
+    scale_color_manual(values = my_colors,
+                      labels = c("tidyverse",
+                                 "clustering",
+                                 "text", 
+                                 "regression",
+                                 "bayesian",
+                                 "trees"))
