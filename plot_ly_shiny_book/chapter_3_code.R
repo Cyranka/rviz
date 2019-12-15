@@ -184,3 +184,90 @@ plot_ly(tx5,
                                 bgcolor = toRGB("white"))) ##Use linetypes arguments
 
 #3.2.2 Segments
+#3.2.2.2 dumbell charts
+mpg %>%
+    group_by(model) %>%
+    summarise(
+        c = mean(cty),
+        h = mean(hwy)
+    ) %>%
+    mutate(model = forcats::fct_reorder(model,c)) %>%
+    plot_ly() %>%
+    add_segments(
+        x = ~c,
+        y = ~model,
+        xend = ~h, ##Argument exclusive to segment
+        yend = ~model, ##Argument exclusive to segment
+        color = I("gray"),
+        showlegend = FALSE
+    ) %>%
+    add_markers(
+        x = ~c,
+        y = ~model,
+        color = I("blue"),
+        name = "Mpg city" ##Notice you can change two tooltips
+    ) %>%
+    add_markers(
+        x = ~h,
+        y = ~model,
+        color = I("Red"),
+        name = "Mpg highway"
+    ) %>%
+    layout(xaxis = list(title = "Miles per gallon",
+                        showline = TRUE,
+                        linewidth = 1),
+           yaxis = list(title = "Miodel",
+                        showline = TRUE,
+                        linewidth = 1))
+
+##3.2.3 Density plots
+kerns <- c("gaussian","epanechnikov","rectangular",
+           "triangular","biweight","cosine","optcosine")
+
+p <- plot_ly()
+
+for(k in kerns){
+    d <- density(economics$pce, kernel = k, na.rm = TRUE)
+    p <- add_lines(p, x = d$x,y = d$y, name = k)
+}
+
+
+# 3.3 Polygons ------------------------------------------------------------
+base <- map_data("world", "canada") %>%
+    group_by(group) %>%
+    plotly_empty(
+        x = ~long,
+        y = ~lat, 
+        alpha = 0.2
+    ) %>%
+    layout(showlegend = FALSE,
+           xaxis = list(scaleanchor = "y"))
+
+base %>%
+    add_polygons(hoverinfo = "none",
+                 color = I("black")) %>%
+    add_markers(
+        text = ~paste(name, "<br />",pop),
+        hoverinfo = "text",
+        color = I("red"),
+        data = maps::canada.cities,
+        size = ~pop,
+        sizes= c(1,500)
+    )
+
+base %>%
+    add_polygons(hoverinfo = "none",
+                 split = ~subregion,
+                 hoveron = "fills")
+
+#3.3.1 Ribbons
+m <- lm(mpg ~wt, data = mtcars)
+broom::augment(m) %>%
+    plot_ly(x = ~wt, showlegend = FALSE) %>%
+    add_markers(y = ~mpg, color = I("black")) %>%
+    add_ribbons(
+        ymin = ~.fitted -1.96*.se.fit,
+        ymax = ~.fitted + 1.96*.se.fit,
+        color = I("gray80")
+    ) %>%
+    add_lines(y = ~.fitted, color = I("steelblue"))
