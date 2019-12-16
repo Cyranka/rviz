@@ -8,7 +8,13 @@ mpg %>%
            model = fct_reorder(model,hwy, max)) %>%
     arrange(model) %>%
     plot_ly(x = ~hwy, y = ~model) %>%
-    add_bars() %>%
+    add_bars(width = I(0.8),
+             stroke = I("black"),
+             showlegend = FALSE,
+             hoverinfo = "text",
+             text = ~paste0("Model: ", str_to_title(model), "<br>",
+                            "MPG: ", hwy),
+             hoverlabel = list(bgcolor = "white")) %>%
     layout(
         xaxis = list(title = "<b>Miles per gallon (highway)<b>",
                      showline = TRUE,
