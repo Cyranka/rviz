@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <origin/>
+                <pubdate>19920101</pubdate>
+                <title>New Hampshire Political Boundaries at 1:24,000 Scale</title>
+                <edition>One</edition>
+                <geoform>Map</geoform>
+                <pubinfo>
+                    <pubplace/>
+                    <publish>Earth Systems Research Center, University of New Hampshire</publish>
+                </pubinfo>
+                <othercit>None</othercit>
+                <lworkcit>
+                    <citeinfo>
+                        <pubdate>19860101</pubdate>
+                        <title>NH GRANIT Database</title>
+                    </citeinfo>
+                </lworkcit>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>The New Hampshire Political Boundaries (pbnh) layer provides a digital representation of corporate boundaries at the town level. It was derived from the 1:24,000-scale USGS Digital Line Graphs (DLGs).</abstract>
+            <purpose>These data may be used to construct municipal, regional, or statewide base maps.</purpose>
+            <supplinf>Data distribution tile: statewide The data are available in shapefile format. This data is not be used as a legal definition of town boundaries in the state.</supplinf>
+        </descript>
+        <timeperd>
+            <timeinfo>
+                <rngdates>
+                    <begdate>19530101</begdate>
+                    <enddate>20130411</enddate>
+                </rngdates>
+            </timeinfo>
+            <current>Publication Date</current>
+        </timeperd>
+        <status>
+            <progress>Complete</progress>
+            <update>Irregular</update>
+        </status>
+        <spdom>
+            <bounding>
+                <westbc>-72.5947</westbc>
+                <eastbc>-70.6647</eastbc>
+                <northbc>45.3034</northbc>
+                <southbc>42.6936</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>Digital Line Graphs</themekey>
+                <themekey>Town</themekey>
+                <themekey>Boundary</themekey>
+                <themekey>Political</themekey>
+            </theme>
+            <place>
+                <placekt>None</placekt>
+                <placekey>Northeast</placekey>
+                <placekey>United States</placekey>
+                <placekey>New Hampshire</placekey>
+                <placekey>New England</placekey>
+            </place>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>Not for legal use</useconst>
+        <ptcontac>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Earth Systems Research Center</cntorg>
+                    <cntper>GRANIT Database Manager</cntper>
+                </cntorgp>
+                <cntpos>GRANIT Database Manager</cntpos>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>Morse Hall, University of New Hampshire</address>
+                    <city>Durham</city>
+                    <state>NH</state>
+                    <postal>03824</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntvoice>603-862-1792</cntvoice>
+                <cntfax>603-862-0188</cntfax>
+                <cntemail>granit@unh.edu</cntemail>
+                <hours>8:30AM-5PM, EST</hours>
+            </cntinfo>
+        </ptcontac>
+        <datacred>GRANIT database</datacred>
+        <native>Arc/Info coverage format</native>
+    </idinfo>
+    <dataqual>
+        <attracc>
+            <attraccr>The primary attribute associated with each polygon is the Federal Information Processing Standard (FIPS) code, which was generated directly from the DLGs. Additional attributes were linked from pre-existing files based on the FIPS code. Attributes were verified by visual inspection - both on-screen and on computer-generated hardcopy.</attraccr>
+        </attracc>
+        <logic>Polygon and arc-node topology exists.</logic>
+        <complete>Data is complete for the tile.</complete>
+        <posacc>
+            <horizpa>
+                <horizpar>The data were generated from standard USGS 1:24,000/1:25,000-scale Digital Line Graphs, and thus meet National Map Accuracy standards.</horizpar>
+            </horizpa>
+            <vertacc>
+                <vertaccr>The data were generated from standard USGS 1:24,000-1:25,000-scale Digital Line Graphs, and thus meet National Map Accuracy standards.</vertaccr>
+            </vertacc>
+        </posacc>
+        <lineage>
+            <srcinfo>
+                <srccite>
+                    <citeinfo>
+                        <pubdate>19900101</pubdate>
+                        <title>Digital Line Graphs - 1:24,000/1:25,000</title>
+                    </citeinfo>
+                </srccite>
+                <srcscale>24000</srcscale>
+                <typesrc>None</typesrc>
+                <srctime>
+                    <timeinfo>
+                        <rngdates>
+                            <begdate>19530101</begdate>
+                            <enddate>19900101</enddate>
+                        </rngdates>
+                    </timeinfo>
+                    <srccurr>Publication Date</srccurr>
+                </srctime>
+                <srccitea>Digital Line Graphs - 1:24,000/1:25,000</srccitea>
+                <srccontr>The DLG files provided the basic coordinate information for the data layer, as well as the fundamental feature codes.</srccontr>
+            </srcinfo>
+            <procstep>
+                <procdesc>The DLG-3 files for the 213 7.5-minute quadrangles in the state were converted to Arc/Info coverages using "DLGARC". Line topology was constructed, and attributes were appended using standard Arc/Info utilities. Each tile was then projected from UTM meters (Zone 18 or 19), NAD27, to NH State Plane feet, NAD83. The individual tiles were then edgematched, allowing for movement of arcs at the quadrangle seams of up to 10 ft. to create the statewide layer.</procdesc>
+                <procdate>19920101</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Earth Systems Research Center</cntorg>
+                            <cntper>GRANIT Database Manager</cntper>
+                        </cntorgp>
+                        <cntpos>GRANIT Database Manager</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>Morse Hall, University of New Hampshire</address>
+                            <city>Durham</city>
+                            <state>NH</state>
+                            <postal>03824</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>603-862-1792</cntvoice>
+                        <cntfax>603-862-0188</cntfax>
+                        <cntemail>granit@unh.edu</cntemail>
+                        <hours>8:30AM-5PM, EST</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>The RPA (Regional Planning Agency) designation for 3 towns - Wilmot, Langdon, and Brookfield - was updated.</procdesc>
+                <procdate>20060502</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Earth Systems Research Center</cntorg>
+                            <cntper>GRANIT Database Manager</cntper>
+                        </cntorgp>
+                        <cntpos>GRANIT Database Manager</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>Morse Hall, University of New Hampshire</address>
+                            <city>Durham</city>
+                            <state>NH</state>
+                            <postal>03824</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>603-862-1792</cntvoice>
+                        <cntfax>603-862-0188</cntfax>
+                        <cntemail>granit@unh.edu</cntemail>
+                        <hours>8:30AM-5PM, EST</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>The RPA (Regional Planning Agency) designation for 1 town - Windham - was updated.</procdesc>
+                <procdate>20090414</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Earth Systems Research Center</cntorg>
+                            <cntper>GRANIT Database Manager</cntper>
+                        </cntorgp>
+                        <cntpos>GRANIT Database Manager</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>Morse Hall, University of New Hampshire</address>
+                            <city>Durham</city>
+                            <state>NH</state>
+                            <postal>03824</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>603-862-1792</cntvoice>
+                        <cntfax>603-862-0188</cntfax>
+                        <cntemail>granit@unh.edu</cntemail>
+                        <hours>8:30AM-5PM, EST</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>The RPA (Regional Planning Agency) designation for 1 town - Mason - was updated.</procdesc>
+                <procdate>20090414</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Earth Systems Research Center</cntorg>
+                            <cntper>GRANIT Database Manager</cntper>
+                        </cntorgp>
+                        <cntpos>GRANIT Database Manager</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>Morse Hall, University of New Hampshire</address>
+                            <city>Durham</city>
+                            <state>NH</state>
+                            <postal>03824</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>603-862-1792</cntvoice>
+                        <cntfax>603-862-0188</cntfax>
+                        <cntemail>granit@unh.edu</cntemail>
+                        <hours>8:30AM-5PM, EST</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+        </lineage>
+    </dataqual>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>Complete chain</sdtstype>
+                <ptvctcnt>773</ptvctcnt>
+            </sdtsterm>
+            <sdtsterm>
+                <sdtstype>GT-polygon composed of chains</sdtstype>
+                <ptvctcnt>259</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>pbnh_polygon.dbf</enttypl>
+                <enttypd>Database Table</enttypd>
+                <enttypds>None</enttypds>
+            </enttyp>
+            <attr>
+                <attrlabl>County</attrlabl>
+                <attrdef>County in which town resides</attrdef>
+                <attrdefs>None</attrdefs>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>15</edomv>
+                                                						
+                        
+                        <edomvd>Rockingham</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>9</edomv>
+                                                						
+                        
+                        <edomvd>Grafton</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>17</edomv>
+                                                						
+                        
+                        <edomvd>Strafford</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>5</edomv>
+                                                						
+                        
+                        <edomvd>Cheshire</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>11</edomv>
+                                                						
+                        
+                        <edomvd>Hillsborough</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>1</edomv>
+                                                						
+                        
+                        <edomvd>Belknap</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>19</edomv>
+                                                						
+                        
+                        <edomvd>Sullivan</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>3</edomv>
+                                                						
+                        
+                        <edomvd>Carroll</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>7</edomv>
+                                                						
+                        
+                        <edomvd>Coos</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>13</edomv>
+                                                						
+                        
+                        <edomvd>Merrimack</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>RPA</attrlabl>
+                <attrdef>Regional Planning Agency to which town belongs</attrdef>
+                <attrdefs>None</attrdefs>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>1</edomv>
+                                                						
+                        
+                        <edomvd>North Country Council</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>2</edomv>
+                                                						
+                        
+                        <edomvd>Lakes Region Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>9</edomv>
+                                                						
+                        
+                        <edomvd>Strafford Regional Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>6</edomv>
+                                                						
+                        
+                        <edomvd>Southern NH Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>3</edomv>
+                                                						
+                        
+                        <edomvd>Upper Valley/Lake Sunapee Council</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>5</edomv>
+                                                						
+                        
+                        <edomvd>Central NH Regional Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>4</edomv>
+                                                						
+                        
+                        <edomvd>Southwest Region Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>8</edomv>
+                                                						
+                        
+                        <edomvd>Rockingham Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+                <attrdomv>
+                                        					
+                    
+                    <edom>
+                                                						
+                        
+                        <edomv>7</edomv>
+                                                						
+                        
+                        <edomvd>Nashua Regional Planning Commission</edomvd>
+                                                						
+                        
+                        <edomvds>None</edomvds>
+                                                					
+                    
+                    </edom>
+                                        				
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Fips</attrlabl>
+                <attrdef>Five-digit version of the Federal Information Processing Standard Code, used to uniquely identify each town. The format for NH GRANIT town FIPS codes is ccttt, where the first two digits (cc) reflect the county FIPS code (01 to 19, assigned alphabetically and in increments of 2) and the last three digits (ttt) reflect the town within each county (005 to nnn, assigned alphabetically and in increments of 5).</attrdef>
+                <attrdefs>Federal Information Processing Standard</attrdefs>
+                <attrdomv>
+                                        					
+                    
+                    <codesetd>
+                                                						
+                        
+                        <codesetn>Federal Information Processing Standard Codes</codesetn>
+                                                						
+                        
+                        <codesets>Federal Information Processing Standard Codes</codesets>
+                                                					
+                    
+                    </codesetd>
+                                        				
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Name</attrlabl>
+                <attrdef>Town Name</attrdef>
+                <attrdefs>None</attrdefs>
+                <attrdomv>
+                                        					
+                    
+                    <udom>Character Field</udom>
+                                        				
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>FID</attrlabl>
+                <attrdef>Feature identification number</attrdef>
+                <attrdefs>Software generated</attrdefs>
+                <attrdomv>
+                                        					
+                    
+                    <udom>User Defined</udom>
+                                        				
+                
+                </attrdomv>
+            </attr>
+        </detailed>
+    </eainfo>
+    <distinfo>
+        <distrib>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Earth Systems Research Center</cntorg>
+                    <cntper>GRANIT Database Manager</cntper>
+                </cntorgp>
+                <cntpos>GRANIT Database Manager</cntpos>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>Morse Hall, University of New Hampshire</address>
+                    <city>Durham</city>
+                    <state>NH</state>
+                    <postal>03824</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntvoice>603-862-1792</cntvoice>
+                <cntfax>603-862-0188</cntfax>
+                <cntemail>granit@unh.edu</cntemail>
+                <hours>8:30AM-5PM, EST</hours>
+            </cntinfo>
+        </distrib>
+        <resdesc>pbnh_polygon - 1:24,000-scale Political Boundaries of New Hampshire</resdesc>
+        <distliab>Digital data in NH GRANIT represent the efforts of the contributing agencies to record information from the cited source materials. Earth Systems Research Center, under contract to the NH Office of Energy and Planning, and in consultation with cooperating agencies, maintains a continuing program to identify and correct errors in these data. OSP, CSRC, and the cooperating agencies make no claim as to the validity or reliability or to any implied uses of these data.</distliab>
+        <stdorder>
+            <digform>
+                <digtinfo>
+                    <formname>ESRI shapefile</formname>
+                    <transize>1.5</transize>
+                </digtinfo>
+                <digtopt/>
+            </digform>
+            <fees>No charge when downloaded from the internet. Cost of reproduction for provision on CD/ROM or other media.</fees>
+            <ordering>Mail or fax a copy of the GRANIT "Data Request Form" from the GRANIT Data Catalog. Delivery Time: Two weeks</ordering>
+        </stdorder>
+    </distinfo>
+    <metainfo>
+        <metd>19990720</metd>
+        <metrd>20130411</metrd>
+        <metc>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Earth Systems Research Center</cntorg>
+                    <cntper>GRANIT Database Manager</cntper>
+                </cntorgp>
+                <cntpos>GRANIT Database Manager</cntpos>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>Morse Hall, University of New Hampshire</address>
+                    <city>Durham</city>
+                    <state>NH</state>
+                    <postal>03824</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntvoice>603-862-1792</cntvoice>
+                <cntfax>603-862-0188</cntfax>
+                <cntemail>granit@unh.edu</cntemail>
+                <hours>8:30AM-5PM, EST</hours>
+            </cntinfo>
+        </metc>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>
